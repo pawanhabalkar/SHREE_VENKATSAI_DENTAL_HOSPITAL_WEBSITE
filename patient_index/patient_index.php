@@ -1,0 +1,2530 @@
+<?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+require_once "../backend/auth/patient_auth.php";
+require_once "../backend/config/database.php";
+
+<?php
+
+require_once "../backend/auth/patient_auth.php";
+require_once "../backend/config/database.php";
+
+$user_id = $_SESSION["user_id"];
+
+$stmt = $conn->prepare("
+    SELECT
+        id,
+        mrn,
+        full_name,
+        mobile,
+        date_of_birth,
+        gender,
+        address,
+        area,
+        email
+    FROM patients
+    WHERE user_id = ?
+    LIMIT 1
+");
+
+$stmt->bind_param("i", $user_id);
+
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+if ($result->num_rows !== 1) {
+
+    die("Patient profile not found.");
+
+}
+
+$patient = $result->fetch_assoc();
+
+?>
+
+<?php
+
+$age = "";
+
+if (!empty($patient["date_of_birth"])) {
+
+    $dob = new DateTime($patient["date_of_birth"]);
+    $today = new DateTime();
+
+    $age = $today->diff($dob)->y;
+}
+
+?>
+
+<input
+    type="number"
+    value="<?= htmlspecialchars($age) ?>"
+    readonly
+>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Patient Portal | SHREE VENKATSAI Dental Hospital</title>
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <!-- Patient CSS -->
+    <link rel="stylesheet" href="patient.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar" id="sidebar">
+
+
+    <!-- LOGO -->
+
+    <div class="sidebar-brand">
+
+        <img
+            src="../assets/logo.jpg"
+            alt="SHREE VENKATSAI Dental Hospital Logo"
+        >
+
+        <div>
+
+            <strong>SHREE VENKATSAI</strong>
+
+            <span>
+                PATIENT PORTAL
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- PATIENT PROFILE -->
+
+    <div class="sidebar-profile">
+
+        <div class="profile-avatar">
+            <i class="fa-solid fa-user"></i>
+        </div>
+
+        <div>
+
+           <strong id="sidebarPatientName">
+    <?= htmlspecialchars($patient["full_name"]) ?>
+</strong>
+
+            <span>
+                Patient
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="sidebar-nav">
+
+
+        <p class="nav-title">
+            MAIN MENU
+        </p>
+
+
+        <a
+            href="#dashboard"
+            class="nav-link active"
+            data-section="dashboard"
+        >
+
+            <i class="fa-solid fa-chart-pie"></i>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <a
+            href="#appointments"
+            class="nav-link"
+            data-section="appointments"
+        >
+
+            <i class="fa-regular fa-calendar-check"></i>
+
+            <span>
+                My Appointments
+            </span>
+
+            <em>
+                2
+            </em>
+
+        </a>
+
+
+        <a
+            href="#medical-records"
+            class="nav-link"
+            data-section="medical-records"
+        >
+
+            <i class="fa-solid fa-file-medical"></i>
+
+            <span>
+                Medical Records
+            </span>
+
+        </a>
+
+
+        <a
+            href="#treatments"
+            class="nav-link"
+            data-section="treatments"
+        >
+
+            <i class="fa-solid fa-tooth"></i>
+
+            <span>
+                Treatments
+            </span>
+
+        </a>
+
+
+        <a
+            href="#prescriptions"
+            class="nav-link"
+            data-section="prescriptions"
+        >
+
+            <i class="fa-solid fa-prescription-bottle-medical"></i>
+
+            <span>
+                Prescriptions
+            </span>
+
+        </a>
+
+
+        <a
+            href="#billing"
+            class="nav-link"
+            data-section="billing"
+        >
+
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+
+            <span>
+                Billing & Payments
+            </span>
+
+        </a>
+        <a 
+    href="#referrals" 
+    class="nav-link" 
+    data-section="referrals"
+>
+    <i class="fa-solid fa-share-nodes"></i>
+
+    <span>
+        My Referrals
+    </span>
+
+    <em>
+        2
+    </em>
+</a>
+
+
+        <a
+            href="#notifications"
+            class="nav-link"
+            data-section="notifications"
+        >
+
+            <i class="fa-regular fa-bell"></i>
+
+            <span>
+                Notifications
+            </span>
+
+            <em>
+                3
+            </em>
+
+        </a>
+
+
+        
+
+
+        <p class="nav-title second-title">
+            ACCOUNT
+        </p>
+
+
+        <a
+            href="#profile"
+            class="nav-link"
+            data-section="profile"
+        >
+
+            <i class="fa-regular fa-user"></i>
+
+            <span>
+                My Profile
+            </span>
+
+        </a>
+
+
+        <a
+            href="#settings"
+            class="nav-link"
+            data-section="settings"
+        >
+
+            <i class="fa-solid fa-gear"></i>
+
+            <span>
+                Settings
+            </span>
+
+        </a>
+
+    </nav>
+
+
+    <!-- SIDEBAR FOOTER -->
+
+    <div class="sidebar-footer">
+
+        <a
+            href="../html/index.html"
+            class="website-link"
+        >
+
+            <i class="fa-solid fa-globe"></i>
+
+            Visit Hospital Website
+
+        </a>
+
+
+        <button
+            class="logout-btn"
+            id="logoutBtn"
+        >
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+
+        </button>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =====================================================
+     MOBILE OVERLAY
+===================================================== -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+></div>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main-content">
+
+
+    <!-- TOP BAR -->
+
+    <header class="topbar">
+
+
+        <div class="topbar-left">
+
+            <button
+                class="mobile-menu"
+                id="mobileMenu"
+            >
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+
+            <div class="page-heading">
+
+                <span>
+                    PATIENT PORTAL
+                </span>
+
+                <h1 id="pageTitle">
+                    Dashboard
+                </h1>
+
+            </div>
+
+        </div>
+
+
+        <div class="topbar-right">
+
+
+            <!-- SEARCH -->
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    placeholder="Search..."
+                >
+
+            </div>
+
+
+            <!-- NOTIFICATION -->
+
+            <button
+                class="icon-btn"
+                id="notificationBtn"
+            >
+
+                <i class="fa-regular fa-bell"></i>
+
+                <span class="notification-dot"></span>
+
+            </button>
+
+
+            <!-- PROFILE -->
+
+            <div
+                class="top-profile"
+                id="profileMenu"
+            >
+
+                <div class="top-avatar">
+
+                    <i class="fa-solid fa-user"></i>
+
+                </div>
+
+                <div>
+
+                    <strong id="topPatientName">
+    <?= htmlspecialchars($patient["full_name"]) ?>
+</strong>
+
+                    <span>
+                        Patient
+                    </span>
+
+                </div>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =================================================
+         CONTENT
+    ================================================= -->
+
+    <div class="content-area">
+
+
+        <!-- =================================================
+             DASHBOARD
+        ================================================= -->
+
+        <section
+            class="page-section active"
+            id="dashboard"
+        >
+
+
+            <!-- WELCOME -->
+
+            <div class="welcome-card">
+
+                <div class="welcome-content">
+
+                    <span>
+    GOOD MORNING, <?= htmlspecialchars(strtoupper($patient["full_name"])) ?>
+</span>
+
+                    <h2>
+                        Welcome back! 👋
+                    </h2>
+
+                    <p>
+                        Manage your dental appointments,
+                        treatments, medical records and payments
+                        from one place.
+                    </p>
+
+                    <button
+                        class="primary-btn"
+                        data-open="appointments"
+                    >
+
+                        <i class="fa-regular fa-calendar-plus"></i>
+
+                        Book Appointment
+
+                    </button>
+
+                </div>
+
+
+                <div class="welcome-tooth">
+
+                    <i class="fa-solid fa-tooth"></i>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- STAT CARDS -->
+
+            <div class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon green">
+
+                        <i class="fa-regular fa-calendar-check"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Upcoming Appointments
+                        </span>
+
+                        <strong>
+                            2
+                        </strong>
+
+                        <small class="positive">
+                            Next: Tomorrow
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon sage">
+
+                        <i class="fa-solid fa-tooth"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Active Treatment
+                        </span>
+
+                        <strong>
+                            1
+                        </strong>
+
+                        <small>
+                            Root Canal Treatment
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon maroon">
+
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Outstanding Balance
+                        </span>
+
+                        <strong>
+                            ₹2,500
+                        </strong>
+
+                        <small class="warning">
+                            Payment pending
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon blue">
+
+                        <i class="fa-solid fa-file-medical"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Medical Records
+                        </span>
+
+                        <strong>
+                            8
+                        </strong>
+
+                        <small>
+                            Available records
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TWO COLUMN -->
+
+            <div class="dashboard-grid">
+
+
+                <!-- APPOINTMENT -->
+
+                <div class="dashboard-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span>
+                                NEXT APPOINTMENT
+                            </span>
+
+                            <h3>
+                                Upcoming Visit
+                            </h3>
+
+                        </div>
+
+                        <button
+                            class="text-btn"
+                            data-open="appointments"
+                        >
+                            View All
+                        </button>
+
+                    </div>
+
+
+                    <div class="next-appointment">
+
+                        <div class="appointment-date">
+
+                            <span>
+                                SEP
+                            </span>
+
+                            <strong>
+                                03
+                            </strong>
+
+                            <small>
+                                2026
+                            </small>
+
+                        </div>
+
+
+                        <div class="appointment-details">
+
+                            <span class="status confirmed">
+                                CONFIRMED
+                            </span>
+
+                            <h4>
+                                Dental Consultation
+                            </h4>
+
+                            <p>
+                                <i class="fa-regular fa-clock"></i>
+                                10:30 AM
+                            </p>
+
+                            <p>
+                                <i class="fa-solid fa-user-doctor"></i>
+                                Dr. Orthodontist
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            class="appointment-arrow"
+                        >
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="dashboard-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span>
+                                QUICK ACTIONS
+                            </span>
+
+                            <h3>
+                                What would you like to do?
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="quick-actions">
+
+
+                        <button
+                            class="quick-action"
+                            data-open="appointments"
+                        >
+
+                            <i class="fa-regular fa-calendar-plus"></i>
+
+                            <span>
+                                Book Appointment
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            class="quick-action"
+                            data-open="medical-records"
+                        >
+
+                            <i class="fa-solid fa-file-medical"></i>
+
+                            <span>
+                                Medical Records
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            class="quick-action"
+                            data-open="prescriptions"
+                        >
+
+                            <i class="fa-solid fa-prescription-bottle-medical"></i>
+
+                            <span>
+                                Prescriptions
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            class="quick-action"
+                            data-open="billing"
+                        >
+
+                            <i class="fa-solid fa-receipt"></i>
+
+                            <span>
+                                Pay Bill
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RECENT ACTIVITY -->
+
+            <div class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span>
+                            RECENT ACTIVITY
+                        </span>
+
+                        <h3>
+                            Your Recent Updates
+                        </h3>
+
+                    </div>
+
+                    <button
+                        class="text-btn"
+                        data-open="notifications"
+                    >
+                        View All
+                    </button>
+
+                </div>
+
+
+                <div class="activity-list">
+
+
+                    <div class="activity-item">
+
+                        <div class="activity-icon green">
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Appointment Confirmed
+                            </strong>
+
+                            <p>
+                                Your appointment with Dr. Orthodontist
+                                has been confirmed.
+                            </p>
+
+                            <small>
+                                Today, 9:15 AM
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="activity-item">
+
+                        <div class="activity-icon sage">
+
+                            <i class="fa-solid fa-file-medical"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Medical Record Updated
+                            </strong>
+
+                            <p>
+                                Your latest dental consultation record
+                                has been added.
+                            </p>
+
+                            <small>
+                                Yesterday
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="activity-item">
+
+                        <div class="activity-icon maroon">
+
+                            <i class="fa-solid fa-file-invoice"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Payment Reminder
+                            </strong>
+
+                            <p>
+                                You have an outstanding balance of ₹2,500.
+                            </p>
+
+                            <small>
+                                2 days ago
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             APPOINTMENTS
+        ================================================= -->
+
+        <section
+            class="page-section"
+            id="appointments"
+        >
+
+            <div class="section-top">
+
+                <div>
+
+                    <span>
+                        APPOINTMENTS
+                    </span>
+
+                    <h2>
+                        My Appointments
+                    </h2>
+
+                    <p>
+                        Manage your upcoming and previous appointments.
+                    </p>
+
+                </div>
+
+                <a
+                    href="patient-book-appointment.html"
+                    class="primary-btn"
+                >
+
+                    <i class="fa-regular fa-calendar-plus"></i>
+
+                    Book New Appointment
+
+                </a>
+
+            </div>
+
+
+            <div class="appointments-tabs">
+
+                <button class="tab-btn active">
+                    Upcoming
+                </button>
+
+                <button class="tab-btn">
+                    Completed
+                </button>
+
+                <button class="tab-btn">
+                    Cancelled
+                </button>
+
+            </div>
+
+
+            <div class="appointment-list">
+
+
+                <div class="full-appointment-card">
+
+                    <div class="appointment-date large">
+
+                        <span>
+                            SEP
+                        </span>
+
+                        <strong>
+                            03
+                        </strong>
+
+                        <small>
+                            THU
+                        </small>
+
+                    </div>
+
+
+                    <div class="full-appointment-info">
+
+                        <span class="status confirmed">
+                            CONFIRMED
+                        </span>
+
+                        <h3>
+                            Dental Consultation
+                        </h3>
+
+                        <p>
+                            <i class="fa-regular fa-clock"></i>
+                            10:30 AM
+                        </p>
+
+                        <p>
+                            <i class="fa-solid fa-user-doctor"></i>
+                            Dr. Orthodontist
+                        </p>
+
+                        <p>
+                            <i class="fa-solid fa-tooth"></i>
+                            Orthodontics
+                        </p>
+
+                    </div>
+
+
+                    <div class="appointment-actions">
+
+                        <button class="outline-btn">
+                            View Details
+                        </button>
+
+                        <button class="cancel-btn">
+                            Cancel
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="full-appointment-card">
+
+                    <div class="appointment-date large">
+
+                        <span>
+                            SEP
+                        </span>
+
+                        <strong>
+                            15
+                        </strong>
+
+                        <small>
+                            TUE
+                        </small>
+
+                    </div>
+
+
+                    <div class="full-appointment-info">
+
+                        <span class="status pending">
+                            PENDING
+                        </span>
+
+                        <h3>
+                            Follow-up Consultation
+                        </h3>
+
+                        <p>
+                            <i class="fa-regular fa-clock"></i>
+                            04:00 PM
+                        </p>
+
+                        <p>
+                            <i class="fa-solid fa-user-doctor"></i>
+                            Dr. General
+                        </p>
+
+                        <p>
+                            <i class="fa-solid fa-tooth"></i>
+                            General Dentistry
+                        </p>
+
+                    </div>
+
+
+                    <div class="appointment-actions">
+
+                        <button class="outline-btn">
+                            View Details
+                        </button>
+
+                        <button class="cancel-btn">
+                            Cancel
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             MEDICAL RECORDS
+        ================================================= -->
+
+        <section
+            class="page-section"
+            id="medical-records"
+        >
+
+            <div class="section-top">
+
+                <div>
+
+                    <span>
+                        HEALTH RECORDS
+                    </span>
+
+                    <h2>
+                        Medical Records
+                    </h2>
+
+                    <p>
+                        View your dental reports, X-rays and consultation records.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="records-grid">
+
+
+                <div class="record-card">
+
+                    <div class="record-icon">
+                        <i class="fa-solid fa-file-medical"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            CONSULTATION
+                        </span>
+
+                        <h3>
+                            Dental Consultation
+                        </h3>
+
+                        <p>
+                            Dr. Orthodontist · Sep 01, 2026
+                        </p>
+
+                    </div>
+
+                    <button>
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+
+                </div>
+
+
+                <div class="record-card">
+
+                    <div class="record-icon">
+                        <i class="fa-solid fa-x-ray"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            X-RAY
+                        </span>
+
+                        <h3>
+                            Dental X-Ray
+                        </h3>
+
+                        <p>
+                            Uploaded · Aug 28, 2026
+                        </p>
+
+                    </div>
+
+                    <button>
+                        <i class="fa-solid fa-download"></i>
+                    </button>
+
+                </div>
+
+
+                <div class="record-card">
+
+                    <div class="record-icon">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            LAB REPORT
+                        </span>
+
+                        <h3>
+                            Dental Examination Report
+                        </h3>
+
+                        <p>
+                            Aug 25, 2026
+                        </p>
+
+                    </div>
+
+                    <button>
+                        <i class="fa-solid fa-download"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             TREATMENTS
+        ================================================= -->
+
+        <section
+            class="page-section"
+            id="treatments"
+        >
+
+            <div class="section-top">
+
+                <div>
+
+                    <span>
+                        DENTAL CARE
+                    </span>
+
+                    <h2>
+                        My Treatments
+                    </h2>
+
+                    <p>
+                        Track your current and previous dental treatments.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="treatment-card">
+
+                <div class="treatment-header">
+
+                    <div class="treatment-tooth">
+
+                        <i class="fa-solid fa-tooth"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            ACTIVE TREATMENT
+                        </span>
+
+                        <h3>
+                            Root Canal Treatment
+                        </h3>
+
+                        <p>
+                            Started on August 25, 2026
+                        </p>
+
+                    </div>
+
+                    <span class="treatment-status">
+                        IN PROGRESS
+                    </span>
+
+                </div>
+
+
+                <div class="treatment-progress">
+
+                    <div class="progress-heading">
+
+                        <span>
+                            Treatment Progress
+                        </span>
+
+                        <strong>
+                            60%
+                        </strong>
+
+                    </div>
+
+                    <div class="progress-bar">
+
+                        <span style="width:60%"></span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="treatment-steps">
+
+                    <div class="completed">
+
+                        <span>
+                            01
+                        </span>
+
+                        <strong>
+                            Examination
+                        </strong>
+
+                    </div>
+
+                    <div class="completed">
+
+                        <span>
+                            02
+                        </span>
+
+                        <strong>
+                            Cleaning
+                        </strong>
+
+                    </div>
+
+                    <div class="active-step">
+
+                        <span>
+                            03
+                        </span>
+
+                        <strong>
+                            Root Canal
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            04
+                        </span>
+
+                        <strong>
+                            Crown
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             PRESCRIPTIONS
+        ================================================= -->
+
+        <section
+            class="page-section"
+            id="prescriptions"
+        >
+
+            <div class="section-top">
+
+                <div>
+
+                    <span>
+                        MEDICATION
+                    </span>
+
+                    <h2>
+                        Prescriptions
+                    </h2>
+
+                    <p>
+                        View prescriptions provided by your dentist.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="prescription-card">
+
+                <div class="prescription-header">
+
+                    <div>
+
+                        <span>
+                            PRESCRIPTION
+                        </span>
+
+                        <h3>
+                            Dental Treatment Medication
+                        </h3>
+
+                    </div>
+
+                    <span>
+                        Sep 01, 2026
+                    </span>
+
+                </div>
+
+
+                <div class="medicine-row">
+
+                    <div class="medicine-icon">
+
+                        <i class="fa-solid fa-pills"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Amoxicillin 500mg
+                        </strong>
+
+                        <span>
+                            1 capsule · Three times daily
+                        </span>
+
+                    </div>
+
+                    <span>
+                        5 Days
+                    </span>
+
+                </div>
+
+
+                <div class="medicine-row">
+
+                    <div class="medicine-icon">
+
+                        <i class="fa-solid fa-tablets"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Ibuprofen 400mg
+                        </strong>
+
+                        <span>
+                            1 tablet · After meals
+                        </span>
+
+                    </div>
+
+                    <span>
+                        3 Days
+                    </span>
+
+                </div>
+
+
+                <button class="outline-btn">
+
+                    <i class="fa-solid fa-print"></i>
+
+                    Print Prescription
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             BILLING
+        ================================================= -->
+
+        <section
+            class="page-section"
+            id="billing"
+        >
+
+            <div class="section-top">
+
+                <div>
+
+                    <span>
+                        PAYMENTS
+                    </span>
+
+                    <h2>
+                        Billing & Payments
+                    </h2>
+
+                    <p>
+                        View your invoices, payments and outstanding balance.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="billing-summary">
+
+
+                <div class="billing-box">
+
+                    <span>
+                        TOTAL BILLED
+                    </span>
+
+                    <strong>
+                        ₹18,500
+                    </strong>
+
+                </div>
+
+
+                <div class="billing-box paid">
+
+                    <span>
+                        TOTAL PAID
+                    </span>
+
+                    <strong>
+                        ₹16,000
+                    </strong>
+
+                </div>
+
+
+                <div class="billing-box due">
+
+                    <span>
+                        OUTSTANDING
+                    </span>
+
+                    <strong>
+                        ₹2,500
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span>
+                            BILLING HISTORY
+                        </span>
+
+                        <h3>
+                            Recent Invoices
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Invoice
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Description
+                                </th>
+
+                                <th>
+                                    Amount
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    INV-1025
+                                </td>
+
+                                <td>
+                                    Sep 01, 2026
+                                </td>
+
+                                <td>
+                                    Dental Consultation
+                                </td>
+
+                                <td>
+                                    ₹2,500
+                                </td>
+
+                                <td>
+                                    <span class="status paid-status">
+                                        Paid
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <button class="table-action">
+                                        <i class="fa-solid fa-download"></i>
+                                    </button>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    INV-1028
+                                </td>
+
+                                <td>
+                                    Sep 02, 2026
+                                </td>
+
+                                <td>
+                                    Root Canal Treatment
+                                </td>
+
+                                <td>
+                                    ₹2,500
+                                </td>
+
+                                <td>
+                                    <span class="status due-status">
+                                        Due
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <button class="pay-btn">
+                                        Pay Now
+                                    </button>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =================================================
+     REFERRALS
+================================================= -->
+
+<section
+    class="page-section"
+    id="referrals"
+>
+
+    <div class="section-top">
+
+        <div>
+
+            <span>
+                REFERRAL INFORMATION
+            </span>
+
+            <h2>
+                My Referrals
+            </h2>
+
+            <p>
+                View the doctors who have referred you to our hospital.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- REFERRING DOCTOR CARD -->
+
+    <div class="referral-card">
+
+        <div class="referral-header">
+
+            <div class="referral-doctor-icon">
+
+                <i class="fa-solid fa-user-doctor"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    REFERRED BY
+                </span>
+
+                <h3>
+                    Dr. Rajesh Kumar
+                </h3>
+
+                <p>
+                    General Dentist
+                </p>
+
+            </div>
+
+            <span class="referral-status">
+                ACTIVE
+            </span>
+
+        </div>
+
+
+        <div class="referral-details">
+
+            <div class="referral-detail">
+
+                <i class="fa-solid fa-hospital"></i>
+
+                <div>
+
+                    <span>
+                        Hospital / Clinic
+                    </span>
+
+                    <strong>
+                        Rajesh Dental Clinic
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="referral-detail">
+
+                <i class="fa-solid fa-calendar-days"></i>
+
+                <div>
+
+                    <span>
+                        Referral Date
+                    </span>
+
+                    <strong>
+                        September 01, 2026
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="referral-detail">
+
+                <i class="fa-solid fa-tooth"></i>
+
+                <div>
+
+                    <span>
+                        Referral For
+                    </span>
+
+                    <strong>
+                        Root Canal Treatment
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="referral-detail">
+
+                <i class="fa-solid fa-phone"></i>
+
+                <div>
+
+                    <span>
+                        Contact
+                    </span>
+
+                    <strong>
+                        +91 98765 43210
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="referral-note">
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            <p>
+                You were referred to SHREE VENKATSAI MULTI SPECIALITY
+                DENTAL HOSPITAL for specialized dental treatment.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- REFERRAL HISTORY -->
+
+    <div class="dashboard-card referral-history">
+
+        <div class="card-header">
+
+            <div>
+
+                <span>
+                    REFERRAL HISTORY
+                </span>
+
+                <h3>
+                    Previous Referrals
+                </h3>
+
+            </div>
+
+        </div>
+
+
+        <div class="referral-history-item">
+
+            <div class="history-icon">
+
+                <i class="fa-solid fa-user-doctor"></i>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Dr. Rajesh Kumar
+                </strong>
+
+                <p>
+                    Referred for Root Canal Treatment
+                </p>
+
+                <small>
+                    September 01, 2026
+                </small>
+
+            </div>
+
+            <span class="status confirmed">
+                COMPLETED
+            </span>
+
+        </div>
+
+
+        <div class="referral-history-item">
+
+            <div class="history-icon">
+
+                <i class="fa-solid fa-user-doctor"></i>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Dr. Anil Sharma
+                </strong>
+
+                <p>
+                    Referred for Dental Consultation
+                </p>
+
+                <small>
+                    August 15, 2026
+                </small>
+
+            </div>
+
+            <span class="status confirmed">
+                COMPLETED
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+        <!-- =================================================
+             NOTIFICATIONS
+        ================================================= -->
+
+        <section
+            class="page-section"
+            id="notifications"
+        >
+
+            <div class="section-top">
+
+                <div>
+
+                    <span>
+                        NOTIFICATIONS
+                    </span>
+
+                    <h2>
+                        Notifications
+                    </h2>
+
+                    <p>
+                        Stay updated with your dental care.
+                    </p>
+
+                </div>
+
+                <button class="outline-btn">
+                    Mark All as Read
+                </button>
+
+            </div>
+
+
+            <div class="notification-list">
+
+
+                <div class="notification-card unread">
+
+                    <div class="notification-icon green">
+
+                        <i class="fa-regular fa-calendar-check"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Appointment Confirmed
+                        </strong>
+
+                        <p>
+                            Your appointment on September 3 at
+                            10:30 AM has been confirmed.
+                        </p>
+
+                        <small>
+                            Today · 9:15 AM
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="notification-card unread">
+
+                    <div class="notification-icon maroon">
+
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Payment Reminder
+                        </strong>
+
+                        <p>
+                            Your outstanding balance is ₹2,500.
+                        </p>
+
+                        <small>
+                            Yesterday
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="notification-card">
+
+                    <div class="notification-icon sage">
+
+                        <i class="fa-solid fa-file-medical"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Medical Record Available
+                        </strong>
+
+                        <p>
+                            A new dental consultation record is available.
+                        </p>
+
+                        <small>
+                            Aug 31, 2026
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             PROFILE
+        ================================================= -->
+
+<section
+    class="page-section"
+    id="profile"
+>
+
+    <div class="section-top">
+
+        <div>
+            <span>ACCOUNT</span>
+
+            <h2>My Profile</h2>
+
+            <p>
+                Manage your personal information.
+            </p>
+        </div>
+
+        <!-- EDIT BUTTON -->
+        <button
+            type="button"
+            class="edit-profile-btn"
+            id="editProfileBtn"
+            onclick="toggleProfileEdit()"
+        >
+            <i class="fa-solid fa-pen"></i>
+            Edit Profile
+        </button>
+
+    </div>
+
+
+    <div class="profile-card">
+
+        <!-- PROFILE HEADER -->
+        <div class="profile-large">
+
+            <div class="large-avatar">
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div>
+                <h3 id="profileName">
+                    Pawan Habalkar
+                </h3>
+
+                <span>
+                    Patient ID: ODS-P00125
+                </span>
+            </div>
+
+        </div>
+
+
+        <!-- PROFILE FORM -->
+        <div class="profile-form">
+
+            <!-- FULL NAME -->
+            <div class="profile-field">
+
+                <label>
+                    Full Name
+                </label>
+
+                <input
+    type="text"
+    value="<?= htmlspecialchars($patient["full_name"]) ?>"
+>
+
+            </div>
+
+
+            <!-- EMAIL -->
+            <div class="profile-field">
+
+                <label>
+                    Email Address
+                </label>
+
+                <input
+    type="email"
+    value="<?= htmlspecialchars($patient["email"] ?? "") ?>"
+>
+
+            </div>
+
+
+            <!-- PHONE -->
+            <div class="profile-field">
+
+                <label>
+                    Phone Number
+                </label>
+
+               <input
+    type="tel"
+    value="<?= htmlspecialchars($patient["mobile"] ?? "") ?>"
+>
+
+            </div>
+
+
+            <!-- DATE OF BIRTH -->
+            <div class="profile-field">
+
+                <label>
+                    Date of Birth
+                </label>
+
+                <input
+                    type="date"
+                    id="dateOfBirth"
+                    value="1998-06-15"
+                    readonly
+                >
+
+            </div>
+
+
+            <!-- GENDER -->
+            <div class="profile-field">
+
+                <label>
+                    Gender
+                </label>
+
+                <!-- <select
+                    id="gender"
+                    disabled
+                >
+                    <option value="">Select Gender</option>
+                    <option value="Male" selected>Male</option>
+                    <option value="Female">Female</option>
+                </select> -->
+                <input
+    type="text"
+    value="<?= htmlspecialchars($patient["gender"] ?? "") ?>"
+>
+
+            </div>
+
+
+            <!-- AREA -->
+            <div class="profile-field">
+
+                <label>
+                    Area
+                </label>
+
+                <input
+    type="text"
+    value="<?= htmlspecialchars($patient["area"] ?? "") ?>"
+>
+
+            </div>
+
+
+            <!-- ADDRESS -->
+            <div class="profile-field full">
+
+                <label>
+                    Address
+                </label>
+
+                <textarea><?= htmlspecialchars($patient["address"] ?? "") ?></textarea>
+
+            </div>
+
+        </div>
+
+
+        <!-- SAVE BUTTON - HIDDEN INITIALLY -->
+        <div
+            class="profile-actions"
+            id="profileActions"
+            style="display: none;"
+        >
+
+            <button
+                type="button"
+                class="primary-btn"
+                onclick="saveProfile()"
+            >
+
+                <i class="fa-solid fa-floppy-disk"></i>
+
+                Save Changes
+
+            </button>
+
+            <button
+                type="button"
+                class="cancel-profile-btn"
+                onclick="cancelProfileEdit()"
+            >
+
+                Cancel
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+        <!-- =================================================
+             SETTINGS
+        ================================================= -->
+
+        <section
+            class="page-section"
+            id="settings"
+        >
+
+            <div class="section-top">
+
+                <div>
+
+                    <span>
+                        ACCOUNT SETTINGS
+                    </span>
+
+                    <h2>
+                        Settings
+                    </h2>
+
+                    <p>
+                        Manage your portal preferences.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="settings-card">
+
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <strong>
+                            Appointment Reminders
+                        </strong>
+
+                        <span>
+                            Receive reminders before your appointments.
+                        </span>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <strong>
+                            Payment Notifications
+                        </strong>
+
+                        <span>
+                            Get notified about pending payments.
+                        </span>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <strong>
+                            Email Notifications
+                        </strong>
+
+                        <span>
+                            Receive important updates by email.
+                        </span>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <strong>
+                            SMS Notifications
+                        </strong>
+
+                        <span>
+                            Receive appointment and treatment updates by SMS.
+                        </span>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                        >
+
+                        <span></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     LOGOUT MODAL
+===================================================== -->
+
+<div
+    class="modal-overlay"
+    id="logoutModal"
+>
+
+    <div class="logout-modal">
+
+        <div class="modal-icon">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+        </div>
+
+        <h3>
+            Logout from Portal?
+        </h3>
+
+        <p>
+            Are you sure you want to logout from your
+           SHREE VENKATSAI patient account?
+        </p>
+
+        <div class="modal-actions">
+
+            <button
+                class="outline-btn"
+                id="cancelLogout"
+            >
+                Cancel
+            </button>
+
+            <button
+                class="danger-btn"
+                id="confirmLogout"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script src="patient.js"></script>
+
+</body>
+
+</html>
+

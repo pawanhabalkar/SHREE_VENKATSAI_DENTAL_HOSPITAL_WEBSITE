@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Reception Appointment |
+        SHREE VENKATSAI MULTI SPECIALITY DENTAL HOSPITAL
+    </title>
+
+    <!-- Keep your existing Font Awesome link if already present -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" href="recption.css">
+</head>
+
+<body>
+
+    <main class="reception-page">
+
+        <!-- PAGE HEADER -->
+
+        <section class="page-header">
+
+            <div>
+                <span class="page-kicker">
+                    RECEPTION / FRONT DESK
+                </span>
+
+                <h1>Take Appointment</h1>
+
+                <p>
+                    Search an existing patient or register a new patient
+                    and book an appointment.
+                </p>
+            </div>
+
+            <div class="header-icon">
+                <i class="fa-solid fa-calendar-check"></i>
+            </div>
+
+        </section>
+
+        <header class="hospital-header">
+
+            <div class="hospital-brand">
+
+                <img src="../SHREE_VENKATSAI_DENTAL_HOSPITAL_WEBSITE/assets/logo.jpg" alt="Shree Venkatsai Dental Hospital Logo" class="hospital-logo">
+
+                <div class="hospital-title">
+                    <h1>SHREE VENKATSAI MULTI SPECIALITY DENTAL HOSPITAL</h1>
+                    <p>Reception / Front Desk</p>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================================
+             PATIENT SEARCH
+        ====================================================== -->
+
+        <section class="form-card">
+
+            <div class="card-heading">
+
+                <div class="heading-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+
+                <div>
+                    <h2>Search Patient</h2>
+
+                    <p>
+                        Search using Patient ID / MRN or registered
+                        mobile number.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="search-row">
+
+                <div class="search-box">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input type="text" id="patientSearch" placeholder="Enter MRN or mobile number">
+
+                </div>
+
+                <button type="button" class="primary-btn" id="searchPatientBtn">
+                    <i class="fa-solid fa-search"></i>
+                    Search Patient
+                </button>
+
+                <button type="button" class="secondary-btn" id="newPatientBtn">
+                    <i class="fa-solid fa-user-plus"></i>
+                    New Patient
+                </button>
+
+            </div>
+
+
+            <div id="searchMessage" class="search-message"></div>
+
+
+            <!-- EXISTING PATIENT RESULT -->
+
+            <div id="existingPatient" class="existing-patient hidden">
+
+                <div class="patient-found">
+
+                    <div>
+
+                        <span class="found-label">
+                            EXISTING PATIENT FOUND
+                        </span>
+
+                        <h3 id="foundPatientName">
+                            —
+                        </h3>
+
+                    </div>
+
+
+                    <div class="mrn-box">
+
+                        <span>Patient MRN</span>
+
+                        <strong id="foundPatientMRN">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="patient-summary">
+
+                    <div>
+                        <span>Phone Number</span>
+                        <strong id="foundPatientPhone">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Age</span>
+                        <strong id="foundPatientAge">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Address</span>
+                        <strong id="foundPatientAddress">—</strong>
+                    </div>
+                    <div>
+                        <span>Area</span>
+                        <strong id="foundPatientAddress">—</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             APPOINTMENT / PATIENT FORM
+        ====================================================== -->
+
+        <form id="appointmentForm" class="form-card">
+
+            <!-- PATIENT INFORMATION -->
+
+            <div class="card-heading">
+
+                <div class="heading-icon">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+                <div>
+                    <h2>Patient Information</h2>
+
+                    <p>
+                        Enter the required patient details.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <!-- MRN -->
+
+                <div class="form-group">
+
+                    <label>
+                        Patient Unique ID / MRN
+                    </label>
+
+                    <div class="readonly-field">
+
+                        <i class="fa-solid fa-id-card"></i>
+
+                        <input type="text" id="mrn" placeholder="Automatically generated" readonly>
+
+                        <span>AUTO</span>
+
+                    </div>
+
+                    <small>
+                        MRN is permanent and cannot be manually changed.
+                    </small>
+
+                </div>
+
+
+                <!-- PATIENT NAME -->
+
+                <div class="form-group">
+
+                    <label for="patientName">
+                        Patient Name <b>*</b>
+                    </label>
+
+                    <input type="text" id="patientName" placeholder="Enter patient's full name" required>
+
+                </div>
+
+
+                <!-- AGE -->
+
+                <div class="form-group">
+
+                    <label for="patientAge">
+                        Age <b>*</b>
+                    </label>
+
+                    <input type="number" id="patientAge" min="0" max="120" placeholder="Enter age" required>
+
+                </div>
+                <div class="form-group">
+
+                    <label for="patientAge">
+                        Email <b></b>
+                    </label>
+
+                    <input type="email" id="patientEmail" placeholder="Email">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="dateOfBirth">
+                        Date Of Birth<b>*</b>
+                    </label>
+
+                    <input type="date" id="dateOfBirth" required>
+
+                </div>
+                <div class="form-group ">
+
+                    <label for="gender">
+                        Gender <b>*</b>
+                    </label>
+
+                    <select id="gender" required>
+
+                        <option value="">Select Gender</option>
+                        <option value="Station Road">
+                            Male
+                        </option>
+
+                        <option value="Super Market">
+                            Female
+                        </option>
+                        <option value="Super Market">
+                            Others
+                        </option>
+
+
+                    </select>
+
+                </div>
+
+
+                <!-- DATE -->
+
+                <div class="form-group">
+
+                    <label for="appointmentDate">
+                        Booking Date <b>*</b>
+                    </label>
+
+                    <input type="date" id="appointmentDate" required>
+
+                </div>
+
+                <div class="form-group" id="otherAddressGroup">
+
+                    <label for="otherAddress">
+                        Enter Address <b>*</b>
+                    </label>
+
+                    <textarea id="otherAddress" rows="3" placeholder="Enter complete address">
+                         </textarea>
+
+                </div>
+
+
+                <!-- ADDRESS -->
+
+             <div class="form-group">
+
+    <label for="area">
+        Area <b>*</b>
+    </label>
+
+    <select id="area" required>
+
+        <option value="">
+            Select location
+        </option>
+
+        <option value="Kalaburagi City">
+            Kalaburagi City
+        </option>
+
+        <option value="Sedam Road">
+            Sedam Road
+        </option>
+
+        <option value="Station Road">
+            Station Road
+        </option>
+
+        <option value="Super Market">
+            Super Market
+        </option>
+
+        <option value="Shahabad Road">
+            Shahabad Road
+        </option>
+
+        <option value="Aland Road">
+            Aland Road
+        </option>
+
+        <option value="Jewargi Road">
+            Jewargi Road
+        </option>
+
+        <option value="Ring Road">
+            Ring Road
+        </option>
+
+        <option value="Other">
+            Other
+        </option>
+
+    </select>
+
+</div>
+
+
+<div class="form-group full-width hidden" id="otherAddressGroup">
+
+    <label for="otherAddress">
+        Enter Address <b>*</b>
+    </label>
+
+    <textarea
+        id="otherAddress"
+        rows="3"
+        placeholder="Enter complete address"
+    ></textarea>
+
+</div>
+
+
+                <!-- OTHER ADDRESS -->
+
+                <!-- <div class="form-group full-width hidden" id="otherAddressGroup">
+
+                    <label for="otherAddress">
+                        Enter Address <b>*</b>
+                    </label>
+
+                    <textarea id="otherAddress" rows="3" placeholder="Enter complete address"></textarea>
+
+                </div> -->
+
+
+
+                <!-- CONSULTANT -->
+
+
+
+                <!-- PHONE -->
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone Number <b>*</b>
+                    </label>
+
+                    <input type="tel" id="phone" maxlength="10" placeholder="10-digit mobile number" required>
+
+                </div>
+
+
+                <!-- ALTERNATE PHONE -->
+
+                <div class="form-group">
+
+                    <label for="alternatePhone">
+                        Alternate Phone Number
+                    </label>
+
+                    <input type="tel" id="alternatePhone" maxlength="10" placeholder="Optional">
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 APPOINTMENT DETAILS
+            ================================================== -->
+
+            <div class="sub-heading">
+
+                <div class="heading-icon small">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+
+                <div>
+
+                    <h3>Appointment Details</h3>
+
+                    <p>
+                        Select the date, consultant and appointment time.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <!-- TIME -->
+
+                <div class="form-group">
+
+                    <label for="appointmentTime">
+                        Appointment Time <b>*</b>
+                    </label>
+
+                    <select id="appointmentTime" required>
+
+                        <option value="">
+                            Select appointment time
+                        </option>
+
+                        <option value="09:00 AM">
+                            09:00 AM
+                        </option>
+
+                        <option value="09:30 AM">
+                            09:30 AM
+                        </option>
+
+                        <option value="10:00 AM">
+                            10:00 AM
+                        </option>
+
+                        <option value="10:30 AM">
+                            10:30 AM
+                        </option>
+
+                        <option value="11:00 AM">
+                            11:00 AM
+                        </option>
+
+                        <option value="11:30 AM">
+                            11:30 AM
+                        </option>
+
+                        <option value="12:00 PM">
+                            12:00 PM
+                        </option>
+
+                        <option value="02:00 PM">
+                            02:00 PM
+                        </option>
+
+                        <option value="02:30 PM">
+                            02:30 PM
+                        </option>
+
+                        <option value="03:00 PM">
+                            03:00 PM
+                        </option>
+
+                        <option value="03:30 PM">
+                            03:30 PM
+                        </option>
+
+                        <option value="04:00 PM">
+                            04:00 PM
+                        </option>
+
+                        <option value="04:30 PM">
+                            04:30 PM
+                        </option>
+
+                        <option value="05:00 PM">
+                            05:00 PM
+                        </option>
+
+                        <option value="05:30 PM">
+                            05:30 PM
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- APPOINTMENT TYPE -->
+
+                <div class="form-group">
+
+                    <label for="appointmentType">
+                        Appointment Type <b>*</b>
+                    </label>
+
+                    <select id="appointmentType" required>
+
+                        <option value="">
+                            Select appointment type
+                        </option>
+
+                        <option value="New Consultation">
+                            New Consultation
+                        </option>
+
+                        <option value="Follow-up">
+                            Follow-up
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="consultant">
+                        Consultant Name <b>*</b>
+                    </label>
+
+                    <select id="consultant" required>
+
+                        <option value="">
+                            Select consultant
+                        </option>
+
+                        <option value="Dr. Anil Kumar">
+                            Dr. Anil Kumar
+                        </option>
+
+                        <option value="Dr. Priya Sharma">
+                            Dr. Priya Sharma
+                        </option>
+
+                        <option value="Dr. Rahul Patil">
+                            Dr. Rahul Patil
+                        </option>
+
+                    </select>
+
+                    <small>
+                        The actual system will show only available
+                        consultants for the selected date and time.
+                    </small>
+
+                </div>
+
+
+                <!-- REASON -->
+
+                <div class="form-group full-width">
+
+                    <label for="visitReason">
+                        Reason for Visit
+                    </label>
+
+                    <textarea id="visitReason" rows="3" placeholder="Enter reason for appointment"></textarea>
+
+                </div>
+
+            </div>
+
+
+            <!-- FORM BUTTONS -->
+
+            <div class="form-actions">
+
+                <button type="button" class="secondary-btn" id="clearFormBtn">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    Clear
+                </button>
+
+                <button type="submit" class="primary-btn">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    Book Appointment
+                </button>
+
+            </div>
+
+        </form>
+
+    </main>
+
+
+    <!-- =====================================================
+         SUCCESS MODAL
+    ====================================================== -->
+
+    <div class="modal-overlay hidden" id="successModal">
+
+        <div class="success-modal">
+
+            <div class="success-icon">
+                <i class="fa-solid fa-check"></i>
+            </div>
+
+            <span class="found-label">
+                APPOINTMENT CONFIRMED
+            </span>
+
+            <h2>
+                Appointment Booked Successfully
+            </h2>
+
+            <p>
+                The appointment has been successfully registered.
+            </p>
+
+
+            <div class="generated-details">
+
+                <div>
+                    <span>Patient MRN</span>
+                    <strong id="successMRN">
+                        —
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Appointment Number</span>
+                    <strong id="successAppointmentNo">
+                        —
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button type="button" class="secondary-btn" id="closeSuccessBtn">
+                    Done
+                </button>
+
+                <button type="button" class="primary-btn" id="printAppointmentBtn">
+                    <i class="fa-solid fa-print"></i>
+                    Print Form
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PRINT FORM
+    ====================================================== -->
+
+    <!-- <div
+
+        class="print-container"
+        id="printContainer"
+    >
+
+        <div class="print-header">
+
+            <div class="print-tooth">
+                <i class="fa-solid fa-tooth"></i>
+            </div>
+
+            <div>
+
+                <h1>
+                    SHREE VENKATSAI MULTI SPECIALITY
+                    DENTAL HOSPITAL
+                </h1>
+
+                <p>
+                    Patient Appointment Form
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="print-identifiers">
+
+            <div>
+                <span>Patient MRN</span>
+                <strong id="printMRN"></strong>
+            </div>
+
+            <div>
+                <span>Appointment Number</span>
+                <strong id="printAppointmentNo"></strong>
+            </div>
+
+        </div>
+
+
+        <div class="print-section">
+
+            <h3>Patient Information</h3>
+
+            <div class="print-grid">
+
+                <div>
+                    <span>Patient Name</span>
+                    <strong id="printPatientName"></strong>
+                </div>
+
+                <div>
+                    <span>Age</span>
+                    <strong id="printPatientAge"></strong>
+                </div>
+
+                <div>
+                    <span>Phone Number</span>
+                    <strong id="printPhone"></strong>
+                </div>
+
+                <div>
+                    <span>Alternate Phone</span>
+                    <strong id="printAlternatePhone"></strong>
+                </div>
+
+                <div class="print-full">
+                    <span>Address</span>
+                    <strong id="printAddress"></strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="print-section">
+
+            <h3>Appointment Information</h3>
+
+            <div class="print-grid">
+
+                <div>
+                    <span>Date</span>
+                    <strong id="printDate"></strong>
+                </div>
+
+                <div>
+                    <span>Time</span>
+                    <strong id="printTime"></strong>
+                </div>
+
+                <div>
+                    <span>Consultant</span>
+                    <strong id="printConsultant"></strong>
+                </div>
+
+                <div>
+                    <span>Appointment Type</span>
+                    <strong id="printType"></strong>
+                </div>
+
+                <div class="print-full">
+                    <span>Reason for Visit</span>
+                    <strong id="printReason"></strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="print-footer">
+
+            <p>
+                Please retain this appointment form for your records.
+            </p>
+
+            <p>
+                Reception / Front Desk
+            </p>
+
+        </div>
+
+    </div> -->
+
+    <!-- =========================================
+     PRINT APPOINTMENT FORM
+========================================= -->
+
+    <div class="print-container" id="printContainer">
+
+        <!-- Hospital Header -->
+        <div class="print-hospital-header">
+
+            <img src="images/logo.png" alt="Shree Venkatsai Dental Hospital Logo" class="print-logo">
+
+            <div class="print-hospital-info">
+                <h1>SHREE VENKATSAI MULTI SPECIALITY DENTAL HOSPITAL</h1>
+                <p>Appointment / Patient Registration Form</p>
+            </div>
+
+        </div>
+
+        <div class="print-divider"></div>
+
+
+        <!-- Appointment Information -->
+        <div class="print-section">
+
+            <h2>Appointment Details</h2>
+
+            <div class="print-grid">
+
+                <div class="print-field">
+                    <span>Appointment No.</span>
+                    <strong id="printAppointmentNo">-</strong>
+                </div>
+
+                <div class="print-field">
+                    <span>Appointment Date</span>
+                    <strong id="printAppointmentDate">-</strong>
+                </div>
+
+                <div class="print-field">
+                    <span>Appointment Time</span>
+                    <strong id="printAppointmentTime">-</strong>
+                </div>
+
+                <div class="print-field">
+                    <span>Appointment Type</span>
+                    <strong id="printAppointmentType">-</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Patient Information -->
+        <div class="print-section">
+
+            <h2>Patient Information</h2>
+
+            <div class="print-grid">
+
+                <div class="print-field">
+                    <span>Patient MRN / ID</span>
+                    <strong id="printMRN">-</strong>
+                </div>
+
+                <div class="print-field">
+                    <span>Patient Name</span>
+                    <strong id="printPatientName">-</strong>
+                </div>
+
+                <div class="print-field">
+                    <span>Age</span>
+                    <strong id="printPatientAge">-</strong>
+                </div>
+
+                <div class="print-field">
+                    <span>Phone Number</span>
+                    <strong id="printPhone">-</strong>
+                </div>
+
+                <div class="print-field">
+                    <span>Alternate Phone</span>
+                    <strong id="printAlternatePhone">-</strong>
+                </div>
+
+                <div class="print-field">
+                    <span>Consultant</span>
+                    <strong id="printConsultant">-</strong>
+                </div>
+
+            </div>
+
+            <div class="print-address">
+
+                <span>Address</span>
+
+                <strong id="printAddress">-</strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Reason -->
+        <div class="print-section">
+
+            <h2>Visit Information</h2>
+
+            <div class="print-reason">
+
+                <span>Reason for Visit</span>
+
+                <strong id="printReason">-</strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Footer -->
+        <div class="print-footer">
+
+            <div>
+                <strong>Reception / Front Desk</strong>
+            </div>
+
+            <div>
+                Patient Copy
+            </div>
+
+        </div>
+
+    </div>
+    <script src="recption.js"></script>
+
+</body>
+
+</html>
