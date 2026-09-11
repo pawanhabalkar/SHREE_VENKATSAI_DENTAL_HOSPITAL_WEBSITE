@@ -22,32 +22,53 @@
 
         <!-- PAGE HEADER -->
 
-        <section class="page-header">
+      <!-- =====================================================
+     PAGE HEADER
+====================================================== -->
 
-            <div>
-                <span class="page-kicker">
-                    RECEPTION / FRONT DESK
-                </span>
+<section class="page-header">
 
-                <h1>Take Appointment</h1>
+    <div class="page-header-content">
 
-                <p>
-                    Search an existing patient or register a new patient
-                    and book an appointment.
-                </p>
-            </div>
+        <span class="page-kicker">
+            RECEPTION / FRONT DESK
+        </span>
 
-            <div class="header-icon">
-                <i class="fa-solid fa-calendar-check"></i>
-            </div>
+        <h1>Take Appointment</h1>
 
-        </section>
+        <p>
+            Search an existing patient or register a new patient
+            and book an appointment.
+        </p>
+
+    </div>
+
+    <!-- TOP RIGHT ACTIONS -->
+    <div class="header-actions">
+
+        <div class="header-icon">
+            <i class="fa-solid fa-calendar-check"></i>
+        </div>
+
+        <a href="../login page/login.html"
+           class="logout-btn"
+           id="logoutBtn">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            <span>Logout</span>
+
+        </a>
+
+    </div>
+
+</section>
 
         <header class="hospital-header">
 
             <div class="hospital-brand">
 
-                <img src="../SHREE_VENKATSAI_DENTAL_HOSPITAL_WEBSITE/assets/logo.jpg" alt="Shree Venkatsai Dental Hospital Logo" class="hospital-logo">
+                <img src="../assets/logo.jpg" alt="Shree Venkatsai Dental Hospital Logo" class="hospital-logo">
 
                 <div class="hospital-title">
                     <h1>SHREE VENKATSAI MULTI SPECIALITY DENTAL HOSPITAL</h1>
@@ -159,7 +180,7 @@
                     </div>
                     <div>
                         <span>Area</span>
-                        <strong id="foundPatientAddress">—</strong>
+                        <strong id="foundPatientArea">—</strong>
                     </div>
 
                 </div>
@@ -235,8 +256,20 @@
                 </div>
 
 
-                <!-- AGE -->
+                
+                <div class="form-group">
 
+                    <label for="dateOfBirth">
+                        Date Of Birth<b>*</b>
+                    </label>
+
+                    <input type="date" id="dateOfBirth" required>
+
+                </div>
+
+
+                <!-- AGE -->
+<!-- 
                 <div class="form-group">
 
                     <label for="patientAge">
@@ -245,17 +278,17 @@
 
                     <input type="number" id="patientAge" min="0" max="120" placeholder="Enter age" required>
 
-                </div>
+                </div> -->
                 <div class="form-group">
 
-                    <label for="patientAge">
+                    <label for="patientEmail">
                         Email <b></b>
                     </label>
 
                     <input type="email" id="patientEmail" placeholder="Email">
 
                 </div>
-
+<!-- 
                 <div class="form-group">
 
                     <label for="dateOfBirth">
@@ -263,6 +296,17 @@
                     </label>
 
                     <input type="date" id="dateOfBirth" required>
+
+                </div> -->
+                 <!-- AGE -->
+
+                <div class="form-group">
+
+                    <label for="patientAge">
+                        Age <b>*</b>
+                    </label>
+
+                    <input type="number" id="patientAge" min="0" max="120" placeholder="Enter age" required>
 
                 </div>
                 <div class="form-group ">
@@ -274,14 +318,14 @@
                     <select id="gender" required>
 
                         <option value="">Select Gender</option>
-                        <option value="Station Road">
+                        <option value="Male">
                             Male
                         </option>
 
-                        <option value="Super Market">
+                        <option value="Female">
                             Female
                         </option>
-                        <option value="Super Market">
+                        <option value="Other">
                             Others
                         </option>
 
@@ -303,104 +347,75 @@
 
                 </div>
 
-                <div class="form-group" id="otherAddressGroup">
 
-                    <label for="otherAddress">
-                        Enter Address <b>*</b>
+                <!-- ADDRESS -->
+
+                <div class="form-group">
+
+                    <label for="area">
+                        Area <b>*</b>
                     </label>
 
-                    <textarea id="otherAddress" rows="3" placeholder="Enter complete address">
-                         </textarea>
+                    <select id="area" required>
+
+                        <option value="">
+                            Select location
+                        </option>
+
+                        <option value="Kalaburagi City">
+                            Kalaburagi City
+                        </option>
+
+                        <option value="Sedam Road">
+                            Sedam Road
+                        </option>
+
+                        <option value="Station Road">
+                            Station Road
+                        </option>
+
+                        <option value="Super Market">
+                            Super Market
+                        </option>
+
+                        <option value="Shahabad Road">
+                            Shahabad Road
+                        </option>
+
+                        <option value="Aland Road">
+                            Aland Road
+                        </option>
+
+                        <option value="Jewargi Road">
+                            Jewargi Road
+                        </option>
+
+                        <option value="Ring Road">
+                            Ring Road
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
 
                 </div>
 
 
-                <!-- ADDRESS -->
-
-             <div class="form-group">
-
-    <label for="area">
-        Area <b>*</b>
-    </label>
-
-    <select id="area" required>
-
-        <option value="">
-            Select location
-        </option>
-
-        <option value="Kalaburagi City">
-            Kalaburagi City
-        </option>
-
-        <option value="Sedam Road">
-            Sedam Road
-        </option>
-
-        <option value="Station Road">
-            Station Road
-        </option>
-
-        <option value="Super Market">
-            Super Market
-        </option>
-
-        <option value="Shahabad Road">
-            Shahabad Road
-        </option>
-
-        <option value="Aland Road">
-            Aland Road
-        </option>
-
-        <option value="Jewargi Road">
-            Jewargi Road
-        </option>
-
-        <option value="Ring Road">
-            Ring Road
-        </option>
-
-        <option value="Other">
-            Other
-        </option>
-
-    </select>
-
-</div>
-
-
-<div class="form-group full-width hidden" id="otherAddressGroup">
-
-    <label for="otherAddress">
-        Enter Address <b>*</b>
-    </label>
-
-    <textarea
-        id="otherAddress"
-        rows="3"
-        placeholder="Enter complete address"
-    ></textarea>
-
-</div>
-
-
-                <!-- OTHER ADDRESS -->
-
-                <!-- <div class="form-group full-width hidden" id="otherAddressGroup">
+                <div class="form-group full-width hidden" id="otherAddressGroup">
 
                     <label for="otherAddress">
                         Enter Address <b>*</b>
                     </label>
 
-                    <textarea id="otherAddress" rows="3" placeholder="Enter complete address"></textarea>
+                    <textarea
+                        id="otherAddress"
+                        rows="3"
+                        placeholder="Enter complete address"
+                    ></textarea>
 
-                </div> -->
-
-
-
-                <!-- CONSULTANT -->
-
+                </div>
 
 
                 <!-- PHONE -->
@@ -564,8 +579,24 @@
 
                 <div class="form-group">
 
+                    <label for="department">
+                        Department <b>*</b>
+                    </label>
+
+                    <select id="department" required>
+
+                        <option value="">
+                            Select department
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
                     <label for="consultant">
-                        Consultant Name <b>*</b>
+                        Consultant Name/Doctor <b>*</b>
                     </label>
 
                     <select id="consultant" required>
@@ -573,27 +604,107 @@
                         <option value="">
                             Select consultant
                         </option>
-
-                        <option value="Dr. Anil Kumar">
-                            Dr. Anil Kumar
+                         <option value="">
+                            Dr Dental 1
                         </option>
-
-                        <option value="Dr. Priya Sharma">
-                            Dr. Priya Sharma
-                        </option>
-
-                        <option value="Dr. Rahul Patil">
-                            Dr. Rahul Patil
+                         <option value="">
+                            Dr Dental 2
                         </option>
 
                     </select>
-
+<!-- 
                     <small>
-                        The actual system will show only available
-                        consultants for the selected date and time.
-                    </small>
+                        Consultants are loaded from the selected department.
+                    </small> -->
 
                 </div>
+<div class="form-group">
+
+                    <label for="appointmentTime">
+                        Doctor Availability <b>*</b>
+                    </label>
+
+                    <select id="appointmentTime" required>
+
+         <option value="09:00 AM">
+                            09:00 AM
+                        </option>
+
+                        <option value="09:30 AM">
+                            09:30 AM
+                        </option>
+
+                        <option value="10:00 AM">
+                            10:00 AM
+                        </option>
+
+                        <option value="10:30 AM">
+                            10:30 AM
+                        </option>
+
+                        <option value="11:00 AM">
+                            11:00 AM
+                        </option>
+
+                        <option value="11:30 AM">
+                            11:30 AM
+                        </option>
+
+                        <option value="12:00 PM">
+                            12:00 PM
+                        </option>
+
+                        <option value="02:00 PM">
+                            02:00 PM
+                        </option>
+
+                        <option value="02:30 PM">
+                            02:30 PM
+                        </option>
+
+                        <option value="03:00 PM">
+                            03:00 PM
+                        </option>
+
+                        <option value="03:30 PM">
+                            03:30 PM
+                        </option>
+
+                        <option value="04:00 PM">
+                            04:00 PM
+                        </option>
+
+                        <option value="04:30 PM">
+                            04:30 PM
+                        </option>
+
+                        <option value="05:00 PM">
+                            05:00 PM
+                        </option>
+
+                        <option value="05:30 PM">
+                            05:30 PM
+                        </option>
+
+                    </select>
+    </div>
+
+</div>
+
+<!-- Available Appointment Slots -->
+<div class="form-group" id="availableSlotsGroup" style="display:none;">
+
+    <label for="appointmentTime">
+        Available Appointment Time <b>*</b>
+    </label>
+
+    <select id="appointmentTime" name="appointment_time" required>
+        <option value="">Select available time</option>
+    </select>
+
+</div>
+
+             
 
 
                 <!-- REASON -->
@@ -693,139 +804,6 @@
 
     </div>
 
-
-    <!-- =====================================================
-         PRINT FORM
-    ====================================================== -->
-
-    <!-- <div
-
-        class="print-container"
-        id="printContainer"
-    >
-
-        <div class="print-header">
-
-            <div class="print-tooth">
-                <i class="fa-solid fa-tooth"></i>
-            </div>
-
-            <div>
-
-                <h1>
-                    SHREE VENKATSAI MULTI SPECIALITY
-                    DENTAL HOSPITAL
-                </h1>
-
-                <p>
-                    Patient Appointment Form
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="print-identifiers">
-
-            <div>
-                <span>Patient MRN</span>
-                <strong id="printMRN"></strong>
-            </div>
-
-            <div>
-                <span>Appointment Number</span>
-                <strong id="printAppointmentNo"></strong>
-            </div>
-
-        </div>
-
-
-        <div class="print-section">
-
-            <h3>Patient Information</h3>
-
-            <div class="print-grid">
-
-                <div>
-                    <span>Patient Name</span>
-                    <strong id="printPatientName"></strong>
-                </div>
-
-                <div>
-                    <span>Age</span>
-                    <strong id="printPatientAge"></strong>
-                </div>
-
-                <div>
-                    <span>Phone Number</span>
-                    <strong id="printPhone"></strong>
-                </div>
-
-                <div>
-                    <span>Alternate Phone</span>
-                    <strong id="printAlternatePhone"></strong>
-                </div>
-
-                <div class="print-full">
-                    <span>Address</span>
-                    <strong id="printAddress"></strong>
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="print-section">
-
-            <h3>Appointment Information</h3>
-
-            <div class="print-grid">
-
-                <div>
-                    <span>Date</span>
-                    <strong id="printDate"></strong>
-                </div>
-
-                <div>
-                    <span>Time</span>
-                    <strong id="printTime"></strong>
-                </div>
-
-                <div>
-                    <span>Consultant</span>
-                    <strong id="printConsultant"></strong>
-                </div>
-
-                <div>
-                    <span>Appointment Type</span>
-                    <strong id="printType"></strong>
-                </div>
-
-                <div class="print-full">
-                    <span>Reason for Visit</span>
-                    <strong id="printReason"></strong>
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="print-footer">
-
-            <p>
-                Please retain this appointment form for your records.
-            </p>
-
-            <p>
-                Reception / Front Desk
-            </p>
-
-        </div>
-
-    </div> -->
 
     <!-- =========================================
      PRINT APPOINTMENT FORM

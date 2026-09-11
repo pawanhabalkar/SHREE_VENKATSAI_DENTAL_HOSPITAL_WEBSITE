@@ -1378,3 +1378,127 @@ textarea {
         font-size: 12px;
     }
 }
+
+/* =========================================================
+   PAGE HEADER ACTIONS
+   Logout button - Reception
+========================================================= */
+
+.page-header {
+    position: relative;
+}
+
+.page-header-content {
+    flex: 1;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Calendar icon */
+
+.header-icon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #eaf2e8;
+    color: #006b3c;
+
+    font-size: 17px;
+}
+
+/* Logout button */
+
+.logout-btn {
+    min-height: 42px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 0 16px;
+
+    border: 1px solid #d6e2d4;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #006b3c;
+
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+
+    box-shadow: 0 4px 12px rgba(0, 107, 60, 0.08);
+}
+
+.logout-btn i {
+    font-size: 13px;
+}
+
+.logout-btn:hover {
+    background: #006b3c;
+    color: #ffffff;
+
+    border-color: #006b3c;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 6px 15px rgba(0, 107, 60, 0.16);
+}
+
+.logout-btn:active {
+    transform: translateY(0);
+}
+/* =========================================================
+   MOBILE HEADER
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .page-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .header-actions {
+        flex-shrink: 0;
+        gap: 8px;
+    }
+
+    .header-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 15px;
+        border-radius: 10px;
+    }
+
+    .logout-btn {
+        min-height: 40px;
+        padding: 0 12px;
+        font-size: 11px;
+        gap: 6px;
+    }
+
+    .logout-btn i {
+        font-size: 12px;
+    }
+}

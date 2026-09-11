@@ -1,25 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     /* ==========================================
-       PATIENT INFORMATION
+       PATIENT INFORMATION — now loaded from the
+       real logged-in session instead of being
+       hardcoded as demo data.
     ========================================== */
 
-    const patient = {
-
-        mrn: "SHVMS-MRN-000001",
-
-        name: "Rahul Patil",
-
-        mobile: "9876543210",
-
-        age: 28,
-
-        gender: "Male",
-
-        address: "Kalaburagi, Karnataka",
-
-        area: "Vidya Nagar"
-
+    let patient = {
+        mrn: "",
+        name: ""
     };
 
 
@@ -53,17 +42,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* ==========================================
-       LOAD PATIENT DETAILS
+       LOAD REAL PATIENT DETAILS FROM SESSION
     ========================================== */
 
-    document.getElementById("patientMRN").textContent =
-        patient.mrn;
+    function loadPatientDetails() {
 
-    document.getElementById("reviewMRN").textContent =
-        patient.mrn;
+        fetch("../backend/patient/get_patient_profile.php")
+            .then(function (response) { return response.json(); })
+            .then(function (data) {
 
-    document.getElementById("reviewName").textContent =
-        patient.name;
+                patient.mrn = data.mrn;
+                patient.name = data.full_name;
+
+                document.getElementById("patientMRN").textContent =
+                    patient.mrn;
+
+                document.getElementById("reviewMRN").textContent =
+                    patient.mrn;
+
+                document.getElementById("reviewName").textContent =
+                    patient.name;
+
+                const fullNameInput = document.getElementById("fullName");
+                const mobileInput = document.getElementById("mobile");
+                const ageInput = document.getElementById("age");
+                const genderInput = document.getElementById("gender");
+                const addressInput = document.getElementById("address");
+
+                if (fullNameInput) fullNameInput.value = data.full_name || "";
+                if (mobileInput) mobileInput.value = data.mobile || "";
+                if (ageInput) ageInput.value = data.age || "";
+                if (genderInput) genderInput.value = data.gender || "";
+                if (addressInput) addressInput.value = data.address || "";
+
+            })
+            .catch(function (error) {
+                console.error("Failed to load patient details:", error);
+            });
+
+    }
+
+    loadPatientDetails();
 
 
     /* ==========================================
@@ -79,93 +98,54 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* ==========================================
-       DOCTORS BY DEPARTMENT
+       DEPARTMENTS & DOCTORS — now loaded from the
+       real database instead of a hardcoded list,
+       so the values sent to the backend are real
+       department_id / doctor_id numbers.
     ========================================== */
 
-    const doctors = {
+    let allDepartments = [];
+    let allDoctors = [];
 
-        "general-dentistry": [
+    function loadDepartmentsAndDoctors() {
 
-            {
-                id: "DOC001",
-                name: "Dr. Anil Kumar"
-            },
+        fetch("../backend/patient/get_departments_doctors.php")
+            .then(function (response) { return response.json(); })
+            .then(function (data) {
 
-            {
-                id: "DOC002",
-                name: "Dr. Priya Sharma"
-            }
+                allDepartments = data.departments;
+                allDoctors = data.doctors;
 
-        ],
+                department.innerHTML =
+                    '<option value="">Select Department</option>';
 
-        "endodontics": [
+                allDepartments.forEach(function (dept) {
 
-            {
-                id: "DOC003",
-                name: "Dr. Ravi Patel"
-            }
+                    const option = document.createElement("option");
+                    option.value = dept.id;
+                    option.textContent = dept.department_name;
+                    department.appendChild(option);
 
-        ],
+                });
 
-        "orthodontics": [
+            })
+            .catch(function (error) {
+                console.error("Failed to load departments/doctors:", error);
+            });
 
-            {
-                id: "DOC004",
-                name: "Dr. Sneha Rao"
-            }
+    }
 
-        ],
-
-        "oral-surgery": [
-
-            {
-                id: "DOC005",
-                name: "Dr. Kiran Reddy"
-            }
-
-        ],
-
-        "prosthodontics": [
-
-            {
-                id: "DOC006",
-                name: "Dr. Meena Joshi"
-            }
-
-        ],
-
-        "periodontics": [
-
-            {
-                id: "DOC007",
-                name: "Dr. Arjun Desai"
-            }
-
-        ],
-
-        "pedodontics": [
-
-            {
-                id: "DOC008",
-                name: "Dr. Neha Kulkarni"
-            }
-
-        ],
-
-        "laser-treatment": [
-
-            {
-                id: "DOC009",
-                name: "Dr. Vikram Shah"
-            }
-
-        ]
-
-    };
+    loadDepartmentsAndDoctors();
 
 
     /* ==========================================
-       TIME SLOTS - DEMO
+       TIME SLOTS
+       Note: this is still a fixed list of clinic
+       hours, not a real slot-availability check.
+       Real double-booking prevention would need
+       additional backend logic (checking existing
+       appointments for that doctor/date) that
+       hasn't been built yet.
     ========================================== */
 
     const timeSlots = [
@@ -196,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     department.addEventListener("change", function () {
 
-        const selectedDepartment =
+        const selectedDepartmentId =
             this.value;
 
         doctor.innerHTML =
@@ -208,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
         appointmentTime.disabled = true;
 
 
-        if (!selectedDepartment) {
+        if (!selectedDepartmentId) {
 
             doctor.disabled = true;
 
@@ -224,7 +204,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         const departmentDoctors =
-            doctors[selectedDepartment] || [];
+            allDoctors.filter(function (doc) {
+                return String(doc.department_id) === String(selectedDepartmentId);
+            });
 
 
         departmentDoctors.forEach(function (doctorData) {
@@ -236,10 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 doctorData.id;
 
             option.textContent =
-                doctorData.name;
-
-            option.dataset.doctorName =
-                doctorData.name;
+                doctorData.doctor_name;
 
             doctor.appendChild(option);
 
@@ -320,11 +299,6 @@ document.addEventListener("DOMContentLoaded", function () {
             selectedDate.getDay();
 
 
-        /*
-            Demo:
-            Sunday = Hospital closed
-        */
-
         if (day === 0) {
 
             showAvailability(
@@ -336,39 +310,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /*
-            Demo occupied slots.
-            Later this will come from backend/database.
-        */
-
-        const occupiedSlots = [
-
-            "10:00 AM",
-            "12:00 PM",
-            "03:30 PM"
-
-        ];
-
-
         let availableCount = 0;
 
 
         timeSlots.forEach(function (slot) {
 
-            if (!occupiedSlots.includes(slot)) {
+            const option =
+                document.createElement("option");
 
-                const option =
-                    document.createElement("option");
+            option.value = slot;
 
-                option.value = slot;
+            option.textContent = slot;
 
-                option.textContent = slot;
+            appointmentTime.appendChild(option);
 
-                appointmentTime.appendChild(option);
-
-                availableCount++;
-
-            }
+            availableCount++;
 
         });
 
@@ -570,27 +526,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* ==========================================
-       GENERATE DEMO APPOINTMENT ID
+       CONVERT "09:30 AM" -> "09:30:00" (24hr)
+       for the database TIME column
     ========================================== */
 
-    function generateAppointmentId() {
+    function convertTo24Hour(timeString) {
 
-        const year =
-            new Date().getFullYear();
+        const [time, modifier] = timeString.split(" ");
 
-        const random =
-            Math.floor(
-                100000 +
-                Math.random() * 900000
-            );
+        let [hours, minutes] = time.split(":");
 
-        return `APT-${year}-${random}`;
+        if (hours === "12") {
+            hours = "00";
+        }
+
+        if (modifier === "PM") {
+            hours = String(parseInt(hours, 10) + 12);
+        }
+
+        return `${hours.padStart(2, "0")}:${minutes}:00`;
 
     }
 
 
     /* ==========================================
-       FORM SUBMISSION
+       FORM SUBMISSION — now sends a real request
+       to book_appointment.php instead of saving
+       fake data to localStorage.
     ========================================== */
 
     appointmentForm.addEventListener(
@@ -662,118 +624,92 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /*
-                IMPORTANT:
-
-                In the actual system this validation
-                must be performed again by the backend
-                before inserting the appointment.
-            */
-
-
-            const appointmentId =
-                generateAppointmentId();
-
-
             const selectedPriority =
                 document.querySelector(
                     'input[name="priority"]:checked'
                 ).value;
 
 
-            /* APPOINTMENT OBJECT */
-
-            const appointment = {
-
-                appointmentId: appointmentId,
-
-                patientMRN: patient.mrn,
-
-                patientName: patient.name,
-
-                department:
-                    department.value,
-
-                doctor:
-                    doctor.value,
-
-                date:
-                    appointmentDate.value,
-
-                time:
-                    appointmentTime.value,
-
-                reason:
-                    reason.value.trim(),
-
-                notes:
-                    notes.value.trim(),
-
-                priority:
-                    selectedPriority,
-
-                status:
-                    "PENDING"
-
-            };
+            /* Combine priority into notes, since the
+               appointments table has no dedicated
+               priority column. */
+            const combinedNotes =
+                "[Priority: " + capitalize(selectedPriority) + "] " +
+                notes.value.trim();
 
 
-            /*
-                DEMO STORAGE
-
-                Later replace this with:
-                POST /api/appointments
-            */
-
-            saveAppointment(appointment);
-
-
-            /* SUCCESS MODAL */
-
-            document.getElementById(
-                "successAppointmentId"
-            ).textContent =
-                appointmentId;
+            const formData = new FormData();
+            formData.append("department_id", department.value);
+            formData.append("doctor_id", doctor.value);
+            formData.append("appointment_date", appointmentDate.value);
+            formData.append("appointment_time", convertTo24Hour(appointmentTime.value));
+            formData.append("reason", reason.value.trim());
+            formData.append("notes", combinedNotes);
 
 
-            document.getElementById(
-                "successMRN"
-            ).textContent =
-                patient.mrn;
+            const submitButton =
+                appointmentForm.querySelector('button[type="submit"]');
+
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = "Booking...";
+            }
 
 
-            document.getElementById(
-                "successModal"
-            ).classList.add("show");
+            fetch("../backend/patient/book_appointment.php", {
+                method: "POST",
+                body: formData
+            })
+                .then(function (response) { return response.text(); })
+                .then(function (result) {
 
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.textContent = "Confirm Appointment";
+                    }
+
+                    if (result.trim().startsWith("success")) {
+
+                        const newAppointmentId =
+                            result.trim().split(":")[1];
+
+                        document.getElementById(
+                            "successAppointmentId"
+                        ).textContent =
+                            "#" + newAppointmentId;
+
+
+                        document.getElementById(
+                            "successMRN"
+                        ).textContent =
+                            patient.mrn;
+
+
+                        document.getElementById(
+                            "successModal"
+                        ).classList.add("show");
+
+                    } else {
+
+                        alert("Booking failed: " + result);
+
+                    }
+
+                })
+                .catch(function (error) {
+
+                    console.error("Booking request failed:", error);
+                    alert("Something went wrong while booking. Please try again.");
+
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.textContent = "Confirm Appointment";
+                    }
+
+                });
 
         }
     );
-
-
-    /* ==========================================
-       SAVE DEMO APPOINTMENT
-    ========================================== */
-
-    function saveAppointment(appointment) {
-
-        const existing =
-            JSON.parse(
-                localStorage.getItem(
-                    "patientAppointments"
-                )
-            ) || [];
-
-
-        existing.push(appointment);
-
-
-        localStorage.setItem(
-            "patientAppointments",
-            JSON.stringify(existing)
-        );
-
-    }
 
 
     /* ==========================================

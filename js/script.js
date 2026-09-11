@@ -18,16 +18,39 @@ document.addEventListener("DOMContentLoaded", () => {
         if (icon) { icon.classList.add("fa-bars"); icon.classList.remove("fa-xmark"); }
     };
 
+    // if (menuBtn && navbar) {
+    //     menuBtn.addEventListener("click", () => {
+    //         const open = navbar.classList.toggle("mobile-open");
+    //         menuBtn.setAttribute("aria-expanded", String(open));
+    //         menuBtn.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+    //         const icon = menuBtn.querySelector("i");
+    //         if (icon) { icon.classList.toggle("fa-bars", !open); icon.classList.toggle("fa-xmark", open); }
+    //     });
+    //     navbar.querySelectorAll("a").forEach(link => link.addEventListener("click", closeMenu));
+    // }
     if (menuBtn && navbar) {
-        menuBtn.addEventListener("click", () => {
-            const open = navbar.classList.toggle("mobile-open");
-            menuBtn.setAttribute("aria-expanded", String(open));
-            menuBtn.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
-            const icon = menuBtn.querySelector("i");
-            if (icon) { icon.classList.toggle("fa-bars", !open); icon.classList.toggle("fa-xmark", open); }
-        });
-        navbar.querySelectorAll("a").forEach(link => link.addEventListener("click", closeMenu));
-    }
+    menuBtn.addEventListener("click", () => {
+        const open = navbar.classList.toggle("mobile-open");
+
+        menuBtn.setAttribute("aria-expanded", String(open));
+
+        menuBtn.setAttribute(
+            "aria-label",
+            open ? "Close navigation menu" : "Open navigation menu"
+        );
+
+        const icon = menuBtn.querySelector("i");
+
+        if (icon) {
+            icon.classList.toggle("fa-bars", !open);
+            icon.classList.toggle("fa-xmark", open);
+        }
+    });
+
+    navbar.querySelectorAll("a").forEach(link =>
+        link.addEventListener("click", closeMenu)
+    );
+}
 
     // Mark the correct page active while keeping Home section links functional.
     const current = window.location.pathname.split("/").pop() || "index.html";

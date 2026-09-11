@@ -6,11 +6,6 @@ ini_set('display_errors', 1);
 require_once "../backend/auth/patient_auth.php";
 require_once "../backend/config/database.php";
 
-<?php
-
-require_once "../backend/auth/patient_auth.php";
-require_once "../backend/config/database.php";
-
 $user_id = $_SESSION["user_id"];
 
 $stmt = $conn->prepare("
@@ -43,10 +38,6 @@ if ($result->num_rows !== 1) {
 
 $patient = $result->fetch_assoc();
 
-?>
-
-<?php
-
 $age = "";
 
 if (!empty($patient["date_of_birth"])) {
@@ -59,11 +50,6 @@ if (!empty($patient["date_of_birth"])) {
 
 ?>
 
-<input
-    type="number"
-    value="<?= htmlspecialchars($age) ?>"
-    readonly
->
 
 
 <!DOCTYPE html>
@@ -184,7 +170,7 @@ if (!empty($patient["date_of_birth"])) {
                 My Appointments
             </span>
 
-            <em>
+            <em id="navAppointmentsBadge">
                 2
             </em>
 
@@ -260,7 +246,7 @@ if (!empty($patient["date_of_birth"])) {
         My Referrals
     </span>
 
-    <em>
+    <em id="navReferralsBadge">
         2
     </em>
 </a>
@@ -278,7 +264,7 @@ if (!empty($patient["date_of_birth"])) {
                 Notifications
             </span>
 
-            <em>
+            <em id="navNotificationsBadge">
                 3
             </em>
 
@@ -329,7 +315,7 @@ if (!empty($patient["date_of_birth"])) {
 
     <div class="sidebar-footer">
 
-        <a
+        <!-- <a
             href="../html/index.html"
             class="website-link"
         >
@@ -338,7 +324,7 @@ if (!empty($patient["date_of_birth"])) {
 
             Visit Hospital Website
 
-        </a>
+        </a> -->
 
 
         <button
@@ -554,11 +540,11 @@ if (!empty($patient["date_of_birth"])) {
                             Upcoming Appointments
                         </span>
 
-                        <strong>
+                        <strong id="statUpcomingCount">
                             2
                         </strong>
 
-                        <small class="positive">
+                        <small class="positive" id="statNextDate">
                             Next: Tomorrow
                         </small>
 
@@ -581,12 +567,12 @@ if (!empty($patient["date_of_birth"])) {
                             Active Treatment
                         </span>
 
-                        <strong>
-                            1
+                        <strong id="statActiveTreatmentCount">
+                            0
                         </strong>
 
-                        <small>
-                            Root Canal Treatment
+                        <small id="statActiveTreatmentName">
+                            No active treatment
                         </small>
 
                     </div>
@@ -608,7 +594,7 @@ if (!empty($patient["date_of_birth"])) {
                             Outstanding Balance
                         </span>
 
-                        <strong>
+                        <strong id="statDueAmount">
                             ₹2,500
                         </strong>
 
@@ -635,7 +621,7 @@ if (!empty($patient["date_of_birth"])) {
                             Medical Records
                         </span>
 
-                        <strong>
+                        <strong id="statRecordsCount">
                             8
                         </strong>
 
@@ -991,22 +977,22 @@ if (!empty($patient["date_of_birth"])) {
 
             <div class="appointments-tabs">
 
-                <button class="tab-btn active">
+                <button class="tab-btn active" data-filter="upcoming">
                     Upcoming
                 </button>
 
-                <button class="tab-btn">
+                <button class="tab-btn" data-filter="completed">
                     Completed
                 </button>
 
-                <button class="tab-btn">
+                <button class="tab-btn" data-filter="cancelled">
                     Cancelled
                 </button>
 
             </div>
 
 
-            <div class="appointment-list">
+            <div class="appointment-list" id="appointmentListContainer">
 
 
                 <div class="full-appointment-card">
@@ -1168,7 +1154,7 @@ if (!empty($patient["date_of_birth"])) {
             </div>
 
 
-            <div class="records-grid">
+            <div class="records-grid" id="medicalRecordsContainer">
 
 
                 <div class="record-card">
@@ -1293,114 +1279,7 @@ if (!empty($patient["date_of_birth"])) {
             </div>
 
 
-            <div class="treatment-card">
-
-                <div class="treatment-header">
-
-                    <div class="treatment-tooth">
-
-                        <i class="fa-solid fa-tooth"></i>
-
-                    </div>
-
-                    <div>
-
-                        <span>
-                            ACTIVE TREATMENT
-                        </span>
-
-                        <h3>
-                            Root Canal Treatment
-                        </h3>
-
-                        <p>
-                            Started on August 25, 2026
-                        </p>
-
-                    </div>
-
-                    <span class="treatment-status">
-                        IN PROGRESS
-                    </span>
-
-                </div>
-
-
-                <div class="treatment-progress">
-
-                    <div class="progress-heading">
-
-                        <span>
-                            Treatment Progress
-                        </span>
-
-                        <strong>
-                            60%
-                        </strong>
-
-                    </div>
-
-                    <div class="progress-bar">
-
-                        <span style="width:60%"></span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="treatment-steps">
-
-                    <div class="completed">
-
-                        <span>
-                            01
-                        </span>
-
-                        <strong>
-                            Examination
-                        </strong>
-
-                    </div>
-
-                    <div class="completed">
-
-                        <span>
-                            02
-                        </span>
-
-                        <strong>
-                            Cleaning
-                        </strong>
-
-                    </div>
-
-                    <div class="active-step">
-
-                        <span>
-                            03
-                        </span>
-
-                        <strong>
-                            Root Canal
-                        </strong>
-
-                    </div>
-
-                    <div>
-
-                        <span>
-                            04
-                        </span>
-
-                        <strong>
-                            Crown
-                        </strong>
-
-                    </div>
-
-                </div>
-
+            <div id="treatmentListContainer">
             </div>
 
         </section>
@@ -1436,6 +1315,8 @@ if (!empty($patient["date_of_birth"])) {
 
             </div>
 
+
+            <div id="prescriptionListContainer">
 
             <div class="prescription-card">
 
@@ -1524,7 +1405,10 @@ if (!empty($patient["date_of_birth"])) {
 
             </div>
 
-        </section>
+                    </div>
+
+
+</section>
 
 
 
@@ -1567,7 +1451,7 @@ if (!empty($patient["date_of_birth"])) {
                         TOTAL BILLED
                     </span>
 
-                    <strong>
+                    <strong id="billingTotalAmount">
                         ₹18,500
                     </strong>
 
@@ -1580,7 +1464,7 @@ if (!empty($patient["date_of_birth"])) {
                         TOTAL PAID
                     </span>
 
-                    <strong>
+                    <strong id="billingPaidAmount">
                         ₹16,000
                     </strong>
 
@@ -1593,7 +1477,7 @@ if (!empty($patient["date_of_birth"])) {
                         OUTSTANDING
                     </span>
 
-                    <strong>
+                    <strong id="billingDueAmount">
                         ₹2,500
                     </strong>
 
@@ -1657,7 +1541,7 @@ if (!empty($patient["date_of_birth"])) {
 
                         </thead>
 
-                        <tbody>
+                        <tbody id="invoicesTableBody">
 
                             <tr>
 
@@ -1764,137 +1648,6 @@ if (!empty($patient["date_of_birth"])) {
     </div>
 
 
-    <!-- REFERRING DOCTOR CARD -->
-
-    <div class="referral-card">
-
-        <div class="referral-header">
-
-            <div class="referral-doctor-icon">
-
-                <i class="fa-solid fa-user-doctor"></i>
-
-            </div>
-
-            <div>
-
-                <span>
-                    REFERRED BY
-                </span>
-
-                <h3>
-                    Dr. Rajesh Kumar
-                </h3>
-
-                <p>
-                    General Dentist
-                </p>
-
-            </div>
-
-            <span class="referral-status">
-                ACTIVE
-            </span>
-
-        </div>
-
-
-        <div class="referral-details">
-
-            <div class="referral-detail">
-
-                <i class="fa-solid fa-hospital"></i>
-
-                <div>
-
-                    <span>
-                        Hospital / Clinic
-                    </span>
-
-                    <strong>
-                        Rajesh Dental Clinic
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="referral-detail">
-
-                <i class="fa-solid fa-calendar-days"></i>
-
-                <div>
-
-                    <span>
-                        Referral Date
-                    </span>
-
-                    <strong>
-                        September 01, 2026
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="referral-detail">
-
-                <i class="fa-solid fa-tooth"></i>
-
-                <div>
-
-                    <span>
-                        Referral For
-                    </span>
-
-                    <strong>
-                        Root Canal Treatment
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="referral-detail">
-
-                <i class="fa-solid fa-phone"></i>
-
-                <div>
-
-                    <span>
-                        Contact
-                    </span>
-
-                    <strong>
-                        +91 98765 43210
-                    </strong>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="referral-note">
-
-            <i class="fa-solid fa-circle-info"></i>
-
-            <p>
-                You were referred to SHREE VENKATSAI MULTI SPECIALITY
-                DENTAL HOSPITAL for specialized dental treatment.
-            </p>
-
-        </div>
-
-    </div>
-
-
-    <!-- REFERRAL HISTORY -->
-
     <div class="dashboard-card referral-history">
 
         <div class="card-header">
@@ -1906,7 +1659,7 @@ if (!empty($patient["date_of_birth"])) {
                 </span>
 
                 <h3>
-                    Previous Referrals
+                    Referrals
                 </h3>
 
             </div>
@@ -1914,68 +1667,11 @@ if (!empty($patient["date_of_birth"])) {
         </div>
 
 
-        <div class="referral-history-item">
-
-            <div class="history-icon">
-
-                <i class="fa-solid fa-user-doctor"></i>
-
-            </div>
-
-            <div>
-
-                <strong>
-                    Dr. Rajesh Kumar
-                </strong>
-
-                <p>
-                    Referred for Root Canal Treatment
-                </p>
-
-                <small>
-                    September 01, 2026
-                </small>
-
-            </div>
-
-            <span class="status confirmed">
-                COMPLETED
-            </span>
-
-        </div>
-
-
-        <div class="referral-history-item">
-
-            <div class="history-icon">
-
-                <i class="fa-solid fa-user-doctor"></i>
-
-            </div>
-
-            <div>
-
-                <strong>
-                    Dr. Anil Sharma
-                </strong>
-
-                <p>
-                    Referred for Dental Consultation
-                </p>
-
-                <small>
-                    August 15, 2026
-                </small>
-
-            </div>
-
-            <span class="status confirmed">
-                COMPLETED
-            </span>
-
+        <div id="referralListContainer">
         </div>
 
     </div>
+
 
 </section>
 
@@ -2015,7 +1711,7 @@ if (!empty($patient["date_of_birth"])) {
             </div>
 
 
-            <div class="notification-list">
+            <div class="notification-list" id="notificationListContainer">
 
 
                 <div class="notification-card unread">
@@ -2175,6 +1871,7 @@ if (!empty($patient["date_of_birth"])) {
                 <input
     type="text"
     value="<?= htmlspecialchars($patient["full_name"]) ?>"
+    id="fullName"
 >
 
             </div>
@@ -2190,6 +1887,8 @@ if (!empty($patient["date_of_birth"])) {
                 <input
     type="email"
     value="<?= htmlspecialchars($patient["email"] ?? "") ?>"
+    id="email"
+    readonly
 >
 
             </div>
@@ -2205,6 +1904,7 @@ if (!empty($patient["date_of_birth"])) {
                <input
     type="tel"
     value="<?= htmlspecialchars($patient["mobile"] ?? "") ?>"
+    id="phone"
 >
 
             </div>
@@ -2245,6 +1945,7 @@ if (!empty($patient["date_of_birth"])) {
                 <input
     type="text"
     value="<?= htmlspecialchars($patient["gender"] ?? "") ?>"
+    id="gender"
 >
 
             </div>
@@ -2260,6 +1961,7 @@ if (!empty($patient["date_of_birth"])) {
                 <input
     type="text"
     value="<?= htmlspecialchars($patient["area"] ?? "") ?>"
+    id="area"
 >
 
             </div>
@@ -2272,7 +1974,7 @@ if (!empty($patient["date_of_birth"])) {
                     Address
                 </label>
 
-                <textarea><?= htmlspecialchars($patient["address"] ?? "") ?></textarea>
+                <textarea id="address"><?= htmlspecialchars($patient["address"] ?? "") ?></textarea>
 
             </div>
 
@@ -2527,4 +2229,3 @@ if (!empty($patient["date_of_birth"])) {
 </body>
 
 </html>
-
