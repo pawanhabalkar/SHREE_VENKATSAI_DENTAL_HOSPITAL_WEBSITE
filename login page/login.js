@@ -293,6 +293,7 @@ if (loginForm) {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
+            credentials: "same-origin",
             body:
                 "email=" + encodeURIComponent(email) +
                 "&password=" + encodeURIComponent(password)
@@ -306,7 +307,7 @@ if (loginForm) {
 
             console.log("Server Response:", data);
 
-            if (data === "success") {
+            if (data === "success:patient") {
 
                 showMessage(
                     "Login Successful! Redirecting...",
@@ -332,6 +333,22 @@ if (loginForm) {
 
                     window.location.href =
                         "../patient_index/patient_index.php";
+
+                }, 1000);
+
+            }
+
+            else if (data === "success:receptionist") {
+
+                showMessage(
+                    "Login Successful! Redirecting to Reception Desk...",
+                    "success"
+                );
+
+                setTimeout(function () {
+
+                    window.location.href =
+                        "../recption/recption.html";
 
                 }, 1000);
 

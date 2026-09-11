@@ -1,177 +1,190 @@
 /* =========================================================
-   RECEPTION APPOINTMENT MODULE
-   SHREE VENKATSAI MULTI SPECIALITY DENTAL HOSPITAL
+   SHREE VENKATSAI DENTAL HOSPITAL
+   RECEPTION / FRONT DESK
+   Connected to real backend endpoints (backend/receptionist/)
+   Replaces the old localStorage-only mock version.
 ========================================================= */
 
 
 /* =========================================================
-   STORAGE
+   CONFIG
 ========================================================= */
 
-const PATIENTS_KEY = "svmsdh_patients";
-const APPOINTMENTS_KEY = "svmsdh_appointments";
-
-const MRN_COUNTER_KEY = "svmsdh_mrn_counter";
-const APPOINTMENT_COUNTER_KEY = "svmsdh_appointment_counter";
+const API_BASE = "../backend/receptionist";
+const LOGIN_PAGE = "../login page/login.html";
 
 
 /* =========================================================
    STATE
 ========================================================= */
 
-let selectedExistingPatient = null;
-let lastAppointment = null;
+let selectedExistingPatient = null; // { id, mrn, full_name, mobile, ... } or null
+let departmentsData = [];
+let doctorsData = [];
 
 
 /* =========================================================
-   ELEMENTS
+   DOM ELEMENTS
 ========================================================= */
 
-const patientSearch =
-    document.getElementById("patientSearch");
+const patientSearch = document.getElementById("patientSearch");
+const searchPatientBtn = document.getElementById("searchPatientBtn");
+const newPatientBtn = document.getElementById("newPatientBtn");
+const searchMessage = document.getElementById("searchMessage");
 
-const searchPatientBtn =
-    document.getElementById("searchPatientBtn");
+const existingPatient = document.getElementById("existingPatient");
+const foundPatientName = document.getElementById("foundPatientName");
+const foundPatientMRN = document.getElementById("foundPatientMRN");
+const foundPatientPhone = document.getElementById("foundPatientPhone");
+const foundPatientAge = document.getElementById("foundPatientAge");
+const foundPatientAddress = document.getElementById("foundPatientAddress");
 
-const newPatientBtn =
-    document.getElementById("newPatientBtn");
+const appointmentForm = document.getElementById("appointmentForm");
 
-const searchMessage =
-    document.getElementById("searchMessage");
+const mrn = document.getElementById("mrn");
+const patientName = document.getElementById("patientName");
+const patientAge = document.getElementById("patientAge");
+const patientEmail = document.getElementById("patientEmail");
+const dateOfBirth = document.getElementById("dateOfBirth");
+const gender = document.getElementById("gender");
+const appointmentDate = document.getElementById("appointmentDate");
 
-const existingPatient =
-    document.getElementById("existingPatient");
+const area = document.getElementById("area");
+const otherAddressGroup = document.getElementById("otherAddressGroup");
+const otherAddress = document.getElementById("otherAddress");
 
-const foundPatientName =
-    document.getElementById("foundPatientName");
+const phone = document.getElementById("phone");
+const alternatePhone = document.getElementById("alternatePhone");
 
-const foundPatientMRN =
-    document.getElementById("foundPatientMRN");
+const department = document.getElementById("department");
+const consultant = document.getElementById("consultant");
+const appointmentTime = document.getElementById("appointmentTime");
+const appointmentType = document.getElementById("appointmentType");
+const visitReason = document.getElementById("visitReason");
 
-const foundPatientPhone =
-    document.getElementById("foundPatientPhone");
+const clearFormBtn = document.getElementById("clearFormBtn");
 
-const foundPatientAge =
-    document.getElementById("foundPatientAge");
-
-const foundPatientAddress =
-    document.getElementById("foundPatientAddress");
-
-const appointmentForm =
-    document.getElementById("appointmentForm");
-
-const mrn =
-    document.getElementById("mrn");
-
-const patientName =
-    document.getElementById("patientName");
-
-const patientAge =
-    document.getElementById("patientAge");
-
-const appointmentDate =
-    document.getElementById("appointmentDate");
-
-
-const otherAddressGroup =
-    document.getElementById("otherAddressGroup");
-
-const otherAddress =
-    document.getElementById("otherAddress");
-
-const consultant =
-    document.getElementById("consultant");
-
-const phone =
-    document.getElementById("phone");
-
-const alternatePhone =
-    document.getElementById("alternatePhone");
-
-const appointmentTime =
-    document.getElementById("appointmentTime");
-
-const appointmentType =
-    document.getElementById("appointmentType");
-
-const visitReason =
-    document.getElementById("visitReason");
-
-const clearFormBtn =
-    document.getElementById("clearFormBtn");
-
-const successModal =
-    document.getElementById("successModal");
-
-const closeSuccessBtn =
-    document.getElementById("closeSuccessBtn");
-
-const printAppointmentBtn =
-    document.getElementById("printAppointmentBtn");
+const successModal = document.getElementById("successModal");
+const successMRN = document.getElementById("successMRN");
+const successAppointmentNo = document.getElementById("successAppointmentNo");
+const closeSuccessBtn = document.getElementById("closeSuccessBtn");
+const printAppointmentBtn = document.getElementById("printAppointmentBtn");
 
 
 /* =========================================================
-   INITIALIZE
+   INIT
 ========================================================= */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+document.addEventListener("DOMContentLoaded", function () {
 
-        initializeStorage();
+    checkSession();
+    loadDepartmentsAndDoctors();
+    setMinimumDate();
+    attachEvents();
+    consultant.addEventListener("change", checkDoctorAvailability);
+    appointmentDate.addEventListener("change", checkDoctorAvailability);
 
-        setMinimumDate();
-
-        attachEvents();
-
-    }
-);
+});
 
 
 /* =========================================================
-   STORAGE INITIALIZATION
+   SESSION CHECK
 ========================================================= */
 
-function initializeStorage() {
+function checkSession() {
 
-    if (!localStorage.getItem(PATIENTS_KEY)) {
+    fetch(`${API_BASE}/check_session.php`, {
+        credentials: "same-origin"
+    })
 
-        localStorage.setItem(
-            PATIENTS_KEY,
-            JSON.stringify([])
-        );
+    .then(response => {
 
-    }
+        if (!response.ok) {
+            throw new Error("not_logged_in");
+        }
+
+        return response.json();
+
+    })
+
+    .then(data => {
+
+        if (!data.logged_in) {
+            window.location.href = LOGIN_PAGE;
+        }
+
+    })
+
+    .catch(function () {
+
+        window.location.href = LOGIN_PAGE;
+
+    });
+
+}
 
 
-    if (!localStorage.getItem(APPOINTMENTS_KEY)) {
+/* =========================================================
+   LOAD DEPARTMENTS + DOCTORS
+========================================================= */
 
-        localStorage.setItem(
-            APPOINTMENTS_KEY,
-            JSON.stringify([])
-        );
+function loadDepartmentsAndDoctors() {
 
-    }
+    fetch(`${API_BASE}/get_departments_doctors.php`, {
+        credentials: "same-origin"
+    })
 
+    .then(response => response.json())
 
-    if (!localStorage.getItem(MRN_COUNTER_KEY)) {
+    .then(data => {
 
-        localStorage.setItem(
-            MRN_COUNTER_KEY,
-            "0"
-        );
+        departmentsData = data.departments || [];
+        doctorsData = data.doctors || [];
 
-    }
+        populateDepartmentOptions();
 
+    })
 
-    if (!localStorage.getItem(APPOINTMENT_COUNTER_KEY)) {
+    .catch(function (error) {
 
-        localStorage.setItem(
-            APPOINTMENT_COUNTER_KEY,
-            "0"
-        );
+        console.error("Failed to load departments/doctors:", error);
 
-    }
+    });
+
+}
+
+function populateDepartmentOptions() {
+
+    department.innerHTML = `<option value="">Select department</option>`;
+
+    departmentsData.forEach(function (dept) {
+
+        const option = document.createElement("option");
+        option.value = dept.id;
+        option.textContent = dept.department_name;
+        department.appendChild(option);
+
+    });
+
+}
+
+function populateConsultantOptions(selectedDepartmentId) {
+
+    consultant.innerHTML = `<option value="">Select consultant</option>`;
+
+    const filtered = selectedDepartmentId
+        ? doctorsData.filter(doc => String(doc.department_id) === String(selectedDepartmentId))
+        : doctorsData;
+
+    filtered.forEach(function (doc) {
+
+        const option = document.createElement("option");
+        option.value = doc.id;
+        option.textContent = doc.doctor_name +
+            (doc.specialization ? ` (${doc.specialization})` : "");
+        consultant.appendChild(option);
+
+    });
 
 }
 
@@ -182,74 +195,44 @@ function initializeStorage() {
 
 function attachEvents() {
 
-    searchPatientBtn.addEventListener(
-        "click",
-        searchPatient
-    );
+    searchPatientBtn.addEventListener("click", searchPatient);
 
-    patientSearch.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (event.key === "Enter") {
-
-                event.preventDefault();
-
-                searchPatient();
-
-            }
-
+    patientSearch.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            searchPatient();
         }
-    );
+    });
 
-    newPatientBtn.addEventListener(
-        "click",
-        prepareNewPatient
-    );
+    newPatientBtn.addEventListener("click", prepareNewPatient);
 
-    // Area dropdown
-    area.addEventListener(
-        "change",
-        handleAddressChange
-    );
+    department.addEventListener("change", function () {
+        populateConsultantOptions(department.value);
+    });
 
-    appointmentForm.addEventListener(
-        "submit",
-        bookAppointment
-    );
+    area.addEventListener("change", handleAddressChange);
 
-    clearFormBtn.addEventListener(
-        "click",
-        clearForm
-    );
+    appointmentForm.addEventListener("submit", bookAppointment);
 
-    closeSuccessBtn.addEventListener(
-        "click",
-        closeModal
-    );
+    clearFormBtn.addEventListener("click", function () {
+        prepareNewPatient();
+    });
 
-    printAppointmentBtn.addEventListener(
-        "click",
-        printAppointment
-    );
+    closeSuccessBtn.addEventListener("click", closeModal);
+
+    printAppointmentBtn.addEventListener("click", printAppointment);
 
 }
 
 
 /* =========================================================
-   DATE
+   SET MINIMUM DATE (today, can't book in the past)
 ========================================================= */
 
 function setMinimumDate() {
 
-    const today =
-        new Date()
-            .toISOString()
-            .split("T")[0];
-
-
+    const today = new Date().toISOString().split("T")[0];
     appointmentDate.min = today;
-
     appointmentDate.value = today;
 
 }
@@ -261,204 +244,137 @@ function setMinimumDate() {
 
 function searchPatient() {
 
-    const value =
-        patientSearch.value.trim();
+    const query = patientSearch.value.trim();
 
-
-    if (!value) {
-
-        showMessage(
-            "Please enter MRN or mobile number.",
-            "error"
-        );
-
+    if (!query) {
+        searchMessage.textContent = "Please enter an MRN or mobile number to search.";
+        searchMessage.className = "search-message error";
         return;
-
     }
 
+    searchMessage.textContent = "Searching...";
+    searchMessage.className = "search-message";
 
-    const patients =
-        getPatients();
+    fetch(`${API_BASE}/search_patient.php?query=${encodeURIComponent(query)}`, {
+        credentials: "same-origin"
+    })
 
+    .then(response => response.json())
 
-    const patient =
-        patients.find(
-            item =>
+    .then(data => {
 
-                item.mrn.toLowerCase() ===
-                value.toLowerCase()
+        if (data.error) {
+            searchMessage.textContent = "Search failed. Please try again.";
+            searchMessage.className = "search-message error";
+            return;
+        }
 
-                ||
+        const patients = data.patients || [];
 
-                item.phone === value
-        );
+        if (patients.length === 0) {
 
+            searchMessage.textContent =
+                "No matching patient found. You can register them as a new patient below.";
+            searchMessage.className = "search-message info";
 
-    if (!patient) {
+            hideExistingPatient();
+            prepareNewPatient(query);
 
-        selectedExistingPatient = null;
+        } else {
 
-        hideExistingPatient();
+            // Take the first/best match.
+            showExistingPatient(patients[0]);
 
-        showMessage(
-            "Patient not found. Please register as a new patient.",
-            "error"
-        );
+            searchMessage.textContent =
+                patients.length > 1
+                    ? `${patients.length} matches found — showing the closest match.`
+                    : "Patient found.";
+            searchMessage.className = "search-message success";
 
-        clearPatientFields();
+        }
 
-        generateMRN();
+    })
 
-        patientName.focus();
+    .catch(function (error) {
 
-        return;
+        console.error(error);
+        searchMessage.textContent = "Unable to connect to the server.";
+        searchMessage.className = "search-message error";
 
-    }
-
-
-    /* Existing patient */
-
-    selectedExistingPatient = patient;
-
-
-    showExistingPatient(patient);
-
-    loadPatientIntoForm(patient);
-
-
-    showMessage(
-        "Existing patient found. The existing MRN will be used.",
-        "success"
-    );
+    });
 
 }
 
 
 /* =========================================================
-   SHOW EXISTING PATIENT
+   SHOW / HIDE EXISTING PATIENT PANEL
 ========================================================= */
 
 function showExistingPatient(patient) {
 
+    selectedExistingPatient = patient;
+
+    foundPatientName.textContent = patient.full_name;
+    foundPatientMRN.textContent = patient.mrn;
+    foundPatientPhone.textContent = patient.mobile || "—";
+
+    if (patient.date_of_birth) {
+        foundPatientAge.textContent = calculateAge(patient.date_of_birth);
+    } else {
+        foundPatientAge.textContent = "—";
+    }
+
+    foundPatientAddress.textContent = patient.address || patient.area || "—";
+
     existingPatient.classList.remove("hidden");
 
-
-    foundPatientName.textContent =
-        patient.name;
-
-    foundPatientMRN.textContent =
-        patient.mrn;
-
-    foundPatientPhone.textContent =
-        patient.phone;
-
-    foundPatientAge.textContent =
-        patient.age;
-
-    foundPatientAddress.textContent =
-        patient.address;
+    loadPatientIntoForm(patient);
 
 }
 
-
-/* =========================================================
-   HIDE EXISTING PATIENT
-========================================================= */
-
 function hideExistingPatient() {
 
+    selectedExistingPatient = null;
     existingPatient.classList.add("hidden");
 
 }
 
 
 /* =========================================================
-   LOAD EXISTING PATIENT
+   LOAD EXISTING PATIENT INTO FORM (read-only-ish, for booking)
 ========================================================= */
 
 function loadPatientIntoForm(patient) {
 
-    mrn.value =
-        patient.mrn;
+    mrn.value = patient.mrn;
+    patientName.value = patient.full_name;
 
-    patientName.value =
-        patient.name;
+    if (patient.date_of_birth) {
+        patientAge.value = calculateAge(patient.date_of_birth);
+        dateOfBirth.value = patient.date_of_birth;
+    }
 
-    patientAge.value =
-        patient.age;
+    phone.value = patient.mobile || "";
+    patientEmail.value = patient.email || "";
+    gender.value = patient.gender || "";
 
-    phone.value =
-        patient.phone;
+    const areaExists =
+        [...area.options].some(option => option.value === patient.area);
 
-    alternatePhone.value =
-        patient.alternatePhone || "";
+    if (areaExists) {
 
-    dateOfBirth.value =
-        patient.dateOfBirth || "";
+        area.value = patient.area;
+        otherAddressGroup.classList.add("hidden");
+        otherAddress.required = false;
 
-    gender.value =
-        patient.gender || "";
+    } else {
 
-    patientEmail.value =
-        patient.email || "";
+        area.value = "Other";
+        otherAddressGroup.classList.remove("hidden");
+        otherAddress.required = true;
+        otherAddress.value = patient.address || "";
 
-    area.value =
-        patient.area || "";
-
-
-    /*
-        Address is loaded only if it exists
-        in the predefined dropdown.
-    */
-
-    const addressExists =
-    [...patientAddress.options]
-        .some(
-            option =>
-                option.value === patient.address
-        );
-
-if (addressExists) {
-
-    patientAddress.value =
-        patient.address;
-
-    otherAddressGroup.classList.add(
-        "hidden"
-    );
-
-} else {
-
-    patientAddress.value = "Other";
-
-    otherAddressGroup.classList.remove(
-        "hidden"
-    );
-
-    otherAddress.value =
-        patient.address;
-
-} 
-
-area.value = patient.area || "";
-
-if (patient.area === "Other") {
-
-    otherAddressGroup.classList.remove("hidden");
-
-    otherAddress.required = true;
-
-    otherAddress.value = patient.address || "";
-
-} else {
-
-    otherAddressGroup.classList.add("hidden");
-
-    otherAddress.required = false;
-
-    otherAddress.value = "";
-
-}
+    }
 
 }
 
@@ -467,23 +383,23 @@ if (patient.area === "Other") {
    NEW PATIENT
 ========================================================= */
 
-function prepareNewPatient() {
-
-    selectedExistingPatient = null;
-
-    patientSearch.value = "";
+function prepareNewPatient(prefillMobileOrMrn) {
 
     hideExistingPatient();
 
-    clearPatientFields();
+    appointmentForm.reset();
+    mrn.value = "";
 
-    generateMRN();
+    otherAddressGroup.classList.add("hidden");
+    otherAddress.required = false;
 
-    showMessage(
-        "New patient selected. A permanent MRN has been generated.",
-        "success"
-    );
+    setMinimumDate();
 
+    // If they searched by a mobile number that wasn't found, keep it
+    // filled in on the phone field to save re-typing.
+    if (prefillMobileOrMrn && /^\d{10}$/.test(prefillMobileOrMrn)) {
+        phone.value = prefillMobileOrMrn;
+    }
 
     patientName.focus();
 
@@ -491,139 +407,7 @@ function prepareNewPatient() {
 
 
 /* =========================================================
-   GENERATE MRN
-========================================================= */
-
-function generateMRN() {
-
-    let counter =
-        parseInt(
-            localStorage.getItem(
-                MRN_COUNTER_KEY
-            ) || "0",
-            10
-        );
-
-
-    counter++;
-
-
-    localStorage.setItem(
-        MRN_COUNTER_KEY,
-        counter.toString()
-    );
-
-
-    const generatedMRN =
-        "SVMSDH-" +
-        String(counter).padStart(6, "0");
-
-
-    mrn.value =
-        generatedMRN;
-
-
-    return generatedMRN;
-
-}
-
-
-/* =========================================================
-   GENERATE APPOINTMENT NUMBER
-========================================================= */
-
-function generateAppointmentNumber() {
-
-    let counter =
-        parseInt(
-            localStorage.getItem(
-                APPOINTMENT_COUNTER_KEY
-            ) || "0",
-            10
-        );
-
-
-    counter++;
-
-
-    localStorage.setItem(
-        APPOINTMENT_COUNTER_KEY,
-        counter.toString()
-    );
-
-
-    const year =
-        new Date().getFullYear();
-
-
-    return (
-        "APT-" +
-        year +
-        "-" +
-        String(counter).padStart(5, "0")
-    );
-
-}
-
-
-/* =========================================================
-   GET PATIENTS
-========================================================= */
-
-function getPatients() {
-
-    return JSON.parse(
-        localStorage.getItem(PATIENTS_KEY)
-        || "[]"
-    );
-
-}
-
-
-/* =========================================================
-   SAVE PATIENTS
-========================================================= */
-
-function savePatients(patients) {
-
-    localStorage.setItem(
-        PATIENTS_KEY,
-        JSON.stringify(patients)
-    );
-
-}
-
-
-/* =========================================================
-   GET APPOINTMENTS
-========================================================= */
-
-function getAppointments() {
-
-    return JSON.parse(
-        localStorage.getItem(APPOINTMENTS_KEY)
-        || "[]"
-    );
-
-}
-
-
-/* =========================================================
-   SAVE APPOINTMENTS
-========================================================= */
-
-function saveAppointments(appointments) {
-
-    localStorage.setItem(
-        APPOINTMENTS_KEY,
-        JSON.stringify(appointments)
-    );
-
-}
-
-
-/* =========================================================
-   ADDRESS
+   ADDRESS / AREA CHANGE
 ========================================================= */
 
 function handleAddressChange() {
@@ -631,515 +415,309 @@ function handleAddressChange() {
     if (area.value === "Other") {
 
         otherAddressGroup.classList.remove("hidden");
-
         otherAddress.required = true;
 
     } else {
 
         otherAddressGroup.classList.add("hidden");
-
         otherAddress.required = false;
-
         otherAddress.value = "";
 
     }
 
 }
-/* ========== PRINT ========= */
-
-const patientEmail =
-    document.getElementById("patientEmail");
-
-const dateOfBirth =
-    document.getElementById("dateOfBirth");
-
-const gender =
-    document.getElementById("gender");
-
-const area =
-    document.getElementById("area");
-
 
 /* =========================================================
-   BOOK APPOINTMENT
+   DOCTOR AVAILABILITY CHECK
+   Disables already-booked time slots and blocks inactive doctors.
 ========================================================= */
 
+function checkDoctorAvailability() {
 
-function bookAppointment(event) {
+    const doctorId = consultant.value;
+    const date = appointmentDate.value;
 
-    event.preventDefault();
+    [...appointmentTime.options].forEach(option => {
+        option.disabled = false;
+        option.textContent = option.textContent.replace(" (Booked)", "");
+    });
 
-    const primaryPhone =
-        phone.value.trim();
-
-    /* PHONE VALIDATION */
-
-    if (!/^[6-9]\d{9}$/.test(primaryPhone)) {
-
-        alert(
-            "Please enter a valid 10-digit mobile number."
-        );
-
-        phone.focus();
-
+    if (!doctorId || !date) {
         return;
     }
 
+    fetch(`${API_BASE}/get_doctor_availability.php?doctor_id=${doctorId}&date=${date}`, {
+        credentials: "same-origin"
+    })
 
-    /* ALTERNATE PHONE */
+    .then(response => response.json())
 
-    const alternate =
-        alternatePhone.value.trim();
+    .then(data => {
 
-    if (
-        alternate &&
-        !/^[6-9]\d{9}$/.test(alternate)
-    ) {
-
-        alert(
-            "Please enter a valid alternate mobile number."
-        );
-
-        alternatePhone.focus();
-
-        return;
-    }
-
-
-    let patient;
-
-
-    /* =====================================================
-       EXISTING PATIENT
-    ====================================================== */
-
-    if (selectedExistingPatient) {
-
-        patient = selectedExistingPatient;
-
-    }
-
-
-    /* =====================================================
-       NEW PATIENT
-    ====================================================== */
-
-    else {
-
-        const patients = getPatients();
-
-
-        /* CHECK DUPLICATE MOBILE */
-
-        const duplicate =
-            patients.find(
-                item =>
-                    item.phone === primaryPhone
-            );
-
-
-        if (duplicate) {
-
-            alert(
-                "This mobile number is already registered. Please search the existing patient."
-            );
-
-            patientSearch.value =
-                primaryPhone;
-
-            searchPatient();
-
+        if (data.error) {
+            console.error("Availability check failed:", data.error);
             return;
         }
 
+        if (data.doctor_status !== "active") {
 
-        if (!mrn.value) {
-
-            generateMRN();
+            alert("This doctor is currently unavailable. Please choose a different consultant.");
+            consultant.value = "";
+            return;
 
         }
 
+        const bookedSlots = data.booked_slots || [];
 
-        patient = {
+        [...appointmentTime.options].forEach(option => {
 
-            mrn:
-                mrn.value,
+            if (!option.value) return;
 
-            name:
-                patientName.value.trim(),
+            const time24 = convertTo24Hour(option.value).substring(0, 5);
 
-            age:
-                patientAge.value,
+            if (bookedSlots.includes(time24)) {
+                option.disabled = true;
+                option.textContent = option.textContent + " (Booked)";
+            }
 
-            dateOfBirth:
-                dateOfBirth.value,
+        });
 
-            gender:
-                gender.value,
-
-            email:
-                patientEmail.value.trim(),
-
-            phone:
-                primaryPhone,
-
-            alternatePhone:
-                alternate,
-
-            area:
-                area.value,
-
-            address:
-                getFinalAddress(),
-
-            registeredDate:
-                new Date().toISOString()
-
-        };
-
-
-        /*
-         * IMPORTANT:
-         * Patient will be saved only after
-         * print decision.
-         */
-    }
-
-
-    /* =====================================================
-       CREATE APPOINTMENT OBJECT
-    ====================================================== */
-
-    const appointmentNumber =
-        generateAppointmentNumber();
-
-
-    const appointment = {
-
-        appointmentNumber:
-            appointmentNumber,
-
-        mrn:
-            patient.mrn,
-
-        patientName:
-            patient.name,
-
-        age:
-            patient.age,
-
-        dateOfBirth:
-            patient.dateOfBirth || dateOfBirth.value,
-
-        gender:
-            patient.gender || gender.value,
-
-        email:
-            patient.email || patientEmail.value.trim(),
-
-        phone:
-            patient.phone,
-
-        alternatePhone:
-            patient.alternatePhone || "",
-
-        area:
-            patient.area || area.value,
-
-        address:
-            patient.address,
-
-        date:
-            appointmentDate.value,
-
-        time:
-            appointmentTime.value,
-
-        consultant:
-            consultant.value,
-
-        appointmentType:
-            appointmentType.value,
-
-        reason:
-            visitReason.value.trim(),
-
-        status:
-            "Booked",
-
-        createdAt:
-            new Date().toISOString()
-
-    };
-
-
-    /*
-     * Store temporarily.
-     * DO NOT save yet.
-     */
-
-    lastAppointment = {
-        appointment: appointment,
-        patient: patient,
-        isNewPatient: !selectedExistingPatient
-    };
-
-
-    /* =====================================================
-       PREPARE PRINT DATA
-    ====================================================== */
-
-    preparePrintData(
-        appointment,
-        patient
-    );
-
-
-    /* =====================================================
-       ASK PRINT OR SUBMIT
-    ====================================================== */
-
-    showPrintConfirmation();
-
-}
-
-/* =========================================================
-   PRINT CONFIRMATION
-========================================================= */
-
-function showPrintConfirmation() {
-
-    const shouldPrint =
-        confirm(
-            "Appointment details are ready.\n\n" +
-            "Do you want to PRINT the appointment form?\n\n" +
-            "YES = Print and save appointment\n" +
-            "NO = Submit directly without printing"
-        );
-
-
-    if (shouldPrint) {
-
-        /*
-         * Print first.
-         * Data will be saved after the print dialog closes.
-         */
-
-        printAppointment();
-
-    } else {
-
-        /*
-         * Submit directly.
-         */
-
-        finalizeAppointment(false);
-
-    }
-
-}
-
-/* =========================================================
-   FINALIZE APPOINTMENT
-========================================================= */
-
-function finalizeAppointment(printed = false) {
-
-    if (!lastAppointment) {
-
-        return;
-
-    }
-
-
-    const data =
-        lastAppointment;
-
-
-    const appointment =
-        data.appointment;
-
-    const patient =
-        data.patient;
-
-
-    /* =====================================================
-       SAVE NEW PATIENT
-    ====================================================== */
-
-    if (data.isNewPatient) {
-
-        const patients =
-            getPatients();
-
-
-        /*
-         * Double-check that patient does not
-         * already exist.
-         */
-
-        const alreadyExists =
-            patients.some(
-                item =>
-                    item.mrn === patient.mrn
-            );
-
-
-        if (!alreadyExists) {
-
-            patients.push(patient);
-
-            savePatients(patients);
-
+        const selectedOption = appointmentTime.options[appointmentTime.selectedIndex];
+        if (selectedOption && selectedOption.disabled) {
+            appointmentTime.value = "";
         }
 
-    }
+    })
 
-
-    /* =====================================================
-       SAVE APPOINTMENT
-    ====================================================== */
-
-    const appointments =
-        getAppointments();
-
-
-    appointments.push(appointment);
-
-    saveAppointments(appointments);
-
-
-    /* =====================================================
-       SHOW SUCCESS
-    ====================================================== */
-
-    document.getElementById(
-        "successMRN"
-    ).textContent =
-        patient.mrn;
-
-
-    document.getElementById(
-        "successAppointmentNo"
-    ).textContent =
-        appointment.appointmentNumber;
-
-
-    successModal.classList.remove(
-        "hidden"
-    );
-
-
-    /*
-     * Clear temporary appointment data
-     * after successful save.
-     */
-
-    lastAppointment = null;
+    .catch(function (error) {
+        console.error("Availability check error:", error);
+    });
 
 }
 
-
 /* =========================================================
-   FINAL ADDRESS
+   HELPERS
 ========================================================= */
+
+function calculateAge(dobString) {
+
+    const dob = new Date(dobString);
+    const today = new Date();
+
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+        age--;
+    }
+
+    return age;
+
+}
 
 function getFinalAddress() {
 
     if (area.value === "Other") {
-
         return otherAddress.value.trim();
-
     }
 
     return area.value;
 
 }
 
+// Converts "09:30 AM" -> "09:30:00" for the appointments.appointment_time
+// TIME column.
+function convertTo24Hour(timeStr) {
+
+    const [time, modifier] = timeStr.split(" ");
+    let [hours, minutes] = time.split(":");
+
+    hours = parseInt(hours, 10);
+
+    if (modifier === "PM" && hours !== 12) {
+        hours += 12;
+    }
+
+    if (modifier === "AM" && hours === 12) {
+        hours = 0;
+    }
+
+    return `${String(hours).padStart(2, "0")}:${minutes}:00`;
+
+}
+
 
 /* =========================================================
-   PREPARE PRINT DATA
+   BOOK APPOINTMENT (register if new, then book)
 ========================================================= */
 
-function preparePrintData(
-    appointment,
-    patient
-) {
+function bookAppointment(event) {
 
-    document.getElementById(
-        "printMRN"
-    ).textContent =
-        patient.mrn;
+    event.preventDefault();
+
+    const primaryPhone = phone.value.trim();
+
+    if (!/^[6-9]\d{9}$/.test(primaryPhone)) {
+        alert("Please enter a valid 10-digit mobile number.");
+        phone.focus();
+        return;
+    }
+
+    const alternate = alternatePhone.value.trim();
+    if (alternate && !/^[6-9]\d{9}$/.test(alternate)) {
+        alert("Please enter a valid alternate mobile number.");
+        alternatePhone.focus();
+        return;
+    }
+
+    if (!department.value) {
+        alert("Please select a department.");
+        department.focus();
+        return;
+    }
+
+    if (!consultant.value) {
+        alert("Please select a consultant.");
+        consultant.focus();
+        return;
+    }
+
+    const patientPassword = document.getElementById("patientPassword").value;
+    if (!patientPassword || patientPassword.length < 6) {
+        alert("Please set a password (at least 6 characters) for the patient's portal access.");
+        document.getElementById("patientPassword").focus();
+        return;
+    }
+
+    const submitBtn = appointmentForm.querySelector("button[type='submit']");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Booking...";
+
+    if (selectedExistingPatient) {
+
+        // Existing patient — go straight to booking.
+        createAppointment(selectedExistingPatient.id, selectedExistingPatient.mrn)
+            .finally(() => resetSubmitButton(submitBtn));
+
+    } else {
+
+        // New patient — register first, then book using the new patient_id.
+        const formData = new URLSearchParams();
+        formData.append("full_name", patientName.value.trim());
+        formData.append("mobile", primaryPhone);
+        formData.append("date_of_birth", dateOfBirth.value);
+        formData.append("gender", gender.value);
+        formData.append("password", document.getElementById("patientPassword").value);
+        formData.append("email", patientEmail.value.trim());
+        formData.append("area", area.value);
+        formData.append("address", getFinalAddress());
+
+        fetch(`${API_BASE}/register_patient.php`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            credentials: "same-origin",
+            body: formData.toString()
+        })
+
+        .then(response => response.json())
+
+        .then(data => {
+
+            if (data.result !== "success") {
+                alert("Could not register patient: " + (data.error || "unknown error"));
+                return Promise.reject(data.error);
+            }
+
+            mrn.value = data.mrn;
+
+            return createAppointment(data.patient_id, data.mrn);
+
+        })
+
+        .catch(function (error) {
+            console.error(error);
+        })
+
+        .finally(() => resetSubmitButton(submitBtn));
+
+    }
+
+}
+
+function resetSubmitButton(submitBtn) {
+
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = `
+        <i class="fa-solid fa-calendar-check"></i>
+        Book Appointment
+    `;
+
+}
+
+function createAppointment(patientId, patientMrn) {
+
+    const formData = new URLSearchParams();
+    formData.append("patient_id", patientId);
+    formData.append("department_id", department.value);
+    formData.append("doctor_id", consultant.value);
+    formData.append("appointment_date", appointmentDate.value);
+    formData.append("appointment_time", convertTo24Hour(appointmentTime.value));
+    formData.append("reason", visitReason.value.trim());
+    formData.append("status", "Booked");
+
+    return fetch(`${API_BASE}/book_appointment.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        credentials: "same-origin",
+        body: formData.toString()
+    })
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        if (data.result === "success") {
+
+            finalizeAppointment(patientMrn, data.appointment_id);
+
+        } else {
+
+            alert("Could not book appointment: " + (data.error || "unknown error"));
+
+        }
+
+    })
+
+    .catch(function (error) {
+
+        console.error(error);
+        alert("Unable to connect to the server.");
+
+    });
+
+}
 
 
-    document.getElementById(
-        "printAppointmentNo"
-    ).textContent =
-        appointment.appointmentNumber;
+/* =========================================================
+   SUCCESS MODAL
+========================================================= */
 
+function finalizeAppointment(patientMrn, appointmentId) {
 
-    document.getElementById(
-        "printAppointmentDate"
-    ).textContent =
-        formatDate(
-            appointment.date
-        );
+    successMRN.textContent = patientMrn;
+    successAppointmentNo.textContent = appointmentId;
 
+    successModal.classList.remove("hidden");
 
-    document.getElementById(
-        "printAppointmentTime"
-    ).textContent =
-        appointment.time;
+}
 
+function closeModal() {
 
-    document.getElementById(
-        "printAppointmentType"
-    ).textContent =
-        appointment.appointmentType;
-
-
-    document.getElementById(
-        "printPatientName"
-    ).textContent =
-        patient.name;
-
-
-    document.getElementById(
-        "printPatientAge"
-    ).textContent =
-        patient.age;
-
-
-    document.getElementById(
-        "printPhone"
-    ).textContent =
-        patient.phone;
-
-
-    document.getElementById(
-        "printAlternatePhone"
-    ).textContent =
-        patient.alternatePhone ||
-        "Not provided";
-
-
-    document.getElementById(
-        "printConsultant"
-    ).textContent =
-        appointment.consultant;
-
-
-    document.getElementById(
-        "printAddress"
-    ).textContent =
-        patient.address;
-
-
-    document.getElementById(
-        "printReason"
-    ).textContent =
-        appointment.reason ||
-        "Not provided";
+    successModal.classList.add("hidden");
+    hideExistingPatient();
+    prepareNewPatient();
+    searchMessage.textContent = "";
+    patientSearch.value = "";
 
 }
 
@@ -1148,153 +726,46 @@ function preparePrintData(
    PRINT
 ========================================================= */
 
-/* =========================================================
-   PRINT APPOINTMENT
-========================================================= */
-
 function printAppointment() {
 
-    if (!lastAppointment) {
+    document.getElementById("printAppointmentNo").textContent =
+        successAppointmentNo.textContent;
 
-        return;
+    document.getElementById("printAppointmentDate").textContent =
+        appointmentDate.value;
 
-    }
+    document.getElementById("printAppointmentTime").textContent =
+        appointmentTime.value;
 
+    document.getElementById("printAppointmentType").textContent =
+        appointmentType.value;
 
-    /*
-     * Open browser print dialog.
-     *
-     * window.print() pauses JavaScript execution
-     * until the print dialog is closed.
-     */
+    document.getElementById("printMRN").textContent =
+        successMRN.textContent;
+
+    document.getElementById("printPatientName").textContent =
+        patientName.value;
+
+    document.getElementById("printPatientAge").textContent =
+        patientAge.value;
+
+    document.getElementById("printPhone").textContent =
+        phone.value;
+
+    document.getElementById("printAlternatePhone").textContent =
+        alternatePhone.value || "—";
+
+    document.getElementById("printConsultant").textContent =
+        consultant.options[consultant.selectedIndex]
+            ? consultant.options[consultant.selectedIndex].textContent
+            : "—";
+
+    document.getElementById("printAddress").textContent =
+        getFinalAddress();
+
+    document.getElementById("printReason").textContent =
+        visitReason.value || "—";
 
     window.print();
 
-
-    /*
-     * After the user finishes/cancels the print dialog,
-     * save the appointment.
-     */
-
-    finalizeAppointment(true);
-
 }
-
-/* =========================================================
-   CLOSE MODAL
-========================================================= */
-
-function closeModal() {
-
-    successModal.classList.add(
-        "hidden"
-    );
-
-}
-
-
-/* =========================================================
-   CLEAR FORM
-========================================================= */
-
-function clearForm() {
-
-    appointmentForm.reset();
-
-    selectedExistingPatient = null;
-
-    patientSearch.value = "";
-
-    hideExistingPatient();
-
-    searchMessage.textContent = "";
-
-    searchMessage.className =
-        "search-message";
-
-    otherAddressGroup.classList.add(
-        "hidden"
-    );
-
-    otherAddress.required = false;
-
-    mrn.value = "";
-
-    setMinimumDate();
-
-}
-
-
-/* =========================================================
-   CLEAR PATIENT FIELDS
-========================================================= */
-
-function clearPatientFields() {
-
-    patientName.value = "";
-
-    patientAge.value = "";
-
-    phone.value = "";
-
-    alternatePhone.value = "";
-
-    patientEmail.value = "";
-
-    dateOfBirth.value = "";
-
-    gender.value = "";
-
-    area.value = "";
-
-    otherAddress.value = "";
-
-    otherAddressGroup.classList.add("hidden");
-
-    otherAddress.required = false;
-
-}
-
-
-/* =========================================================
-   MESSAGE
-========================================================= */
-
-function showMessage(
-    message,
-    type
-) {
-
-    searchMessage.textContent =
-        message;
-
-    searchMessage.className =
-        "search-message " +
-        type;
-
-}
-
-
-/* =========================================================
-   DATE FORMAT
-========================================================= */
-
-function formatDate(dateString) {
-
-    const date =
-        new Date(
-            dateString + "T00:00:00"
-        );
-
-
-    return date.toLocaleDateString(
-        "en-IN",
-        {
-            day: "2-digit",
-            month: "long",
-            year: "numeric"
-        }
-    );
-
-}
-

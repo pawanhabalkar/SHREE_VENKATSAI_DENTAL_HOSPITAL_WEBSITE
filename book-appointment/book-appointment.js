@@ -1,8 +1,10 @@
-
 /* =========================================================
    ODSMART DENTAL HOSPITAL
    BOOK APPOINTMENT JAVASCRIPT
    ========================================================= */
+
+let allDepartments = [];
+let allDoctors = [];
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -38,6 +40,94 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const bookAnother =
         document.getElementById("bookAnother");
+
+    const departmentSelect =
+        document.getElementById("department");
+
+    const doctorSelect =
+        document.getElementById("doctor");
+
+    const areaSelect =
+        document.getElementById("area");
+
+    const otherAreaGroup =
+        document.getElementById("otherAreaGroup");
+
+    const otherAreaInput =
+        document.getElementById("otherArea");
+
+
+    /* =====================================================
+       LOAD DEPARTMENTS + DOCTORS FROM BACKEND
+       ===================================================== */
+
+    fetch("../backend/public/get_departments_doctors.php")
+        .then(response => response.json())
+        .then(data => {
+
+            allDepartments = data.departments || [];
+            allDoctors = data.doctors || [];
+
+            departmentSelect.innerHTML = `<option value="">Select Department</option>`;
+
+            allDepartments.forEach(function (dept) {
+                const option = document.createElement("option");
+                option.value = dept.id;
+                option.textContent = dept.department_name;
+                departmentSelect.appendChild(option);
+            });
+
+        })
+        .catch(function (error) {
+            console.error("Failed to load departments/doctors:", error);
+        });
+
+
+    departmentSelect.addEventListener("change", function () {
+
+        const selectedDepartmentId = departmentSelect.value;
+
+        doctorSelect.innerHTML = `<option value="">Select Doctor</option>`;
+
+        if (!selectedDepartmentId) {
+            return;
+        }
+
+        const filteredDoctors = allDoctors.filter(function (doc) {
+            return String(doc.department_id) === String(selectedDepartmentId);
+        });
+
+        filteredDoctors.forEach(function (doc) {
+            const option = document.createElement("option");
+            option.value = doc.id;
+            option.textContent = doc.doctor_name +
+                (doc.specialization ? ` (${doc.specialization})` : "");
+            doctorSelect.appendChild(option);
+        });
+
+    });
+
+
+    /* =====================================================
+       AREA "OTHER" TOGGLE
+       ===================================================== */
+
+    areaSelect.addEventListener("change", function () {
+
+        if (this.value === "Other") {
+
+            otherAreaGroup.style.display = "block";
+            otherAreaInput.required = true;
+            otherAreaInput.focus();
+
+        } else {
+
+            otherAreaGroup.style.display = "none";
+            otherAreaInput.required = false;
+            otherAreaInput.value = "";
+
+        }
+    });
 
 
     /* =====================================================
@@ -186,10 +276,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 .value
                 .trim();
 
-        const doctor =
-            document
-                .getElementById("doctor")
-                .value;
+        const departmentId =
+            departmentSelect.value;
+
+        const doctorId =
+            doctorSelect.value;
+
+        const doctorText =
+            doctorSelect.options[doctorSelect.selectedIndex]
+                ? doctorSelect.options[doctorSelect.selectedIndex].textContent
+                : "";
 
         const date =
             appointmentDate.value;
@@ -199,8 +295,43 @@ document.addEventListener("DOMContentLoaded", function () {
                 .getElementById("appointmentTime")
                 .value;
 
+        const finalArea =
+            areaSelect.value === "Other"
+                ? otherAreaInput.value.trim()
+                : areaSelect.value;
 
-        /* Format date */
+        if (!departmentId) {
+            alert("Please select a department.");
+            departmentSelect.focus();
+            return;
+        }
+
+        if (!doctorId) {
+            alert("Please select a doctor.");
+            doctorSelect.focus();
+            return;
+        }
+
+        if (!date) {
+            alert("Please select an appointment date.");
+            appointmentDate.focus();
+            return;
+        }
+
+        if (!time) {
+            alert("Please select an appointment time.");
+            return;
+        }
+
+        const password = document.getElementById("password").value;
+
+        if (!password || password.length < 6) {
+            alert("Please set a password (at least 6 characters) for your patient portal.");
+            document.getElementById("password").focus();
+            return;
+        }
+
+        /* Format date for the summary display */
 
         let formattedDate =
             date;
@@ -222,94 +353,63 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /* Fill summary */
+        const formPayload = new URLSearchParams();
+        formPayload.append("full_name", fullName);
+        formPayload.append("mobile", phone.value.trim());
+        formPayload.append("email", email.value.trim());
+        formPayload.append("password", password);
+        formPayload.append("age", document.getElementById("age").value);
+        formPayload.append("gender", document.getElementById("gender").value);
+        formPayload.append("area", finalArea);
+        formPayload.append("address", document.getElementById("address").value.trim());
+        formPayload.append("department_id", departmentId);
+        formPayload.append("doctor_id", doctorId);
+        formPayload.append("appointment_date", date);
+        formPayload.append("appointment_time", convertTo24Hour(time));
+        formPayload.append("reason", document.getElementById("symptoms").value.trim());
 
-        document.getElementById(
-            "summaryName"
-        ).textContent =
-            fullName || "-";
+        const submitBtn = form.querySelector("button[type='submit']");
+        if (submitBtn) {
+            submitBtn.disabled = true;
+        }
 
-        document.getElementById(
-            "summaryDoctor"
-        ).textContent =
-            doctor || "-";
+        fetch("../backend/public/book_appointment.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: formPayload.toString()
+        })
+        .then(response => response.json())
+        .then(data => {
 
-        document.getElementById(
-            "summaryDate"
-        ).textContent =
-            formattedDate || "-";
+            if (data.result === "success") {
 
-        document.getElementById(
-            "summaryTime"
-        ).textContent =
-            time || "-";
+                document.getElementById("summaryName").textContent = fullName || "-";
+                document.getElementById("summaryDoctor").textContent = doctorText || "-";
+                document.getElementById("summaryDate").textContent = formattedDate || "-";
+                document.getElementById("summaryTime").textContent = time || "-";
 
+                const loginEmail = email.value.trim() || `(no email provided — use ${phone.value.trim()}@no-email.local)`;
+                alert("Your Patient Portal login email is: " + loginEmail + "\nUse the password you just created to log in.");
 
-        /* Show success modal */
+                successOverlay.classList.add("active");
+                document.body.style.overflow = "hidden";
 
-        successOverlay.classList.add(
-            "active"
-        );
+            } else {
 
-        document.body.style.overflow =
-            "hidden";
+                alert("Booking failed: " + (data.error || "unknown error"));
 
+            }
 
-        /*
-         * Temporary frontend storage.
-         *
-         * This stores the appointment in
-         * localStorage until your backend/API
-         * is connected.
-         */
-
-        const appointmentData = {
-
-            name: fullName,
-
-            phone:
-                phone.value.trim(),
-
-            email:
-                email.value.trim(),
-
-            age:
-                document
-                    .getElementById("age")
-                    .value,
-
-            gender:
-                document
-                    .getElementById("gender")
-                    .value,
-
-            department:
-                document
-                    .getElementById("department")
-                    .value,
-
-            doctor: doctor,
-
-            date: date,
-
-            time: time,
-
-            symptoms:
-                document
-                    .getElementById("symptoms")
-                    .value
-                    .trim(),
-
-            createdAt:
-                new Date().toISOString()
-
-        };
-
-
-        localStorage.setItem(
-            "odsmartLastAppointment",
-            JSON.stringify(appointmentData)
-        );
+        })
+        .catch(function (error) {
+            console.error("Booking failed:", error);
+            alert("Unable to connect to the server.");
+        })
+        .finally(function () {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+            }
+        });
 
     });
 
@@ -353,6 +453,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             emailMessage.textContent =
                 "";
+
+            doctorSelect.innerHTML = `<option value="">Select Doctor</option>`;
+
+            otherAreaGroup.style.display = "none";
+            otherAreaInput.required = false;
 
         }
     );
@@ -416,30 +521,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-const areaSelect = document.getElementById("area");
-const otherAreaGroup = document.getElementById("otherAreaGroup");
-const otherAreaInput = document.getElementById("otherArea");
 
-areaSelect.addEventListener("change", function () {
+/* =====================================================
+   CONVERT "04:00 PM" -> "16:00:00" FOR THE BACKEND
+   (appointments.appointment_time is a TIME column)
+   ===================================================== */
 
-    if (this.value === "Other") {
-        // Show manual area field
-        otherAreaGroup.style.display = "block";
+function convertTo24Hour(timeStr) {
 
-        // Make manual area required
-        otherAreaInput.required = true;
+    const [time, modifier] = timeStr.split(" ");
+    let [hours, minutes] = time.split(":");
 
-        // Focus on the text area
-        otherAreaInput.focus();
+    hours = parseInt(hours, 10);
 
-    } else {
-        // Hide manual area field
-        otherAreaGroup.style.display = "none";
-
-        // Remove required validation
-        otherAreaInput.required = false;
-
-        // Clear previous manual entry
-        otherAreaInput.value = "";
+    if (modifier === "PM" && hours !== 12) {
+        hours += 12;
     }
-});
+
+    if (modifier === "AM" && hours === 12) {
+        hours = 0;
+    }
+
+    return `${String(hours).padStart(2, "0")}:${minutes}:00`;
+
+}
