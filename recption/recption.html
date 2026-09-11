@@ -1,815 +1,861 @@
-/* =========================================================
-   SHREE VENKATSAI DENTAL HOSPITAL
-   RECEPTION / FRONT DESK
-   Connected to real backend endpoints (backend/receptionist/)
-========================================================= */
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-/* =========================================================
-   CONFIG
-========================================================= */
+    <title>
+        Reception Appointment |
+        SHREE VENKATSAI MULTI SPECIALITY DENTAL HOSPITAL
+    </title>
 
-const API_BASE = "../backend/receptionist";
-const LOGIN_PAGE = "../login page/login.html";
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
+    <link rel="stylesheet" href="recption.css">
+</head>
 
-/* =========================================================
-   STATE
-========================================================= */
+<body>
 
-let selectedExistingPatient = null; // { id, mrn, full_name, mobile, ... } or null
-let departmentsData = [];
-let doctorsData = [];
+    <main class="reception-page">
 
+        <!-- =====================================================
+             PAGE HEADER
+        ====================================================== -->
 
-/* =========================================================
-   DOM ELEMENTS
-========================================================= */
+        <section class="page-header">
 
-const patientSearch = document.getElementById("patientSearch");
-const searchPatientBtn = document.getElementById("searchPatientBtn");
-const newPatientBtn = document.getElementById("newPatientBtn");
-const searchMessage = document.getElementById("searchMessage");
+            <div class="page-header-content">
 
-const existingPatient = document.getElementById("existingPatient");
-const foundPatientName = document.getElementById("foundPatientName");
-const foundPatientMRN = document.getElementById("foundPatientMRN");
-const foundPatientPhone = document.getElementById("foundPatientPhone");
-const foundPatientAge = document.getElementById("foundPatientAge");
-const foundPatientAddress = document.getElementById("foundPatientAddress");
+                <span class="page-kicker">
+                    RECEPTION / FRONT DESK
+                </span>
 
-const appointmentForm = document.getElementById("appointmentForm");
+                <h1>Take Appointment</h1>
 
-const mrn = document.getElementById("mrn");
-const patientName = document.getElementById("patientName");
-const patientAge = document.getElementById("patientAge");
-const patientEmail = document.getElementById("patientEmail");
-const dateOfBirth = document.getElementById("dateOfBirth");
-const gender = document.getElementById("gender");
-const appointmentDate = document.getElementById("appointmentDate");
+                <p>
+                    Search an existing patient or register a new patient
+                    and book an appointment.
+                </p>
 
-const patientPasswordGroup = document.getElementById("patientPasswordGroup");
-const patientPassword = document.getElementById("patientPassword");
+            </div>
 
-const area = document.getElementById("area");
-const otherAddressGroup = document.getElementById("otherAddressGroup");
-const otherAddress = document.getElementById("otherAddress");
+            <!-- TOP RIGHT ACTIONS -->
+            <div class="header-actions">
 
-const phone = document.getElementById("phone");
-const alternatePhone = document.getElementById("alternatePhone");
+                <div class="header-icon">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
 
-const department = document.getElementById("department");
-const consultant = document.getElementById("consultant");
-const appointmentTime = document.getElementById("appointmentTime");
-const appointmentType = document.getElementById("appointmentType");
-const visitReason = document.getElementById("visitReason");
+                <a href="../login page/login.html"
+                   class="logout-btn"
+                   id="logoutBtn">
 
-const clearFormBtn = document.getElementById("clearFormBtn");
+                    <i class="fa-solid fa-right-from-bracket"></i>
 
-const successModal = document.getElementById("successModal");
-const successMRN = document.getElementById("successMRN");
-const successAppointmentNo = document.getElementById("successAppointmentNo");
-const closeSuccessBtn = document.getElementById("closeSuccessBtn");
-const printAppointmentBtn = document.getElementById("printAppointmentBtn");
+                    <span>Logout</span>
 
-const logoutBtn = document.getElementById("logoutBtn");
+                </a>
 
+            </div>
 
-/* =========================================================
-   INIT
-========================================================= */
+        </section>
 
-document.addEventListener("DOMContentLoaded", function () {
+        <header class="hospital-header">
 
-    checkSession();
-    loadDepartmentsAndDoctors();
-    setMinimumDate();
-    attachEvents();
-    consultant.addEventListener("change", checkDoctorAvailability);
-    appointmentDate.addEventListener("change", checkDoctorAvailability);
+            <div class="hospital-brand">
 
-});
+                <img src="../assets/logo.jpg" alt="Shree Venkatsai Dental Hospital Logo" class="hospital-logo">
 
+                <div class="hospital-title">
+                    <h1>SHREE VENKATSAI MULTI SPECIALITY DENTAL HOSPITAL</h1>
+                    <p>Reception / Front Desk</p>
+                </div>
 
-/* =========================================================
-   SESSION CHECK
-========================================================= */
+            </div>
 
-function checkSession() {
+        </header>
 
-    fetch(`${API_BASE}/check_session.php`, {
-        credentials: "same-origin"
-    })
 
-    .then(response => {
+        <!-- =====================================================
+             PATIENT SEARCH
+        ====================================================== -->
 
-        if (!response.ok) {
-            throw new Error("not_logged_in");
-        }
+        <section class="form-card">
 
-        return response.json();
+            <div class="card-heading">
 
-    })
+                <div class="heading-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
 
-    .then(data => {
+                <div>
+                    <h2>Search Patient</h2>
 
-        if (!data.logged_in) {
-            window.location.href = LOGIN_PAGE;
-        }
+                    <p>
+                        Search using Patient ID / MRN or registered
+                        mobile number.
+                    </p>
+                </div>
 
-    })
+            </div>
 
-    .catch(function () {
 
-        window.location.href = LOGIN_PAGE;
+            <div class="search-row">
 
-    });
+                <div class="search-box">
 
-}
+                    <i class="fa-solid fa-magnifying-glass"></i>
 
+                    <input type="text" id="patientSearch" placeholder="Enter MRN or mobile number">
 
-/* =========================================================
-   LOGOUT
-========================================================= */
+                </div>
 
-if (logoutBtn) {
+                <button type="button" class="primary-btn" id="searchPatientBtn">
+                    <i class="fa-solid fa-search"></i>
+                    Search Patient
+                </button>
 
-    logoutBtn.addEventListener("click", function (event) {
+                <button type="button" class="secondary-btn" id="newPatientBtn">
+                    <i class="fa-solid fa-user-plus"></i>
+                    New Patient
+                </button>
 
-        event.preventDefault();
+            </div>
 
-        const confirmLogout = confirm(
-            "Are you sure you want to logout?"
-        );
 
-        if (!confirmLogout) {
-            return;
-        }
+            <div id="searchMessage" class="search-message"></div>
 
-        // Actually destroy the PHP session server-side, not just
-        // clear client-side storage — otherwise the session cookie
-        // stays valid and protected endpoints remain accessible.
-        window.location.href = "../backend/auth/logout.php";
 
-    });
+            <!-- EXISTING PATIENT RESULT -->
 
-}
+            <div id="existingPatient" class="existing-patient hidden">
 
+                <div class="patient-found">
 
-/* =========================================================
-   LOAD DEPARTMENTS + DOCTORS
-========================================================= */
+                    <div>
 
-function loadDepartmentsAndDoctors() {
+                        <span class="found-label">
+                            EXISTING PATIENT FOUND
+                        </span>
 
-    fetch(`${API_BASE}/get_departments_doctors.php`, {
-        credentials: "same-origin"
-    })
+                        <h3 id="foundPatientName">
+                            —
+                        </h3>
 
-    .then(response => response.json())
+                    </div>
 
-    .then(data => {
 
-        departmentsData = data.departments || [];
-        doctorsData = data.doctors || [];
+                    <div class="mrn-box">
 
-        populateDepartmentOptions();
+                        <span>Patient MRN</span>
 
-    })
+                        <strong id="foundPatientMRN">
+                            —
+                        </strong>
 
-    .catch(function (error) {
+                    </div>
 
-        console.error("Failed to load departments/doctors:", error);
+                </div>
 
-    });
 
-}
+                <div class="patient-summary">
 
-function populateDepartmentOptions() {
+                    <div>
+                        <span>Phone Number</span>
+                        <strong id="foundPatientPhone">—</strong>
+                    </div>
 
-    department.innerHTML = `<option value="">Select department</option>`;
+                    <div>
+                        <span>Age</span>
+                        <strong id="foundPatientAge">—</strong>
+                    </div>
 
-    departmentsData.forEach(function (dept) {
+                    <div>
+                        <span>Address</span>
+                        <strong id="foundPatientAddress">—</strong>
+                    </div>
+                    <div>
+                        <span>Area</span>
+                        <strong id="foundPatientArea">—</strong>
+                    </div>
 
-        const option = document.createElement("option");
-        option.value = dept.id;
-        option.textContent = dept.department_name;
-        department.appendChild(option);
+                </div>
 
-    });
+            </div>
 
-}
+        </section>
 
-function populateConsultantOptions(selectedDepartmentId) {
 
-    consultant.innerHTML = `<option value="">Select consultant</option>`;
+        <!-- =====================================================
+             APPOINTMENT / PATIENT FORM
+        ====================================================== -->
 
-    const filtered = selectedDepartmentId
-        ? doctorsData.filter(doc => String(doc.department_id) === String(selectedDepartmentId))
-        : doctorsData;
+        <form id="appointmentForm" class="form-card">
 
-    filtered.forEach(function (doc) {
+            <!-- PATIENT INFORMATION -->
 
-        const option = document.createElement("option");
-        option.value = doc.id;
-        option.textContent = doc.doctor_name +
-            (doc.specialization ? ` (${doc.specialization})` : "");
-        consultant.appendChild(option);
+            <div class="card-heading">
 
-    });
+                <div class="heading-icon">
+                    <i class="fa-solid fa-user"></i>
+                </div>
 
-}
+                <div>
+                    <h2>Patient Information</h2>
 
+                    <p>
+                        Enter the required patient details.
+                    </p>
+                </div>
 
-/* =========================================================
-   EVENTS
-========================================================= */
+            </div>
 
-function attachEvents() {
 
-    searchPatientBtn.addEventListener("click", searchPatient);
+            <div class="form-grid">
 
-    patientSearch.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            searchPatient();
-        }
-    });
 
-    newPatientBtn.addEventListener("click", prepareNewPatient);
+                <!-- MRN -->
 
-    department.addEventListener("change", function () {
-        populateConsultantOptions(department.value);
-    });
+                <div class="form-group">
 
-    area.addEventListener("change", handleAddressChange);
+                    <label>
+                        Patient Unique ID / MRN
+                    </label>
 
-    appointmentForm.addEventListener("submit", bookAppointment);
+                    <div class="readonly-field">
 
-    clearFormBtn.addEventListener("click", function () {
-        prepareNewPatient();
-    });
+                        <i class="fa-solid fa-id-card"></i>
 
-    closeSuccessBtn.addEventListener("click", closeModal);
+                        <input type="text" id="mrn" placeholder="Automatically generated" readonly>
 
-    printAppointmentBtn.addEventListener("click", printAppointment);
+                        <span>AUTO</span>
 
-}
+                    </div>
 
+                    <small>
+                        MRN is permanent and cannot be manually changed.
+                    </small>
 
-/* =========================================================
-   SET MINIMUM DATE (today, can't book in the past)
-========================================================= */
+                </div>
 
-function setMinimumDate() {
 
-    const today = new Date().toISOString().split("T")[0];
-    appointmentDate.min = today;
-    appointmentDate.value = today;
+                <!-- PATIENT NAME -->
 
-}
+                <div class="form-group">
 
+                    <label for="patientName">
+                        Patient Name <b>*</b>
+                    </label>
 
-/* =========================================================
-   SEARCH PATIENT
-========================================================= */
+                    <input type="text" id="patientName" placeholder="Enter patient's full name" required>
 
-function searchPatient() {
+                </div>
 
-    const query = patientSearch.value.trim();
 
-    if (!query) {
-        searchMessage.textContent = "Please enter an MRN or mobile number to search.";
-        searchMessage.className = "search-message error";
-        return;
-    }
+                <!-- DATE OF BIRTH -->
 
-    searchMessage.textContent = "Searching...";
-    searchMessage.className = "search-message";
+                <div class="form-group">
 
-    fetch(`${API_BASE}/search_patient.php?query=${encodeURIComponent(query)}`, {
-        credentials: "same-origin"
-    })
+                    <label for="dateOfBirth">
+                        Date Of Birth<b>*</b>
+                    </label>
 
-    .then(response => response.json())
+                    <input type="date" id="dateOfBirth" required>
 
-    .then(data => {
+                </div>
 
-        if (data.error) {
-            searchMessage.textContent = "Search failed. Please try again.";
-            searchMessage.className = "search-message error";
-            return;
-        }
 
-        const patients = data.patients || [];
+                <!-- EMAIL -->
 
-        if (patients.length === 0) {
+                <div class="form-group">
 
-            searchMessage.textContent =
-                "No matching patient found. You can register them as a new patient below.";
-            searchMessage.className = "search-message info";
+                    <label for="patientEmail">
+                        Email <b></b>
+                    </label>
 
-            hideExistingPatient();
-            prepareNewPatient(query);
+                    <input type="email" id="patientEmail" placeholder="Email">
 
-        } else {
+                </div>
 
-            showExistingPatient(patients[0]);
 
-            searchMessage.textContent =
-                patients.length > 1
-                    ? `${patients.length} matches found — showing the closest match.`
-                    : "Patient found.";
-            searchMessage.className = "search-message success";
+                <!-- AGE -->
 
-        }
+                <div class="form-group">
 
-    })
+                    <label for="patientAge">
+                        Age <b>*</b>
+                    </label>
 
-    .catch(function (error) {
+                    <input type="number" id="patientAge" min="0" max="120" placeholder="Enter age" required>
 
-        console.error(error);
-        searchMessage.textContent = "Unable to connect to the server.";
-        searchMessage.className = "search-message error";
+                </div>
 
-    });
 
-}
+                <!-- GENDER -->
 
+                <div class="form-group">
 
-/* =========================================================
-   SHOW / HIDE EXISTING PATIENT PANEL
-========================================================= */
+                    <label for="gender">
+                        Gender <b>*</b>
+                    </label>
 
-function showExistingPatient(patient) {
+                    <select id="gender" required>
 
-    selectedExistingPatient = patient;
+                        <option value="">Select Gender</option>
+                        <option value="Male">
+                            Male
+                        </option>
 
-    foundPatientName.textContent = patient.full_name;
-    foundPatientMRN.textContent = patient.mrn;
-    foundPatientPhone.textContent = patient.mobile || "—";
+                        <option value="Female">
+                            Female
+                        </option>
+                        <option value="Other">
+                            Others
+                        </option>
 
-    if (patient.date_of_birth) {
-        foundPatientAge.textContent = calculateAge(patient.date_of_birth);
-    } else {
-        foundPatientAge.textContent = "—";
-    }
+                    </select>
 
-    foundPatientAddress.textContent = patient.address || patient.area || "—";
+                </div>
 
-    existingPatient.classList.remove("hidden");
 
-    loadPatientIntoForm(patient);
+                <!-- PATIENT PORTAL PASSWORD (new patients only) -->
 
-    // Existing patient already has a portal password — hide/disable the
-    // "set a password" field entirely for this flow.
-    patientPasswordGroup.style.display = "none";
-    patientPassword.required = false;
-    patientPassword.value = "";
+                <div class="form-group" id="patientPasswordGroup">
 
-}
+                    <label for="patientPassword">
+                        Set Patient Portal Password <b>*</b>
+                    </label>
 
-function hideExistingPatient() {
+                    <input type="password" id="patientPassword" minlength="6" placeholder="Password for patient portal login">
 
-    selectedExistingPatient = null;
-    existingPatient.classList.add("hidden");
+                    <small>
+                        Only needed when registering a NEW patient — the
+                        patient will use their mobile/email + this
+                        password to log into the Patient Portal.
+                    </small>
 
-}
+                </div>
 
 
-/* =========================================================
-   LOAD EXISTING PATIENT INTO FORM (read-only-ish, for booking)
-========================================================= */
+                <!-- DATE -->
 
-function loadPatientIntoForm(patient) {
+                <div class="form-group">
 
-    mrn.value = patient.mrn;
-    patientName.value = patient.full_name;
+                    <label for="appointmentDate">
+                        Booking Date <b>*</b>
+                    </label>
 
-    if (patient.date_of_birth) {
-        patientAge.value = calculateAge(patient.date_of_birth);
-        dateOfBirth.value = patient.date_of_birth;
-    }
+                    <input type="date" id="appointmentDate" required>
 
-    phone.value = patient.mobile || "";
-    patientEmail.value = patient.email || "";
-    gender.value = patient.gender || "";
+                </div>
 
-    const areaExists =
-        [...area.options].some(option => option.value === patient.area);
 
-    if (areaExists) {
+                <!-- ADDRESS -->
 
-        area.value = patient.area;
-        otherAddressGroup.classList.add("hidden");
-        otherAddress.required = false;
+                <div class="form-group">
 
-    } else {
+                    <label for="area">
+                        Area <b>*</b>
+                    </label>
 
-        area.value = "Other";
-        otherAddressGroup.classList.remove("hidden");
-        otherAddress.required = true;
-        otherAddress.value = patient.address || "";
+                    <select id="area" required>
 
-    }
+                        <option value="">
+                            Select location
+                        </option>
 
-}
+                        <option value="Kalaburagi City">
+                            Kalaburagi City
+                        </option>
 
+                        <option value="Sedam Road">
+                            Sedam Road
+                        </option>
 
-/* =========================================================
-   NEW PATIENT
-========================================================= */
+                        <option value="Station Road">
+                            Station Road
+                        </option>
 
-function prepareNewPatient(prefillMobileOrMrn) {
+                        <option value="Super Market">
+                            Super Market
+                        </option>
 
-    hideExistingPatient();
+                        <option value="Shahabad Road">
+                            Shahabad Road
+                        </option>
 
-    appointmentForm.reset();
-    mrn.value = "";
+                        <option value="Aland Road">
+                            Aland Road
+                        </option>
 
-    otherAddressGroup.classList.add("hidden");
-    otherAddress.required = false;
+                        <option value="Jewargi Road">
+                            Jewargi Road
+                        </option>
 
-    // New patient — needs a portal password.
-    patientPasswordGroup.style.display = "";
-    patientPassword.required = true;
+                        <option value="Ring Road">
+                            Ring Road
+                        </option>
 
-    setMinimumDate();
+                        <option value="Other">
+                            Other
+                        </option>
 
-    if (prefillMobileOrMrn && /^\d{10}$/.test(prefillMobileOrMrn)) {
-        phone.value = prefillMobileOrMrn;
-    }
+                    </select>
 
-    patientName.focus();
+                </div>
 
-}
 
+                <div class="form-group full-width hidden" id="otherAddressGroup">
 
-/* =========================================================
-   ADDRESS / AREA CHANGE
-========================================================= */
+                    <label for="otherAddress">
+                        Enter Address <b>*</b>
+                    </label>
 
-function handleAddressChange() {
+                    <textarea
+                        id="otherAddress"
+                        rows="3"
+                        placeholder="Enter complete address"
+                    ></textarea>
 
-    if (area.value === "Other") {
+                </div>
 
-        otherAddressGroup.classList.remove("hidden");
-        otherAddress.required = true;
 
-    } else {
+                <!-- PHONE -->
 
-        otherAddressGroup.classList.add("hidden");
-        otherAddress.required = false;
-        otherAddress.value = "";
+                <div class="form-group">
 
-    }
+                    <label for="phone">
+                        Phone Number <b>*</b>
+                    </label>
 
-}
+                    <input type="tel" id="phone" maxlength="10" placeholder="10-digit mobile number" required>
 
+                </div>
 
-/* =========================================================
-   DOCTOR AVAILABILITY CHECK
-   Disables already-booked time slots and blocks inactive doctors.
-========================================================= */
 
-function checkDoctorAvailability() {
+                <!-- ALTERNATE PHONE -->
 
-    const doctorId = consultant.value;
-    const date = appointmentDate.value;
+                <div class="form-group">
 
-    [...appointmentTime.options].forEach(option => {
-        option.disabled = false;
-        option.textContent = option.textContent.replace(" (Booked)", "");
-    });
+                    <label for="alternatePhone">
+                        Alternate Phone Number
+                    </label>
 
-    if (!doctorId || !date) {
-        return;
-    }
+                    <input type="tel" id="alternatePhone" maxlength="10" placeholder="Optional">
 
-    fetch(`${API_BASE}/get_doctor_availability.php?doctor_id=${doctorId}&date=${date}`, {
-        credentials: "same-origin"
-    })
+                </div>
 
-    .then(response => response.json())
+            </div>
 
-    .then(data => {
 
-        if (data.error) {
-            console.error("Availability check failed:", data.error);
-            return;
-        }
+            <!-- =================================================
+                 APPOINTMENT DETAILS
+            ================================================== -->
 
-        if (data.doctor_status !== "active") {
+            <div class="sub-heading">
 
-            alert("This doctor is currently unavailable. Please choose a different consultant.");
-            consultant.value = "";
-            return;
+                <div class="heading-icon small">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
 
-        }
+                <div>
 
-        const bookedSlots = data.booked_slots || [];
+                    <h3>Appointment Details</h3>
 
-        [...appointmentTime.options].forEach(option => {
+                    <p>
+                        Select the date, consultant and appointment time.
+                    </p>
 
-            if (!option.value) return;
+                </div>
 
-            const time24 = convertTo24Hour(option.value).substring(0, 5);
+            </div>
 
-            if (bookedSlots.includes(time24)) {
-                option.disabled = true;
-                option.textContent = option.textContent + " (Booked)";
-            }
 
-        });
+            <div class="form-grid">
 
-        const selectedOption = appointmentTime.options[appointmentTime.selectedIndex];
-        if (selectedOption && selectedOption.disabled) {
-            appointmentTime.value = "";
-        }
 
-    })
+                <!-- APPOINTMENT TYPE -->
 
-    .catch(function (error) {
-        console.error("Availability check error:", error);
-    });
+                <div class="form-group">
 
-}
+                    <label for="appointmentType">
+                        Appointment Type <b>*</b>
+                    </label>
 
+                    <select id="appointmentType" required>
 
-/* =========================================================
-   HELPERS
-========================================================= */
+                        <option value="">
+                            Select appointment type
+                        </option>
 
-function calculateAge(dobString) {
+                        <option value="New Consultation">
+                            New Consultation
+                        </option>
 
-    const dob = new Date(dobString);
-    const today = new Date();
+                        <option value="Follow-up">
+                            Follow-up
+                        </option>
 
-    let age = today.getFullYear() - dob.getFullYear();
-    const monthDiff = today.getMonth() - dob.getMonth();
+                    </select>
 
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
-        age--;
-    }
+                </div>
 
-    return age;
 
-}
+                <!-- DEPARTMENT -->
 
-function getFinalAddress() {
+                <div class="form-group">
 
-    if (area.value === "Other") {
-        return otherAddress.value.trim();
-    }
+                    <label for="department">
+                        Department <b>*</b>
+                    </label>
 
-    return area.value;
+                    <select id="department" required>
 
-}
+                        <option value="">
+                            Select department
+                        </option>
 
-function convertTo24Hour(timeStr) {
+                    </select>
 
-    const [time, modifier] = timeStr.split(" ");
-    let [hours, minutes] = time.split(":");
+                </div>
 
-    hours = parseInt(hours, 10);
 
-    if (modifier === "PM" && hours !== 12) {
-        hours += 12;
-    }
+                <!-- CONSULTANT -->
 
-    if (modifier === "AM" && hours === 12) {
-        hours = 0;
-    }
+                <div class="form-group">
 
-    return `${String(hours).padStart(2, "0")}:${minutes}:00`;
+                    <label for="consultant">
+                        Consultant Name/Doctor <b>*</b>
+                    </label>
 
-}
+                    <select id="consultant" required>
 
+                        <option value="">
+                            Select consultant
+                        </option>
 
-/* =========================================================
-   BOOK APPOINTMENT (register if new, then book)
-========================================================= */
+                    </select>
 
-function bookAppointment(event) {
+                    <small>
+                        Consultants are loaded from the selected department.
+                    </small>
 
-    event.preventDefault();
+                </div>
 
-    const primaryPhone = phone.value.trim();
 
-    if (!/^[6-9]\d{9}$/.test(primaryPhone)) {
-        alert("Please enter a valid 10-digit mobile number.");
-        phone.focus();
-        return;
-    }
+                <!-- APPOINTMENT TIME -->
 
-    const alternate = alternatePhone.value.trim();
-    if (alternate && !/^[6-9]\d{9}$/.test(alternate)) {
-        alert("Please enter a valid alternate mobile number.");
-        alternatePhone.focus();
-        return;
-    }
+                <div class="form-group">
 
-    if (!department.value) {
-        alert("Please select a department.");
-        department.focus();
-        return;
-    }
+                    <label for="appointmentTime">
+                        Appointment Time <b>*</b>
+                    </label>
 
-    if (!consultant.value) {
-        alert("Please select a consultant.");
-        consultant.focus();
-        return;
-    }
+                    <select id="appointmentTime" required>
 
-    // Password is only required when registering a brand-new patient —
-    // existing patients already have portal access.
-    if (!selectedExistingPatient) {
+                        <option value="">
+                            Select appointment time
+                        </option>
 
-        const passwordValue = patientPassword.value;
+                        <option value="09:00 AM">
+                            09:00 AM
+                        </option>
 
-        if (!passwordValue || passwordValue.length < 6) {
-            alert("Please set a password (at least 6 characters) for the patient's portal access.");
-            patientPassword.focus();
-            return;
-        }
+                        <option value="09:30 AM">
+                            09:30 AM
+                        </option>
 
-    }
+                        <option value="10:00 AM">
+                            10:00 AM
+                        </option>
 
-    const submitBtn = appointmentForm.querySelector("button[type='submit']");
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Booking...";
+                        <option value="10:30 AM">
+                            10:30 AM
+                        </option>
 
-    if (selectedExistingPatient) {
+                        <option value="11:00 AM">
+                            11:00 AM
+                        </option>
 
-        createAppointment(selectedExistingPatient.id, selectedExistingPatient.mrn)
-            .finally(() => resetSubmitButton(submitBtn));
+                        <option value="11:30 AM">
+                            11:30 AM
+                        </option>
 
-    } else {
+                        <option value="12:00 PM">
+                            12:00 PM
+                        </option>
 
-        const formData = new URLSearchParams();
-        formData.append("full_name", patientName.value.trim());
-        formData.append("mobile", primaryPhone);
-        formData.append("date_of_birth", dateOfBirth.value);
-        formData.append("gender", gender.value);
-        formData.append("password", patientPassword.value);
-        formData.append("email", patientEmail.value.trim());
-        formData.append("area", area.value);
-        formData.append("address", getFinalAddress());
+                        <option value="02:00 PM">
+                            02:00 PM
+                        </option>
 
-        fetch(`${API_BASE}/register_patient.php`, {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            credentials: "same-origin",
-            body: formData.toString()
-        })
+                        <option value="02:30 PM">
+                            02:30 PM
+                        </option>
 
-        .then(response => response.json())
+                        <option value="03:00 PM">
+                            03:00 PM
+                        </option>
 
-        .then(data => {
+                        <option value="03:30 PM">
+                            03:30 PM
+                        </option>
 
-            if (data.result !== "success") {
-                alert("Could not register patient: " + (data.error || "unknown error"));
-                return Promise.reject(data.error);
-            }
+                        <option value="04:00 PM">
+                            04:00 PM
+                        </option>
 
-            mrn.value = data.mrn;
+                        <option value="04:30 PM">
+                            04:30 PM
+                        </option>
 
-            return createAppointment(data.patient_id, data.mrn);
+                        <option value="05:00 PM">
+                            05:00 PM
+                        </option>
 
-        })
+                        <option value="05:30 PM">
+                            05:30 PM
+                        </option>
 
-        .catch(function (error) {
-            console.error(error);
-        })
+                    </select>
 
-        .finally(() => resetSubmitButton(submitBtn));
+                </div>
 
-    }
 
-}
+                <!-- REASON -->
 
-function resetSubmitButton(submitBtn) {
+                <div class="form-group full-width">
 
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = `
-        <i class="fa-solid fa-calendar-check"></i>
-        Book Appointment
-    `;
+                    <label for="visitReason">
+                        Reason for Visit
+                    </label>
 
-}
+                    <textarea id="visitReason" rows="3" placeholder="Enter reason for appointment"></textarea>
 
-function createAppointment(patientId, patientMrn) {
+                </div>
 
-    const formData = new URLSearchParams();
-    formData.append("patient_id", patientId);
-    formData.append("department_id", department.value);
-    formData.append("doctor_id", consultant.value);
-    formData.append("appointment_date", appointmentDate.value);
-    formData.append("appointment_time", convertTo24Hour(appointmentTime.value));
-    formData.append("reason", visitReason.value.trim());
-    formData.append("status", "Booked");
+            </div>
 
-    return fetch(`${API_BASE}/book_appointment.php`, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        credentials: "same-origin",
-        body: formData.toString()
-    })
 
-    .then(response => response.json())
+            <!-- FORM BUTTONS -->
 
-    .then(data => {
+            <div class="form-actions">
 
-        if (data.result === "success") {
+                <button type="button" class="secondary-btn" id="clearFormBtn">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    Clear
+                </button>
 
-            finalizeAppointment(patientMrn, data.appointment_id);
+                <button type="submit" class="primary-btn">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    Book Appointment
+                </button>
 
-        } else {
+            </div>
 
-            alert("Could not book appointment: " + (data.error || "unknown error"));
+        </form>
 
-        }
+    </main>
 
-    })
 
-    .catch(function (error) {
+    <!-- =====================================================
+         SUCCESS MODAL
+    ====================================================== -->
 
-        console.error(error);
-        alert("Unable to connect to the server.");
+    <div class="modal-overlay hidden" id="successModal">
 
-    });
+        <div class="success-modal">
 
-}
+            <div class="success-icon">
+                <i class="fa-solid fa-check"></i>
+            </div>
 
+            <span class="found-label">
+                APPOINTMENT CONFIRMED
+            </span>
 
-/* =========================================================
-   SUCCESS MODAL
-========================================================= */
+            <h2>
+                Appointment Booked Successfully
+            </h2>
 
-function finalizeAppointment(patientMrn, appointmentId) {
+            <p>
+                The appointment has been successfully registered.
+            </p>
 
-    successMRN.textContent = patientMrn;
-    successAppointmentNo.textContent = appointmentId;
 
-    successModal.classList.remove("hidden");
+            <div class="generated-details">
 
-}
+                <div>
+                    <span>Patient MRN</span>
+                    <strong id="successMRN">
+                        —
+                    </strong>
+                </div>
 
-function closeModal() {
+                <div>
+                    <span>Appointment Number</span>
+                    <strong id="successAppointmentNo">
+                        —
+                    </strong>
+                </div>
 
-    successModal.classList.add("hidden");
-    hideExistingPatient();
-    prepareNewPatient();
-    searchMessage.textContent = "";
-    patientSearch.value = "";
+            </div>
 
-}
 
+            <div class="modal-actions">
 
-/* =========================================================
-   PRINT
-========================================================= */
+                <button type="button" class="secondary-btn" id="closeSuccessBtn">
+                    Done
+                </button>
 
-function printAppointment() {
+                <button type="button" class="primary-btn" id="printAppointmentBtn">
+                    <i class="fa-solid fa-print"></i>
+                    Print Form
+                </button>
 
-    document.getElementById("printAppointmentNo").textContent =
-        successAppointmentNo.textContent;
+            </div>
 
-    document.getElementById("printAppointmentDate").textContent =
-        appointmentDate.value;
+        </div>
 
-    document.getElementById("printAppointmentTime").textContent =
-        appointmentTime.value;
+    </div>
 
-    document.getElementById("printAppointmentType").textContent =
-        appointmentType.value;
 
-    document.getElementById("printMRN").textContent =
-        successMRN.textContent;
+    <!-- =========================================
+     PRINT APPOINTMENT FORM
+========================================= -->
 
-    document.getElementById("printPatientName").textContent =
-        patientName.value;
+    <div class="print-container" id="printContainer">
 
-    document.getElementById("printPatientAge").textContent =
-        patientAge.value;
+        <!-- Hospital Header -->
+        <div class="print-hospital-header">
 
-    document.getElementById("printPhone").textContent =
-        phone.value;
+            <img src="images/logo.png" alt="Shree Venkatsai Dental Hospital Logo" class="print-logo">
 
-    document.getElementById("printAlternatePhone").textContent =
-        alternatePhone.value || "—";
+            <div class="print-hospital-info">
+                <h1>SHREE VENKATSAI MULTI SPECIALITY DENTAL HOSPITAL</h1>
+                <p>Appointment / Patient Registration Form</p>
+            </div>
 
-    document.getElementById("printConsultant").textContent =
-        consultant.options[consultant.selectedIndex]
-            ? consultant.options[consultant.selectedIndex].textContent
-            : "—";
+        </div>
 
-    document.getElementById("printAddress").textContent =
-        getFinalAddress();
+        <div class="print-divider"></div>
 
-    document.getElementById("printReason").textContent =
-        visitReason.value || "—";
 
-    window.print();
+        <!-- Appointment Information -->
+        <div class="print-section">
 
-}
+            <h2>Appointment Details</h2>
+
+            <div class="print-grid">
+
+                <div class="print-field">
+                    <span>Appointment No.</span>
+                    <strong id="printAppointmentNo">-</strong>
+                </div>
+
+                <div class="print-field">
+                    <span>Appointment Date</span>
+                    <strong id="printAppointmentDate">-</strong>
+                </div>
+
+                <div class="print-field">
+                    <span>Appointment Time</span>
+                    <strong id="printAppointmentTime">-</strong>
+                </div>
+
+                <div class="print-field">
+                    <span>Appointment Type</span>
+                    <strong id="printAppointmentType">-</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Patient Information -->
+        <div class="print-section">
+
+            <h2>Patient Information</h2>
+
+            <div class="print-grid">
+
+                <div class="print-field">
+                    <span>Patient MRN / ID</span>
+                    <strong id="printMRN">-</strong>
+                </div>
+
+                <div class="print-field">
+                    <span>Patient Name</span>
+                    <strong id="printPatientName">-</strong>
+                </div>
+
+                <div class="print-field">
+                    <span>Age</span>
+                    <strong id="printPatientAge">-</strong>
+                </div>
+
+                <div class="print-field">
+                    <span>Phone Number</span>
+                    <strong id="printPhone">-</strong>
+                </div>
+
+                <div class="print-field">
+                    <span>Alternate Phone</span>
+                    <strong id="printAlternatePhone">-</strong>
+                </div>
+
+                <div class="print-field">
+                    <span>Consultant</span>
+                    <strong id="printConsultant">-</strong>
+                </div>
+
+            </div>
+
+            <div class="print-address">
+
+                <span>Address</span>
+
+                <strong id="printAddress">-</strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Reason -->
+        <div class="print-section">
+
+            <h2>Visit Information</h2>
+
+            <div class="print-reason">
+
+                <span>Reason for Visit</span>
+
+                <strong id="printReason">-</strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Footer -->
+        <div class="print-footer">
+
+            <div>
+                <strong>Reception / Front Desk</strong>
+            </div>
+
+            <div>
+                Patient Copy
+            </div>
+
+        </div>
+
+    </div>
+    <script src="recption.js"></script>
+
+</body>
+
+</html>

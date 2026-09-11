@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 10, 2026 at 12:07 PM
+-- Generation Time: Sep 11, 2026 at 12:40 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -30,6 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `appointments` (
   `id` int(11) NOT NULL,
   `patient_id` int(11) NOT NULL,
+  `patient_name` varchar(150) DEFAULT NULL,
   `doctor_id` int(11) DEFAULT NULL,
   `department_id` int(11) DEFAULT NULL,
   `appointment_date` date NOT NULL,
@@ -46,12 +47,11 @@ CREATE TABLE `appointments` (
 -- Dumping data for table `appointments`
 --
 
-INSERT INTO `appointments` (`id`, `patient_id`, `doctor_id`, `department_id`, `appointment_date`, `appointment_time`, `reason`, `notes`, `status`, `created_at`, `updated_at`, `reminder_sent`) VALUES
-(1, 2, 1, 1, '2026-09-09', '15:30:00', '', NULL, 'Booked', '2026-09-09 11:09:04', '2026-09-09 11:09:04', 0),
-(2, 1, 1, 1, '2026-09-10', '09:30:00', '--', NULL, 'Cancelled', '2026-09-09 13:30:56', '2026-09-09 13:33:38', 0),
-(3, 3, 1, 1, '2026-09-10', '16:30:00', '', NULL, 'Booked', '2026-09-10 08:08:02', '2026-09-10 08:08:02', 0),
-(4, 4, 1, 1, '2026-09-15', '10:00:00', 'Test booking', NULL, 'Checked-in', '2026-09-10 09:37:49', '2026-09-10 09:38:37', 0),
-(5, 1, 1, 2, '2026-09-20', '11:00:00', 'Curl test booking', NULL, 'Cancelled', '2026-09-10 09:47:13', '2026-09-10 09:47:27', 0);
+INSERT INTO `appointments` (`id`, `patient_id`, `patient_name`, `doctor_id`, `department_id`, `appointment_date`, `appointment_time`, `reason`, `notes`, `status`, `created_at`, `updated_at`, `reminder_sent`) VALUES
+(6, 1, 'Test Patient Updated', 1, 2, '2026-09-12', '10:30:00', '-', NULL, 'Booked', '2026-09-11 06:01:34', '2026-09-11 06:01:34', 0),
+(11, 9, 'Gopal', 1, 2, '2026-09-11', '17:00:00', '', NULL, 'Booked', '2026-09-11 08:13:20', '2026-09-11 08:13:20', 0),
+(12, 10, 'Sakshi', 1, 2, '2026-09-11', '15:00:00', '', NULL, 'Booked', '2026-09-11 10:35:21', '2026-09-11 10:35:21', 0),
+(13, 10, 'Sakshi', 1, 2, '2026-09-12', '15:00:00', '-', NULL, 'Booked', '2026-09-11 10:36:25', '2026-09-11 10:36:25', 0);
 
 -- --------------------------------------------------------
 
@@ -103,7 +103,13 @@ CREATE TABLE `doctors` (
 --
 
 INSERT INTO `doctors` (`id`, `user_id`, `department_id`, `doctor_name`, `specialization`, `phone`, `email`, `status`, `created_at`) VALUES
-(1, NULL, 2, 'Dr. Test Kumar', 'Orthodontics', NULL, NULL, 'active', '2026-09-09 11:07:43');
+(1, NULL, 2, 'Dr. Test Kumar', 'Orthodontics', NULL, NULL, 'active', '2026-09-09 11:07:43'),
+(2, NULL, 1, 'Dr. Anil Sharma', 'General Dentistry', NULL, NULL, 'active', '2026-09-11 10:38:22'),
+(3, NULL, 3, 'Dr. Priya Reddy', 'Endodontics', NULL, NULL, 'active', '2026-09-11 10:38:22'),
+(4, NULL, 4, 'Dr. Suresh Patil', 'Periodontics', NULL, NULL, 'active', '2026-09-11 10:38:22'),
+(5, NULL, 5, 'Dr. Neha Joshi', 'Prosthodontics', NULL, NULL, 'active', '2026-09-11 10:38:22'),
+(6, NULL, 6, 'Dr. Kavya Rao', 'Pediatric Dentistry', NULL, NULL, 'active', '2026-09-11 10:38:22'),
+(7, NULL, 7, 'Dr. Vikram Singh', 'Oral & Maxillofacial Surgery', NULL, NULL, 'active', '2026-09-11 10:38:22');
 
 -- --------------------------------------------------------
 
@@ -132,7 +138,7 @@ CREATE TABLE `invoices` (
 
 INSERT INTO `invoices` (`id`, `patient_id`, `appointment_id`, `invoice_number`, `total_amount`, `discount`, `net_amount`, `paid_amount`, `due_amount`, `status`, `invoice_date`, `created_at`) VALUES
 (1, 1, NULL, 'INV-1001', 2500.00, 0.00, 2500.00, 1500.00, 1000.00, 'Partially Paid', '2026-09-10', '2026-09-10 06:38:45'),
-(2, 4, 4, 'INV-000002', 1500.00, 100.00, 1400.00, 1400.00, 0.00, 'Paid', '2026-09-10', '2026-09-10 09:39:08');
+(2, 4, NULL, 'INV-000002', 1500.00, 100.00, 1400.00, 1400.00, 0.00, 'Paid', '2026-09-10', '2026-09-10 09:39:08');
 
 -- --------------------------------------------------------
 
@@ -211,9 +217,10 @@ CREATE TABLE `patients` (
 
 INSERT INTO `patients` (`id`, `user_id`, `mrn`, `full_name`, `mobile`, `date_of_birth`, `gender`, `address`, `area`, `email`, `created_at`, `updated_at`) VALUES
 (1, 1, 'SHVMS-MRN-000001', 'Test Patient Updated', '9876543210', '2000-01-01', '', 'Updated Test Address', 'Ring Road', 'patient@test.com', '2026-09-07 09:57:40', '2026-09-10 09:45:46'),
-(2, 3, 'SVMSDH-000002', 'Sakshi', '8080063117', '2004-06-08', 'Female', 'Aland Road', 'Aland Road', 'sakshic398@gmail.com', '2026-09-09 11:09:04', '2026-09-09 11:09:04'),
-(3, 5, 'SVMSDH-000003', 'Sakshi', '8080063117', '2004-06-08', 'Female', 'Aland Road', 'Aland Road', 'walkin_8080063117@no-email.local', '2026-09-10 08:08:02', '2026-09-10 08:08:02'),
-(4, 6, 'SVMSDH-000004', 'Test CurlPatient', '9812345670', '1995-05-05', 'Male', '', 'Ring Road', 'walkin_9812345670@no-email.local', '2026-09-10 09:37:11', '2026-09-10 09:37:11');
+(4, 6, 'SVMSDH-000004', 'Test CurlPatient', '9812345670', '1995-05-05', 'Male', '', 'Ring Road', 'walkin_9812345670@no-email.local', '2026-09-10 09:37:11', '2026-09-10 09:37:11'),
+(5, 9, 'SVMSDH-000005', 'Sakshi', '7498486711', '2004-06-08', 'Female', 'Kalaburagi City', 'Kalaburagi City', 'walkin_7498486711@no-email.local', '2026-09-11 06:05:15', '2026-09-11 06:05:15'),
+(9, 13, 'SVMSDH-000006', 'Gopal', '7889877332', NULL, 'Male', '--', 'Kailash Nagar', 'tidkegopal62@gmail.com', '2026-09-11 08:13:20', '2026-09-11 08:13:20'),
+(10, 14, 'SVMSDH-000007', 'Sakshi', '8080063117', '2026-09-12', 'Female', 'Aland Road', 'Aland Road', 'sakshic398@gmail.com', '2026-09-11 10:35:21', '2026-09-11 10:35:21');
 
 -- --------------------------------------------------------
 
@@ -358,9 +365,10 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `email`, `password`, `role`, `status`, `created_at`) VALUES
 (1, 'patient@test.com', '$2y$10$/mB/kqrnfrE6ETPhXO7ceuCxZfuGa2zHCNNmb1RERJ7/fIOiVaFcC', 'patient', 'active', '2026-09-07 09:57:40'),
 (2, 'receptionist@123.com', '$2b$12$HWxIIrda7dXaO/Ee8FVK7eiCf3H15cCBBDJwqS.osGjudHo9fD3Ue', 'receptionist', 'active', '2026-09-09 10:55:47'),
-(3, 'sakshic398@gmail.com', '$2y$10$1gtL0CeR7pwzjcGV8kx9cuc/ikXSA12EbkkC/UhEkLkMq3LTC8O4e', 'patient', 'active', '2026-09-09 11:09:04'),
-(5, 'walkin_8080063117@no-email.local', '$2y$10$tPmVMbeqysLgG1OYLvOXjeKSwQeJcG2AEC6vHnLvbRhec.4gJz4ii', 'patient', 'active', '2026-09-10 08:08:02'),
-(6, 'walkin_9812345670@no-email.local', '$2y$10$j9JDP02xZaOLU8yOPVlsYuQyCtUS/ZsTFiGbfQZo8QBDRXAos5yZG', 'patient', 'active', '2026-09-10 09:37:11');
+(6, 'walkin_9812345670@no-email.local', '$2y$10$j9JDP02xZaOLU8yOPVlsYuQyCtUS/ZsTFiGbfQZo8QBDRXAos5yZG', 'patient', 'active', '2026-09-10 09:37:11'),
+(9, 'walkin_7498486711@no-email.local', '$2y$10$Yjgrhi1JUmK60eh6ZuNIf.fYEnghVPfiU8H/WE9J6ZnuEr92ylsXC', 'patient', 'active', '2026-09-11 06:05:15'),
+(13, 'tidkegopal62@gmail.com', '$2y$10$hHh1KA2tODHBi.6n6ueD8.94oDAEyJd33I1J/ZhXspAQRPsZ03HNe', 'patient', 'active', '2026-09-11 08:13:20'),
+(14, 'sakshic398@gmail.com', '$2y$10$LlHqd5GVs0m2OGCjbsNdr.fDPpLCbgkxSPjC9VYQq0qyDj06Eqs2K', 'patient', 'active', '2026-09-11 10:35:21');
 
 --
 -- Indexes for dumped tables
@@ -481,7 +489,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `departments`
@@ -493,7 +501,7 @@ ALTER TABLE `departments`
 -- AUTO_INCREMENT for table `doctors`
 --
 ALTER TABLE `doctors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `invoices`
@@ -517,7 +525,7 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `patients`
 --
 ALTER TABLE `patients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `payments`
@@ -553,7 +561,7 @@ ALTER TABLE `treatments`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables
@@ -643,3 +651,4 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
