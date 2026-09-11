@@ -582,6 +582,7 @@ function bookAppointment(event) {
         return;
     }
 
+<<<<<<< HEAD
     const patientPassword = document.getElementById("patientPassword").value;
     if (!patientPassword || patientPassword.length < 6) {
         alert("Please set a password (at least 6 characters) for the patient's portal access.");
@@ -589,6 +590,8 @@ function bookAppointment(event) {
         return;
     }
 
+=======
+>>>>>>> 78de1aebcadb96b2ce502e48abf8717279c68e72
     const submitBtn = appointmentForm.querySelector("button[type='submit']");
     submitBtn.disabled = true;
     submitBtn.textContent = "Booking...";
@@ -607,7 +610,10 @@ function bookAppointment(event) {
         formData.append("mobile", primaryPhone);
         formData.append("date_of_birth", dateOfBirth.value);
         formData.append("gender", gender.value);
+<<<<<<< HEAD
         formData.append("password", document.getElementById("patientPassword").value);
+=======
+>>>>>>> 78de1aebcadb96b2ce502e48abf8717279c68e72
         formData.append("email", patientEmail.value.trim());
         formData.append("area", area.value);
         formData.append("address", getFinalAddress());
@@ -768,4 +774,36 @@ function printAppointment() {
 
     window.print();
 
+<<<<<<< HEAD
+=======
+}
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+if (logoutBtn) {
+
+    logoutBtn.addEventListener("click", function (event) {
+
+        event.preventDefault();
+
+        const confirmLogout = confirm(
+            "Are you sure you want to logout?"
+        );
+
+        if (!confirmLogout) {
+            return;
+        }
+
+        // Remove receptionist login session
+        sessionStorage.removeItem("receptionistLoggedIn");
+        sessionStorage.removeItem("receptionistUser");
+
+        // Redirect to login page
+        window.location.href = "../login page/login.html";
+
+    });
+>>>>>>> 78de1aebcadb96b2ce502e48abf8717279c68e72
 }

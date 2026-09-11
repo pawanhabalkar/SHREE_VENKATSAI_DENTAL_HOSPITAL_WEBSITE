@@ -1876,3 +1876,176 @@ body {
         font-size: 13px;
     }
 }
+/* =========================================================
+   MOBILE NAVIGATION
+========================================================= */
+
+.mobile-nav-actions {
+    display: none;
+}
+
+@media (max-width: 850px) {
+
+    .navbar {
+        display: none;
+    }
+
+    .nav-actions {
+        display: none;
+    }
+
+    .menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 1100;
+    }
+
+    .navbar.mobile-open {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+
+        width: 100%;
+        padding: 15px 20px 20px;
+
+        background: var(--off-white);
+
+        z-index: 1000;
+
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .navbar.mobile-open .nav-link {
+        display: flex;
+        align-items: center;
+
+        width: 100%;
+        min-height: 48px;
+
+        padding: 0 10px;
+
+        font-size: 14px;
+    }
+
+    .mobile-nav-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        width: 100%;
+
+        margin-top: 12px;
+        padding-top: 15px;
+
+        border-top: 1px solid var(--border-green);
+    }
+
+    .mobile-login {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 100%;
+        min-height: 44px;
+
+        text-decoration: none;
+        font-family: "Poppins", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+
+        color: var(--text-dark);
+    }
+
+    .mobile-book-btn {
+        display: flex;
+
+        width: 100%;
+        min-height: 46px;
+
+        padding: 0 15px;
+
+        position: relative;
+        z-index: 1001;
+
+        pointer-events: auto;
+    }
+}
+@media (max-width: 768px) {
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .footer-bottom p,
+    .powered-by {
+        font-size: 13px;
+    }
+}
+@media (max-width: 850px) {
+
+    .hero-content {
+        position: relative;
+        z-index: 10;
+    }
+
+    .hero-buttons {
+        position: relative;
+        z-index: 20;
+    }
+
+    .hero-buttons a {
+        position: relative;
+        z-index: 21;
+        pointer-events: auto;
+    }
+
+    .hero-background,
+    .hero-circle,
+    .floating-card {
+        pointer-events: none;
+    }
+}
+
+
+
+/* =========================================================
+   MOBILE HERO - FIX BUTTON CLICK
+========================================================= */
+
+.hero-background {
+    pointer-events: none;
+}
+
+.hero-circle {
+    pointer-events: none;
+}
+
+.floating-card {
+    pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10;
+}
+
+.hero-buttons {
+    position: relative;
+    z-index: 20;
+}
+
+.hero-buttons a {
+    position: relative;
+    z-index: 21;
+    pointer-events: auto;
+}

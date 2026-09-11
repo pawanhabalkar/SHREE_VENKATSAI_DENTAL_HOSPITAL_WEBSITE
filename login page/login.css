@@ -1085,3 +1085,119 @@ body {
     }
 
 }
+
+/* ===============================
+   MOBILE FIX FOR LOGIN PAGE
+==================================*/
+/* @media (max-width:768px){
+
+    .login-page{
+        display:flex;
+        flex-direction:column;
+    }
+
+    .login-visual{
+        width:100%;
+        min-height:auto;
+        overflow:visible;
+        padding:20px;
+    }
+
+    .visual-content{
+        width:100%;
+        padding:0;
+    }
+
+    .login-logo{
+        display:flex;
+        align-items:center;
+        gap:12px;
+        width:100%;
+        margin-bottom:20px;
+        text-decoration:none;
+    }
+
+    .login-logo img{
+        width:60px;
+        height:60px;
+        min-width:60px;
+        object-fit:contain;
+        display:block;
+        margin:0;
+        transform:none;
+    }
+
+    .login-logo div{
+        flex:1;
+    }
+
+    .login-logo strong{
+        display:block;
+        font-size:18px;
+        line-height:1.2;
+    }
+
+    .login-logo span{
+        display:block;
+        font-size:10px;
+        line-height:1.3;
+    }
+} */
+
+@media (max-width:950px){
+
+    .login-page{
+        grid-template-columns:1fr;
+    }
+
+    .login-visual{
+        display:block;
+        min-height:120px;
+        background:none;
+        overflow:visible;
+    }
+
+    .visual-overlay,
+    .visual-text,
+    .visual-features{
+        display:none;
+    }
+
+    .visual-content{
+        min-height:auto;
+        padding:20px 18px 0;
+        justify-content:flex-start;
+    }
+
+    .login-logo{
+        display:flex;
+        align-items:center;
+        gap:12px;
+    }
+
+    .login-logo img{
+        width:60px;
+        height:60px;
+        display:block;
+        object-fit:contain;
+    }
+
+    .login-logo strong{
+        font-size:18px;
+        color:#006b3c;
+    }
+
+    .login-logo span{
+        font-size:10px;
+        letter-spacing:.5px;
+    }
+
+    .login-container{
+        min-height:auto;
+        padding:10px 18px 30px;
+    }
+
+    .mobile-logo{
+        display:none;
+    }
+}

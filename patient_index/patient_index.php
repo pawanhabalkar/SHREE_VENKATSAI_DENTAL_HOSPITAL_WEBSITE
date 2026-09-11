@@ -315,7 +315,7 @@ if (!empty($patient["date_of_birth"])) {
 
     <div class="sidebar-footer">
 
-        <a
+        <!-- <a
             href="../html/index.html"
             class="website-link"
         >
@@ -324,7 +324,7 @@ if (!empty($patient["date_of_birth"])) {
 
             Visit Hospital Website
 
-        </a>
+        </a> -->
 
 
         <button
