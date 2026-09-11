@@ -2,7 +2,6 @@
    SHREE VENKATSAI DENTAL HOSPITAL
    RECEPTION / FRONT DESK
    Connected to real backend endpoints (backend/receptionist/)
-   Replaces the old localStorage-only mock version.
 ========================================================= */
 
 
@@ -49,6 +48,9 @@ const dateOfBirth = document.getElementById("dateOfBirth");
 const gender = document.getElementById("gender");
 const appointmentDate = document.getElementById("appointmentDate");
 
+const patientPasswordGroup = document.getElementById("patientPasswordGroup");
+const patientPassword = document.getElementById("patientPassword");
+
 const area = document.getElementById("area");
 const otherAddressGroup = document.getElementById("otherAddressGroup");
 const otherAddress = document.getElementById("otherAddress");
@@ -69,6 +71,8 @@ const successMRN = document.getElementById("successMRN");
 const successAppointmentNo = document.getElementById("successAppointmentNo");
 const closeSuccessBtn = document.getElementById("closeSuccessBtn");
 const printAppointmentBtn = document.getElementById("printAppointmentBtn");
+
+const logoutBtn = document.getElementById("logoutBtn");
 
 
 /* =========================================================
@@ -118,6 +122,34 @@ function checkSession() {
     .catch(function () {
 
         window.location.href = LOGIN_PAGE;
+
+    });
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+if (logoutBtn) {
+
+    logoutBtn.addEventListener("click", function (event) {
+
+        event.preventDefault();
+
+        const confirmLogout = confirm(
+            "Are you sure you want to logout?"
+        );
+
+        if (!confirmLogout) {
+            return;
+        }
+
+        // Actually destroy the PHP session server-side, not just
+        // clear client-side storage — otherwise the session cookie
+        // stays valid and protected endpoints remain accessible.
+        window.location.href = "../backend/auth/logout.php";
 
     });
 
@@ -282,7 +314,6 @@ function searchPatient() {
 
         } else {
 
-            // Take the first/best match.
             showExistingPatient(patients[0]);
 
             searchMessage.textContent =
@@ -329,6 +360,12 @@ function showExistingPatient(patient) {
     existingPatient.classList.remove("hidden");
 
     loadPatientIntoForm(patient);
+
+    // Existing patient already has a portal password — hide/disable the
+    // "set a password" field entirely for this flow.
+    patientPasswordGroup.style.display = "none";
+    patientPassword.required = false;
+    patientPassword.value = "";
 
 }
 
@@ -393,10 +430,12 @@ function prepareNewPatient(prefillMobileOrMrn) {
     otherAddressGroup.classList.add("hidden");
     otherAddress.required = false;
 
+    // New patient — needs a portal password.
+    patientPasswordGroup.style.display = "";
+    patientPassword.required = true;
+
     setMinimumDate();
 
-    // If they searched by a mobile number that wasn't found, keep it
-    // filled in on the phone field to save re-typing.
     if (prefillMobileOrMrn && /^\d{10}$/.test(prefillMobileOrMrn)) {
         phone.value = prefillMobileOrMrn;
     }
@@ -426,6 +465,7 @@ function handleAddressChange() {
     }
 
 }
+
 
 /* =========================================================
    DOCTOR AVAILABILITY CHECK
@@ -495,6 +535,7 @@ function checkDoctorAvailability() {
 
 }
 
+
 /* =========================================================
    HELPERS
 ========================================================= */
@@ -525,8 +566,6 @@ function getFinalAddress() {
 
 }
 
-// Converts "09:30 AM" -> "09:30:00" for the appointments.appointment_time
-// TIME column.
 function convertTo24Hour(timeStr) {
 
     const [time, modifier] = timeStr.split(" ");
@@ -582,38 +621,37 @@ function bookAppointment(event) {
         return;
     }
 
-<<<<<<< HEAD
-    const patientPassword = document.getElementById("patientPassword").value;
-    if (!patientPassword || patientPassword.length < 6) {
-        alert("Please set a password (at least 6 characters) for the patient's portal access.");
-        document.getElementById("patientPassword").focus();
-        return;
+    // Password is only required when registering a brand-new patient —
+    // existing patients already have portal access.
+    if (!selectedExistingPatient) {
+
+        const passwordValue = patientPassword.value;
+
+        if (!passwordValue || passwordValue.length < 6) {
+            alert("Please set a password (at least 6 characters) for the patient's portal access.");
+            patientPassword.focus();
+            return;
+        }
+
     }
 
-=======
->>>>>>> 78de1aebcadb96b2ce502e48abf8717279c68e72
     const submitBtn = appointmentForm.querySelector("button[type='submit']");
     submitBtn.disabled = true;
     submitBtn.textContent = "Booking...";
 
     if (selectedExistingPatient) {
 
-        // Existing patient — go straight to booking.
         createAppointment(selectedExistingPatient.id, selectedExistingPatient.mrn)
             .finally(() => resetSubmitButton(submitBtn));
 
     } else {
 
-        // New patient — register first, then book using the new patient_id.
         const formData = new URLSearchParams();
         formData.append("full_name", patientName.value.trim());
         formData.append("mobile", primaryPhone);
         formData.append("date_of_birth", dateOfBirth.value);
         formData.append("gender", gender.value);
-<<<<<<< HEAD
-        formData.append("password", document.getElementById("patientPassword").value);
-=======
->>>>>>> 78de1aebcadb96b2ce502e48abf8717279c68e72
+        formData.append("password", patientPassword.value);
         formData.append("email", patientEmail.value.trim());
         formData.append("area", area.value);
         formData.append("address", getFinalAddress());
@@ -774,36 +812,4 @@ function printAppointment() {
 
     window.print();
 
-<<<<<<< HEAD
-=======
-}
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-const logoutBtn = document.getElementById("logoutBtn");
-
-if (logoutBtn) {
-
-    logoutBtn.addEventListener("click", function (event) {
-
-        event.preventDefault();
-
-        const confirmLogout = confirm(
-            "Are you sure you want to logout?"
-        );
-
-        if (!confirmLogout) {
-            return;
-        }
-
-        // Remove receptionist login session
-        sessionStorage.removeItem("receptionistLoggedIn");
-        sessionStorage.removeItem("receptionistUser");
-
-        // Redirect to login page
-        window.location.href = "../login page/login.html";
-
-    });
->>>>>>> 78de1aebcadb96b2ce502e48abf8717279c68e72
 }
