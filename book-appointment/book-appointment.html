@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Book Appointment | SHREE VENKATSAI Dental Hospital</title>
+
+    <link rel="stylesheet" href="book-appointment.css">
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="appointment-header">
+
+        <div class="header-container">
+
+            <a href="../html/index.html" class="brand">
+
+                <img
+                    src="../assets/logo.jpg"
+                    alt="SHREE VENKATSAI Dental Hospital Logo"
+                >
+
+                <div class="brand-text">
+                    <span>SHREE VENKATSAI</span>
+                    <small>MULTI SPECIALITY DENTAL HOSPITAL</small>
+                </div>
+
+            </a>
+
+            <a href="../html/index.html" class="back-home">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Home
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="appointment-hero">
+
+        <div class="hero-content">
+
+            <span class="hero-tag">
+                <i class="fa-regular fa-calendar-check"></i>
+                APPOINTMENT
+            </span>
+
+            <h1>
+                Schedule Your
+                <span>Dental Appointment</span>
+            </h1>
+
+            <p>
+                Book your appointment with our experienced dental specialists.
+                Choose your preferred department, doctor, date and time.
+            </p>
+
+            <div class="hero-features">
+
+                <div class="hero-feature">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Easy Online Booking</span>
+                </div>
+
+                <div class="hero-feature">
+                    <i class="fa-solid fa-user-doctor"></i>
+                    <span>Choose Your Doctor</span>
+                </div>
+
+                <div class="hero-feature">
+                    <i class="fa-solid fa-clock"></i>
+                    <span>Flexible Time Slots</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="appointment-main">
+
+        <div class="appointment-wrapper">
+
+
+            <!-- LEFT INFORMATION PANEL -->
+
+            <aside class="appointment-info">
+
+                <div class="info-card">
+
+                    <div class="info-icon">
+                        <i class="fa-solid fa-tooth"></i>
+                    </div>
+
+                    <h2>Why Book With SHREE VENKATSAI?</h2>
+
+                    <p>
+                        Get professional dental care from experienced
+                        specialists in a comfortable and patient-friendly
+                        environment.
+                    </p>
+
+                    <div class="info-list">
+
+                        <div class="info-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <div>
+                                <strong>Experienced Doctors</strong>
+                                <span>
+                                    Qualified dental specialists
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <div>
+                                <strong>Modern Facilities</strong>
+                                <span>
+                                    Advanced dental technology
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <div>
+                                <strong>Patient-Centered Care</strong>
+                                <span>
+                                    Treatment planned for you
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <div>
+                                <strong>Easy Appointment Booking</strong>
+                                <span>
+                                    Quick and convenient scheduling
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Emergency -->
+
+                <div class="emergency-card">
+
+                    <div class="emergency-icon">
+                        <i class="fa-solid fa-phone-volume"></i>
+                    </div>
+
+                    <div>
+                        <span>Dental Emergency?</span>
+
+                        <strong>
+                            Call +91 9739554406
+                        </strong>
+
+                        <small>
+                            Our team is ready to assist you.
+                        </small>
+                    </div>
+
+                </div>
+
+            </aside>
+
+
+            <!-- APPOINTMENT FORM -->
+
+            <section class="appointment-card">
+
+                <div class="form-heading">
+
+                    <span class="section-label">
+                        BOOK YOUR VISIT
+                    </span>
+
+                    <h2>Schedule Your Appointment</h2>
+
+                    <p>
+                        Fill in the details below and our team will contact
+                        you to confirm your appointment.
+                    </p>
+
+                </div>
+
+
+                <form id="appointmentForm">
+
+
+                    <!-- PATIENT DETAILS -->
+
+                    <div class="form-section">
+
+                        <div class="form-section-title">
+
+                            <span class="number">
+                                01
+                            </span>
+
+                            <div>
+                                <h3>Patient Details</h3>
+                                <p>Tell us about yourself</p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+                            <!-- Full Name -->
+
+                            <div class="form-group full-width">
+
+                                <label for="fullName">
+                                    Full Name
+                                    <span>*</span>
+                                </label>
+
+                                <div class="input-box">
+
+                                    <i class="fa-regular fa-user"></i>
+
+                                    <input
+                                        type="text"
+                                        id="fullName"
+                                        name="fullName"
+                                        placeholder="Enter your full name"
+                                        required
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Phone -->
+
+                            <div class="form-group">
+
+                                <label for="phone">
+                                    Phone Number
+                                    <span>*</span>
+                                </label>
+
+                                <div class="input-box">
+
+                                    <i class="fa-solid fa-phone"></i>
+
+                                    <input
+                                        type="tel"
+                                        id="phone"
+                                        name="phone"
+                                        placeholder="10-digit mobile number"
+                                        maxlength="10"
+                                        required
+                                    >
+
+                                    <button
+                                        type="button"
+                                        class="verify-btn"
+                                        id="verifyPhone"
+                                    >
+                                        Verify
+                                    </button>
+
+                                </div>
+
+                                <small
+                                    class="verification-message"
+                                    id="phoneMessage"
+                                ></small>
+
+                            </div>
+
+
+                            <!-- Email -->
+
+                            <div class="form-group">
+
+                                <label for="email">
+                                    Email Address
+                                </label>
+
+                                <div class="input-box">
+
+                                    <i class="fa-regular fa-envelope"></i>
+
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        placeholder="example@email.com"
+                                    >
+
+                                    <button
+                                        type="button"
+                                        class="verify-btn"
+                                        id="verifyEmail"
+                                    >
+                                        Verify
+                                    </button>
+
+                                </div>
+
+                                <small
+                                    class="verification-message"
+                                    id="emailMessage"
+                                ></small>
+
+                            </div>
+
+
+                            <!-- Age -->
+
+                            <div class="form-group">
+
+                                <label for="age">
+                                    Age
+                                    <span>*</span>
+                                </label>
+
+                                <div class="input-box">
+
+                                    <i class="fa-solid fa-calendar"></i>
+
+                                    <input
+                                        type="number"
+                                        id="age"
+                                        name="age"
+                                        min="1"
+                                        max="120"
+                                        placeholder="Enter your age"
+                                          required
+                                       
+                                    >
+
+                                </div>
+
+                            </div>
+
+                            <!-- Password -->
+
+                            <div class="form-group">
+
+                                <label for="password">
+                                    Create Password
+                                    <span>*</span>
+                                </label>
+
+                                <div class="input-box">
+
+                                    <i class="fa-solid fa-lock"></i>
+
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        placeholder="Set a password for your patient portal"
+                                        minlength="6"
+                                        required
+                                    >
+
+                                </div>
+
+                                <small>
+                                    Use this along with your email to log in to your Patient
+                                    Portal later.
+                                </small>
+
+                            </div>
+                            <!-- Gender -->
+
+                            <div class="form-group">
+
+                                <label for="gender">
+                                    Gender
+                                    <span>*</span>
+                                </label>
+
+                                <div class="input-box select-box">
+
+                                    <i class="fa-solid fa-venus-mars"></i>
+
+                                    <select id="gender" name="gender" required>
+
+                                        <option value="">
+                                            Select gender
+                                        </option>
+
+                                        <option value="Male">
+                                            Male
+                                        </option>
+
+                                        <option value="Female">
+                                            Female
+                                        </option>
+
+                                        <option value="Other">
+                                            Other
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+
+
+<!-- Area -->
+<div class="form-group">
+    <label for="area">
+        Area <span class="required">*</span>
+    </label>
+
+    <div class="input-wrapper">
+        <i class="fa-solid fa-map-location-dot"></i>
+
+        <select id="area" name="area" required>
+
+            <option value="">
+                Select your area
+            </option>
+
+            <option value="Aland Road">
+                Aland Road
+            </option>
+
+            <option value="Aiwan-E-Shahi">
+                Aiwan-E-Shahi
+            </option>
+
+            <option value="Basaveshwar Colony">
+                Basaveshwar Colony
+            </option>
+
+            <option value="Bhagyavanti Nagar">
+                Bhagyavanti Nagar
+            </option>
+
+            <option value="Brhampur">
+                Brhampur
+            </option>
+
+            <option value="Chandni Chowk">
+                Chandni Chowk
+            </option>
+
+            <option value="Dargah Road">
+                Dargah Road
+            </option>
+
+            <option value="GDA Layout">
+                GDA Layout
+            </option>
+
+            <option value="Gulbarga University">
+                Gulbarga University
+            </option>
+
+            <option value="Hagarga Road">
+                Hagarga Road
+            </option>
+
+            <option value="Humnabad Road">
+                Humnabad Road
+            </option>
+
+            <option value="Jagat">
+                Jagat
+            </option>
+
+            <option value="Jevargi Road">
+                Jevargi Road
+            </option>
+
+            <option value="Kailash Nagar">
+                Kailash Nagar
+            </option>
+
+            <option value="Khadak Chowk">
+                Khadak Chowk
+            </option>
+
+            <option value="Khuba Plot">
+                Khuba Plot
+            </option>
+
+            <option value="Kusnoor">
+                Kusnoor
+            </option>
+
+            <option value="Mahadev Nagar">
+                Mahadev Nagar
+            </option>
+
+            <option value="Malkhed Road">
+                Malkhed Road
+            </option>
+
+            <option value="Mominpura">
+                Mominpura
+            </option>
+
+            <option value="MSK Mill Road">
+                MSK Mill Road
+            </option>
+
+            <option value="Nehru Gunj">
+                Nehru Gunj
+            </option>
+
+            <option value="Sedam Road">
+                Sedam Road
+            </option>
+
+            <option value="Shahabad Road">
+                Shahabad Road
+            </option>
+
+            <option value="Shanti Nagar">
+                Shanti Nagar
+            </option>
+
+            <option value="Station Bazar">
+                Station Bazar
+            </option>
+
+            <option value="Super Market">
+                Super Market
+            </option>
+
+            <option value="Uday Nagar">
+                Uday Nagar
+            </option>
+
+            <option value="Vidya Nagar">
+                Vidya Nagar
+            </option>
+
+            <option value="Vijay Nagar">
+                Vijay Nagar
+            </option>
+
+            <option value="Yadgir Road">
+                Yadgir Road
+            </option>
+
+            <option value="Other">
+                Other
+            </option>
+
+        </select>
+    </div>
+    <div class="form-group full-width other-area-group" id="otherAreaGroup" style="display: none;">
+    <label for="otherArea">
+        Enter Your Area <span class="required">*</span>
+    </label>
+
+    <div class="input-wrapper">
+        <i class="fa-solid fa-location-dot"></i>
+
+        <textarea
+            id="otherArea"
+            name="otherArea"
+            rows="2"
+            placeholder="Please enter your area"
+        ></textarea>
+    </div>
+</div>
+</div>
+
+                    <!-- Address -->
+<div class="form-group">
+    <label for="address">
+        Address <span class="required">*</span>
+    </label>
+
+    <div class="input-wrapper">
+        <i class="fa-solid fa-location-dot"></i>
+
+        <textarea
+            id="address"
+            name="address"
+            placeholder="Enter your complete address"
+            rows="3"
+            required></textarea>
+    </div>
+</div>
+<br>
+
+                    <!-- APPOINTMENT DETAILS -->
+
+                    <div class="form-section">
+
+                        <div class="form-section-title">
+
+                            <span class="number">
+                                02
+                            </span>
+
+                            <div>
+                                <h3>Appointment Details</h3>
+                                <p>Choose your preferred appointment</p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+
+                            <!-- Department -->
+
+                            <div class="form-group">
+
+                                <label for="department">
+                                    Department
+                                    <span>*</span>
+                                </label>
+
+                                <div class="input-box select-box">
+
+                                    <i class="fa-solid fa-tooth"></i>
+
+                                    <select
+                                        id="department"
+                                        name="department"
+                                        required
+                                    >
+
+                                        <option value="">
+                                            Select Department
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Doctor -->
+
+                            <div class="form-group">
+
+                                <label for="doctor">
+                                    Preferred Doctor
+                                    <span>*</span>
+                                </label>
+
+                                <div class="input-box select-box">
+
+                                    <i class="fa-solid fa-user-doctor"></i>
+
+                                    <select
+                                        id="doctor"
+                                        name="doctor"
+                                        required
+                                    >
+
+                                        <option value="">
+                                            Select Doctor
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Date -->
+
+                            <div class="form-group">
+
+                                <label for="appointmentDate">
+                                    Preferred Date
+                                    <span>*</span>
+                                </label>
+
+                                <div class="input-box">
+
+                                    <i class="fa-regular fa-calendar-days"></i>
+
+                                    <input
+                                        type="date"
+                                        id="appointmentDate"
+                                        name="appointmentDate"
+                                        required
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Time -->
+
+                            <div class="form-group">
+
+                                <label for="appointmentTime">
+                                    Preferred Time
+                                    <span>*</span>
+                                </label>
+
+                                <div class="input-box select-box">
+
+                                    <i class="fa-regular fa-clock"></i>
+
+                                    <select
+                                        id="appointmentTime"
+                                        name="appointmentTime"
+                                        required
+                                    >
+
+                                        <option value="">
+                                            Select Time
+                                        </option>
+
+                                        <option value="09:00 AM">
+                                            09:00 AM
+                                        </option>
+
+                                        <option value="09:30 AM">
+                                            09:30 AM
+                                        </option>
+
+                                        <option value="10:00 AM">
+                                            10:00 AM
+                                        </option>
+
+                                        <option value="10:30 AM">
+                                            10:30 AM
+                                        </option>
+
+                                        <option value="11:00 AM">
+                                            11:00 AM
+                                        </option>
+
+                                        <option value="11:30 AM">
+                                            11:30 AM
+                                        </option>
+
+                                        <option value="12:00 PM">
+                                            12:00 PM
+                                        </option>
+
+                                        <option value="02:00 PM">
+                                            02:00 PM
+                                        </option>
+
+                                        <option value="02:30 PM">
+                                            02:30 PM
+                                        </option>
+
+                                        <option value="03:00 PM">
+                                            03:00 PM
+                                        </option>
+
+                                        <option value="03:30 PM">
+                                            03:30 PM
+                                        </option>
+
+                                        <option value="04:00 PM">
+                                            04:00 PM
+                                        </option>
+
+                                        <option value="04:30 PM">
+                                            04:30 PM
+                                        </option>
+
+                                        <option value="05:00 PM">
+                                            05:00 PM
+                                        </option>
+
+                                        <option value="05:30 PM">
+                                            05:30 PM
+                                        </option>
+
+                                        <option value="06:00 PM">
+                                            06:00 PM
+                                        </option>
+
+                                        <option value="06:30 PM">
+                                            06:30 PM
+                                        </option>
+
+                                        <option value="07:00 PM">
+                                            07:00 PM
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Symptoms -->
+
+                            <div class="form-group full-width">
+
+                                <label for="symptoms">
+                                   Symptoms/Message 
+                                </label>
+
+                                <div class="textarea-box">
+
+                                    <i class="fa-regular fa-message"></i>
+
+                                    <textarea
+                                        id="symptoms"
+                                        name="symptoms"
+                                        rows="5"
+                                        placeholder="Tell us briefly about your dental concern or symptoms..."
+                                    ></textarea>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- TERMS -->
+
+                    <div class="form-bottom">
+
+                        <label class="checkbox-label">
+
+                            <input
+                                type="checkbox"
+                                id="terms"
+                                required
+                            >
+
+                            <span class="custom-checkbox"></span>
+
+                            <span>
+                                I confirm that the information provided is
+                                correct and I agree to be contacted regarding
+                                my appointment.
+                            </span>
+
+                        </label>
+
+
+                        <button
+                            type="submit"
+                            class="submit-btn"
+                        >
+
+                            <span>
+                                Confirm Appointment
+                            </span>
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- ================= SUCCESS MODAL ================= -->
+
+    <div
+        class="success-overlay"
+        id="successOverlay"
+    >
+
+        <div class="success-modal">
+
+            <button
+                class="close-modal"
+                id="closeModal"
+                type="button"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="success-icon">
+
+                <i class="fa-solid fa-check"></i>
+
+            </div>
+
+            <h2>Appointment Booked!</h2>
+
+            <p>
+                Your appointment request has been submitted successfully.
+                Our team will contact you shortly to confirm your appointment.
+            </p>
+
+            <div class="appointment-summary">
+
+                <div>
+                    <span>Patient</span>
+                    <strong id="summaryName">-</strong>
+                </div>
+
+                <div>
+                    <span>Doctor</span>
+                    <strong id="summaryDoctor">-</strong>
+                </div>
+
+                <div>
+                    <span>Date</span>
+                    <strong id="summaryDate">-</strong>
+                </div>
+
+                <div>
+                    <span>Time</span>
+                    <strong id="summaryTime">-</strong>
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                class="book-another-btn"
+                id="bookAnother"
+            >
+                Book Another Appointment
+            </button>
+
+            <a
+                href="../html/index.html"
+                class="modal-home"
+            >
+                Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="appointment-footer">
+
+        <div class="footer-container">
+
+            <div class="footer-brand">
+
+                <strong>SHREE VENKATSAI</strong>
+
+                <span>
+                    MULTI SPECIALITY DENTAL HOSPITAL
+                </span>
+
+            </div>
+
+            <p>
+                © 2026 SHREE VENKATSAI Dental Hospital. All Rights Reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="book-appointment.js"></script>
+
+</body>
+</html>

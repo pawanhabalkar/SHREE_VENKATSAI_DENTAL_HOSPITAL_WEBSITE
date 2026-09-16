@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Patient Login | SHREE VENKATSAI Dental Hospital
+    </title>
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <!-- Login CSS -->
+    <link rel="stylesheet" href="login.css">
+
+</head>
+
+
+<body>
+
+    <main class="login-page">
+
+
+        <!-- =====================================================
+             LEFT SIDE
+        ====================================================== -->
+
+        <section class="login-visual">
+
+            <div class="visual-overlay"></div>
+
+            <div class="visual-content">
+
+
+                <!-- Hospital Logo -->
+                <a
+                    href="../html/index.html"
+                    class="login-logo"
+                >
+
+                    <img
+                        src="../assets/logo.jpg"
+                        alt="Shree Venkatsai Dental Hospital Logo"
+                    >
+
+                    <div>
+
+                        <strong>
+                            SHREE VENKATSAI
+                        </strong>
+
+                        <span>
+                            MULTI SPECIALITY DENTAL HOSPITAL
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+                <!-- Visual Text -->
+                <div class="visual-text">
+
+                    <span class="visual-label">
+                        WELCOME TO SHREE VENKATSAI
+                    </span>
+
+                    <h1>
+                        Your Smile.
+                        <span>Our Priority.</span>
+                    </h1>
+
+                    <p>
+                        Access your dental care journey, appointments,
+                        treatment information and more through your
+                        secure patient portal.
+                    </p>
+
+                </div>
+
+
+                <!-- Features -->
+                <div class="visual-features">
+
+
+                    <div>
+
+                        <i class="fa-solid fa-shield-heart"></i>
+
+                        <span>
+                            Secure & Private
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <i class="fa-solid fa-calendar-check"></i>
+
+                        <span>
+                            Easy Appointments
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <i class="fa-solid fa-tooth"></i>
+
+                        <span>
+                            Complete Dental Care
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             RIGHT SIDE
+        ====================================================== -->
+
+        <section class="login-container">
+
+            <div class="login-card">
+
+
+                <!-- Mobile Logo -->
+                <div class="mobile-logo">
+
+                    <img
+                        src="../assets/logo.jpg"
+                        alt="Shree Venkatsai Logo"
+                    >
+
+                    <div>
+
+                        <strong>
+                            SHREE VENKATSAI
+                        </strong>
+
+                        <small>
+                            MULTI SPECIALITY DENTAL HOSPITAL
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Login Heading -->
+                <div class="login-heading">
+
+                  
+
+                    <h2>
+                        Welcome Back
+                    </h2>
+
+                    <p>
+                        Login to continue 
+                    </p>
+
+                </div>
+
+
+
+
+              
+
+                <!-- =================================================
+                     LOGIN FORM
+                ================================================== -->
+
+                <form
+                    id="loginForm"
+                    class="login-form"
+                >
+
+
+                    <!-- Email -->
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-regular fa-envelope"></i>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Enter your email"
+                                autocomplete="email"
+                                required
+                            >
+
+                        </div>
+
+                        <small
+                            class="error-message"
+                            id="emailError"
+                        ></small>
+
+                    </div>
+
+
+
+                    <!-- Password -->
+                    <div class="form-group">
+
+                        <div class="password-label">
+
+                            <label for="password">
+                                Password
+                            </label>
+
+                            <a
+                                href="#"
+                                id="forgotPassword"
+                            >
+                                Forgot Password?
+                            </a>
+
+                        </div>
+
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="passwordToggle"
+                                aria-label="Show password"
+                            >
+
+                                <i class="fa-regular fa-eye"></i>
+
+                            </button>
+
+                        </div>
+
+
+                        <small
+                            class="error-message"
+                            id="passwordError"
+                        ></small>
+
+                    </div>
+
+
+
+                    <!-- Remember Me -->
+                    <div class="login-options">
+
+                        <label class="remember-me">
+
+                            <input
+                                type="checkbox"
+                                id="rememberMe"
+                            >
+
+                            <span>
+                                Remember me
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+
+                    <!-- Login Button -->
+                    <button
+                        type="submit"
+                        class="login-btn"
+                        id="loginBtn"
+                    >
+
+                        <span>
+                            Login to Portal
+                        </span>
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </button>
+
+
+
+                    <!-- Login Message -->
+                    <div
+                        class="login-message"
+                        id="loginMessage"
+                    ></div>
+
+
+                </form>
+
+
+
+                <!-- Divider -->
+                <div class="login-divider">
+
+                    <span>
+                        OR
+                    </span>
+
+                </div>
+
+
+
+                <!-- Help -->
+                <div class="login-help">
+
+                    <p>
+                        Need help accessing your account?
+                    </p>
+
+                    <a href="../html/contact.html">
+
+                        <i class="fa-solid fa-phone"></i>
+
+                        Contact Hospital
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- Back -->
+                <a
+                    href="../html/index.html"
+                    class="back-home"
+                >
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Back to Website
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Login JavaScript -->
+    <script src="login.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,2269 @@
+/* =========================================================
+   SHREE VENKATSAI MULTI SPECIALITY DENTAL HOSPITAL
+   RECEPTION APPOINTMENT FORM
+   MATCHED WITH PATIENT PORTAL THEME
+========================================================= */
+
+:root {
+
+    --dark-green: #123f35;
+    --deep-green: #0c2d26;
+    --green: #286b58;
+    --lime: #a7c957;
+    --sage: #dce9d7;
+    --mint: #edf5ed;
+
+    --white: #ffffff;
+    --background: #f5f8f5;
+
+    --text-dark: #17342c;
+    --text: #657771;
+    --muted: #91a09b;
+
+    --border: #e1e9e4;
+
+    --maroon: #8b2e35;
+
+    --blue: #537b9e;
+
+    --shadow:
+        0 10px 35px rgba(18, 63, 53, 0.07);
+
+    --transition: 0.25s ease;
+}
+
+
+/* RESET */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    background: var(--background);
+
+    color: var(--text-dark);
+
+    line-height: 1.5;
+
+}
+
+
+button,
+input,
+select,
+textarea {
+
+    font-family: inherit;
+
+}
+
+
+button {
+    cursor: pointer;
+}
+
+
+input,
+select,
+textarea {
+    outline: none;
+}
+
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.reception-page {
+
+    max-width: 1250px;
+
+    margin: 0 auto;
+
+    padding: 35px;
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.page-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+
+}
+
+
+.page-kicker {
+
+    color: var(--green);
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+
+}
+
+
+.page-header h1 {
+
+    margin-top: 4px;
+
+    font-size: 28px;
+
+    color: var(--text-dark);
+
+}
+
+
+.page-header p {
+
+    margin-top: 5px;
+
+    color: var(--text);
+
+    font-size: 13px;
+
+}
+
+
+.header-icon {
+
+    width: 65px;
+
+    height: 65px;
+
+    border-radius: 17px;
+
+    background: var(--mint);
+
+    color: var(--green);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 27px;
+
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.form-card {
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    padding: 27px;
+
+    box-shadow: var(--shadow);
+
+    margin-bottom: 20px;
+
+}
+
+
+/* =========================================================
+   CARD HEADING
+========================================================= */
+
+.card-heading {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    margin-bottom: 23px;
+
+}
+
+
+.heading-icon {
+
+    width: 43px;
+
+    height: 43px;
+
+    border-radius: 11px;
+
+    background: var(--mint);
+
+    color: var(--green);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.heading-icon.small {
+
+    width: 37px;
+
+    height: 37px;
+
+    font-size: 13px;
+
+}
+
+
+.card-heading h2 {
+
+    font-size: 17px;
+
+    color: var(--text-dark);
+
+}
+
+
+.card-heading p {
+
+    color: var(--text);
+
+    font-size: 11px;
+
+    margin-top: 2px;
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.search-row {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+
+.search-box {
+
+    position: relative;
+
+    flex: 1;
+
+}
+
+
+.search-box i {
+
+    position: absolute;
+
+    left: 14px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: var(--green);
+
+}
+
+
+.search-box input {
+
+    width: 100%;
+
+    height: 45px;
+
+    padding: 0 15px 0 41px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    color: var(--text-dark);
+
+    background: var(--white);
+
+    transition: var(--transition);
+
+}
+
+
+.search-box input:focus {
+
+    border-color: var(--green);
+
+    box-shadow:
+        0 0 0 4px rgba(40, 107, 88, 0.07);
+
+}
+
+
+.search-message {
+
+    margin-top: 11px;
+
+    font-size: 12px;
+
+}
+
+
+.search-message.success {
+
+    color: var(--green);
+
+}
+
+
+.search-message.error {
+
+    color: var(--maroon);
+
+}
+
+
+/* =========================================================
+   EXISTING PATIENT
+========================================================= */
+
+.existing-patient {
+
+    margin-top: 20px;
+
+    padding: 19px;
+
+    background: var(--mint);
+
+    border: 1px solid var(--sage);
+
+    border-radius: 12px;
+
+}
+
+
+.patient-found {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+}
+
+
+.found-label {
+
+    color: var(--green);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+
+}
+
+
+.patient-found h3 {
+
+    margin-top: 4px;
+
+    font-size: 18px;
+
+}
+
+
+.mrn-box {
+
+    padding: 9px 14px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    text-align: right;
+
+}
+
+
+.mrn-box span {
+
+    display: block;
+
+    font-size: 9px;
+
+    color: var(--muted);
+
+}
+
+
+.mrn-box strong {
+
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--dark-green);
+
+    font-size: 14px;
+
+}
+
+
+.patient-summary {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 15px;
+
+    border-top: 1px solid var(--sage);
+
+    margin-top: 16px;
+
+    padding-top: 16px;
+
+}
+
+
+.patient-summary span {
+
+    display: block;
+
+    color: var(--text);
+
+    font-size: 10px;
+
+}
+
+
+.patient-summary strong {
+
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 12px;
+
+}
+
+
+/* =========================================================
+   FORM GRID
+========================================================= */
+
+.form-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+
+}
+
+
+.form-group {
+
+    margin-bottom: 2px;
+
+}
+
+
+.form-group.full-width {
+
+    grid-column: 1 / -1;
+
+}
+
+
+.form-group label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--text-dark);
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+}
+
+
+.form-group label b {
+
+    color: var(--maroon);
+
+}
+
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+
+    width: 100%;
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    background: var(--white);
+
+    color: var(--text-dark);
+
+    font-size: 13px;
+
+    transition: var(--transition);
+
+}
+
+
+.form-group input,
+.form-group select {
+
+    height: 44px;
+
+    padding: 0 13px;
+
+}
+
+
+.form-group textarea {
+
+    padding: 11px 13px;
+
+    resize: vertical;
+
+}
+
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+
+    border-color: var(--green);
+
+    box-shadow:
+        0 0 0 4px rgba(40, 107, 88, 0.07);
+
+}
+
+
+.form-group small {
+
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+}
+
+
+/* =========================================================
+   READONLY MRN
+========================================================= */
+
+.readonly-field {
+
+    position: relative;
+
+}
+
+
+.readonly-field i {
+
+    position: absolute;
+
+    left: 14px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: var(--green);
+
+}
+
+
+.readonly-field input {
+
+    padding-left: 40px !important;
+
+    padding-right: 60px !important;
+
+    background: var(--mint);
+
+    color: var(--dark-green);
+
+    font-weight: 700;
+
+}
+
+
+.readonly-field span {
+
+    position: absolute;
+
+    right: 9px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    padding: 4px 6px;
+
+    border-radius: 5px;
+
+    background: var(--sage);
+
+    color: var(--green);
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+}
+
+
+/* =========================================================
+   SUB HEADING
+========================================================= */
+
+.sub-heading {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    border-top: 1px solid var(--border);
+
+    padding-top: 25px;
+
+    margin-top: 28px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.sub-heading h3 {
+
+    font-size: 15px;
+
+}
+
+
+.sub-heading p {
+
+    color: var(--text);
+
+    font-size: 11px;
+
+    margin-top: 2px;
+
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.primary-btn,
+.secondary-btn {
+
+    min-height: 44px;
+
+    padding: 0 18px;
+
+    border-radius: 9px;
+
+    border: none;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    transition: var(--transition);
+
+}
+
+
+.primary-btn {
+
+    background: var(--lime);
+
+    color: var(--deep-green);
+
+}
+
+
+.primary-btn:hover {
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 20px rgba(167, 201, 87, 0.25);
+
+}
+
+
+.secondary-btn {
+
+    background: var(--sage);
+
+    color: var(--dark-green);
+
+}
+
+
+.secondary-btn:hover {
+
+    background: #ccddc6;
+
+}
+
+
+/* =========================================================
+   FORM ACTIONS
+========================================================= */
+
+.form-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    border-top: 1px solid var(--border);
+
+    margin-top: 28px;
+
+    padding-top: 20px;
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 5000;
+
+    background:
+        rgba(12, 45, 38, 0.55);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+}
+
+
+.success-modal {
+
+    width: 100%;
+
+    max-width: 490px;
+
+    padding: 35px;
+
+    background: var(--white);
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    box-shadow:
+        0 25px 70px rgba(12, 45, 38, 0.25);
+
+}
+
+
+.success-icon {
+
+    width: 65px;
+
+    height: 65px;
+
+    margin: 0 auto 15px;
+
+    border-radius: 50%;
+
+    background: var(--sage);
+
+    color: var(--green);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 27px;
+
+}
+
+
+.success-modal h2 {
+
+    margin-top: 7px;
+
+    font-size: 21px;
+
+}
+
+
+.success-modal > p {
+
+    color: var(--text);
+
+    font-size: 12px;
+
+    margin-top: 5px;
+
+}
+
+
+.generated-details {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+
+    margin: 24px 0;
+
+}
+
+
+.generated-details div {
+
+    background: var(--mint);
+
+    border: 1px solid var(--sage);
+
+    border-radius: 10px;
+
+    padding: 14px;
+
+}
+
+
+.generated-details span {
+
+    display: block;
+
+    color: var(--text);
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.6px;
+
+}
+
+
+.generated-details strong {
+
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--dark-green);
+
+    font-size: 15px;
+
+}
+
+
+.modal-actions {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+}
+
+/* =========================================================
+   PROFESSIONAL A4 PRINT FORM
+========================================================= */
+
+.print-container {
+    display: none;
+}
+
+
+/* =========================================================
+   PRINT PAGE
+========================================================= */
+
+@media print {
+
+    @page {
+        size: A4 portrait;
+        margin: 0;
+    }
+
+
+    html,
+    body {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+    }
+
+
+    body * {
+        visibility: hidden;
+    }
+
+
+    .print-container,
+    .print-container * {
+        visibility: visible;
+    }
+
+
+    .print-container {
+        display: block;
+
+        position: absolute;
+
+        left: 0;
+        top: 0;
+
+        width: 210mm;
+        min-height: 297mm;
+
+        padding: 10mm 9mm 0 9mm;
+
+        background: #ffffff;
+
+        color: #17342c;
+
+        font-family:
+            "Segoe UI",
+            Arial,
+            sans-serif;
+
+        overflow: hidden;
+
+        box-sizing: border-box;
+
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+
+    /* =====================================================
+       TOP GREEN CURVE
+    ====================================================== */
+
+    .print-top-wave {
+
+        position: absolute;
+
+        top: 0;
+        right: 0;
+
+        width: 100%;
+        height: 18mm;
+
+        background: #0c2d26;
+
+        border-bottom-left-radius: 70% 100%;
+
+        z-index: 0;
+    }
+
+
+    .print-top-wave::after {
+
+        content: "";
+
+        position: absolute;
+
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 8mm;
+
+        background: #a7c957;
+
+        border-bottom-right-radius: 80% 100%;
+    }
+
+
+    /* =====================================================
+       MAIN HEADER
+    ====================================================== */
+
+    .print-main-header {
+
+        position: relative;
+
+        z-index: 2;
+
+        display: flex;
+
+        align-items: center;
+
+        width: 100%;
+
+        min-height: 38mm;
+
+        padding-top: 5mm;
+    }
+
+
+    .print-brand {
+
+        width: 35mm;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+    }
+
+
+    .print-logo {
+
+        width: 32mm;
+
+        height: 32mm;
+
+        object-fit: contain;
+
+        display: block;
+    }
+
+
+    .print-brand-text {
+
+        width: 75mm;
+
+        padding-left: 3mm;
+
+        line-height: 1;
+    }
+
+
+    .print-brand-small {
+
+        font-size: 8pt;
+
+        font-weight: 800;
+
+        font-style: italic;
+
+        color: #123f35;
+
+        margin-bottom: 1mm;
+    }
+
+
+    .print-brand-name {
+
+        font-size: 27pt;
+
+        line-height: 0.9;
+
+        font-weight: 900;
+
+        letter-spacing: -1.5px;
+
+        color: #123f35;
+    }
+
+
+    .print-brand-subtitle {
+
+        margin-top: 2mm;
+
+        font-size: 8pt;
+
+        font-weight: 800;
+
+        letter-spacing: 1.6px;
+
+        color: #123f35;
+    }
+
+
+    /* =====================================================
+       TAGLINE
+    ====================================================== */
+
+    .print-tagline {
+
+        flex: 1;
+
+        text-align: right;
+
+        padding-right: 2mm;
+
+        padding-top: 6mm;
+    }
+
+
+    .tagline-title {
+
+        font-size: 10pt;
+
+        font-weight: 600;
+
+        letter-spacing: 1.3px;
+
+        color: #123f35;
+
+        line-height: 1.5;
+    }
+
+
+    .tagline-services {
+
+        margin-top: 4mm;
+
+        font-size: 6.8pt;
+
+        color: #263f38;
+
+        white-space: nowrap;
+    }
+
+
+    /* =====================================================
+       HOSPITAL TITLE
+    ====================================================== */
+
+    .print-hospital-title {
+
+        position: relative;
+
+        z-index: 2;
+
+        text-align: center;
+
+        margin-top: 4mm;
+    }
+
+
+    .print-hospital-title h1 {
+
+        margin: 0;
+
+        font-size: 17pt;
+
+        line-height: 1.2;
+
+        font-weight: 900;
+
+        color: #123f35;
+
+        letter-spacing: 0.2px;
+    }
+
+
+    .print-hospital-title p {
+
+        margin: 1.5mm 0 0;
+
+        font-size: 10pt;
+
+        color: #263f38;
+    }
+
+
+    /* =====================================================
+       CONTACT ROW
+    ====================================================== */
+
+    .print-contact-row {
+
+        display: grid;
+
+        grid-template-columns:
+            1.15fr
+            0.9fr
+            1.15fr
+            1.15fr;
+
+        align-items: center;
+
+        gap: 3mm;
+
+        margin-top: 4mm;
+
+        padding: 0 5mm;
+    }
+
+
+    .print-contact-item {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 2.5mm;
+
+        min-width: 0;
+
+        font-size: 7.2pt;
+
+        color: #263f38;
+
+        white-space: nowrap;
+    }
+
+
+    .print-contact-item i {
+
+        font-size: 10pt;
+
+        color: #0c5947;
+
+        width: 4mm;
+
+        text-align: center;
+    }
+
+
+    /* =====================================================
+       DIVIDER
+    ====================================================== */
+
+    .print-divider {
+
+        width: 100%;
+
+        height: 0.4mm;
+
+        margin-top: 4mm;
+
+        background: #123f35;
+    }
+
+
+    /* =====================================================
+       FORM TITLE
+    ====================================================== */
+
+    .print-form-title {
+
+        text-align: center;
+
+        margin: 4mm 0 5mm;
+    }
+
+
+    .print-form-title h2 {
+
+        margin: 0;
+
+        font-size: 18pt;
+
+        font-weight: 900;
+
+        color: #123f35;
+
+        letter-spacing: 0.3px;
+    }
+
+
+    /* =====================================================
+       TOP TWO CARDS
+    ====================================================== */
+
+    .print-top-sections {
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 3mm;
+
+        width: 100%;
+    }
+
+
+    .print-card {
+
+        border: 0.3mm solid #c5ddce;
+
+        border-radius: 2.5mm;
+
+        overflow: hidden;
+
+        background: #ffffff;
+
+        page-break-inside: avoid;
+    }
+
+
+    .print-card-header {
+
+        min-height: 12mm;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 4mm;
+
+        padding: 2.5mm 4mm;
+
+        background: #dcefe0;
+    }
+
+
+    .print-card-header h3 {
+
+        margin: 0;
+
+        font-size: 12pt;
+
+        color: #123f35;
+
+        font-weight: 800;
+    }
+
+
+    .print-card-icon {
+
+        width: 9mm;
+
+        height: 9mm;
+
+        flex: 0 0 9mm;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 2mm;
+
+        background: #0c5947;
+
+        color: #ffffff;
+
+        font-size: 11pt;
+    }
+
+
+    .print-card-body {
+
+        padding: 4mm 5mm;
+
+        min-height: 35mm;
+    }
+
+
+    /* =====================================================
+       LABEL / VALUE ROW
+    ====================================================== */
+
+    .print-row {
+
+        display: grid;
+
+        grid-template-columns: 36mm 4mm 1fr;
+
+        align-items: baseline;
+
+        column-gap: 2mm;
+
+        margin-bottom: 3mm;
+
+        font-size: 9.5pt;
+
+        line-height: 1.3;
+    }
+
+
+    .print-row:last-child {
+        margin-bottom: 0;
+    }
+
+
+    .print-row span {
+
+        color: #263f38;
+
+        white-space: nowrap;
+    }
+
+
+    .print-row b {
+
+        font-weight: 600;
+
+        color: #263f38;
+
+        text-align: center;
+    }
+
+
+    .print-row strong {
+
+        color: #142820;
+
+        font-weight: 750;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    /* =====================================================
+       VISIT
+    ====================================================== */
+
+    .visit-body {
+
+        display: flex;
+
+        align-items: flex-start;
+
+        padding-top: 5mm;
+    }
+
+
+    .visit-reason-row {
+
+        width: 100%;
+
+        grid-template-columns: 36mm 4mm 1fr;
+    }
+
+
+    /* =====================================================
+       PATIENT CARD
+    ====================================================== */
+
+    .patient-print-card {
+
+        margin-top: 3mm;
+
+        page-break-inside: avoid;
+    }
+
+
+    .patient-print-body {
+
+        display: grid;
+
+        grid-template-columns: 1.3fr 0.7fr;
+
+        min-height: 62mm;
+    }
+
+
+    .patient-print-left {
+
+        padding: 5mm 5mm 4mm;
+    }
+
+
+    .patient-print-right {
+
+        position: relative;
+
+        padding: 5mm 6mm 4mm;
+
+        border-left: 0.3mm solid #e1e9e4;
+    }
+
+
+    .patient-print-left .print-row {
+
+        grid-template-columns: 37mm 4mm 1fr;
+
+        margin-bottom: 3mm;
+
+        font-size: 9.5pt;
+    }
+
+
+    /* =====================================================
+       CONSULTANT
+    ====================================================== */
+
+    .print-consultant {
+
+        display: grid;
+
+        grid-template-columns: 26mm 4mm 1fr;
+
+        column-gap: 2mm;
+
+        align-items: baseline;
+
+        font-size: 9.5pt;
+    }
+
+
+    .print-consultant span {
+
+        color: #263f38;
+
+        white-space: nowrap;
+    }
+
+
+    .print-consultant b {
+
+        text-align: center;
+    }
+
+
+    .print-consultant strong {
+
+        color: #142820;
+
+        font-weight: 750;
+    }
+
+
+    .print-consultant-subtitle {
+
+        margin-left: 32mm;
+
+        margin-top: 1mm;
+
+        font-size: 8.5pt;
+
+        color: #263f38;
+    }
+
+
+    /* =====================================================
+       TOOTH WATERMARK
+    ====================================================== */
+
+    .print-tooth-watermark {
+
+        position: absolute;
+
+        right: 7mm;
+
+        bottom: 5mm;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 3mm;
+
+        opacity: 0.9;
+    }
+
+
+    .print-tooth-watermark > i {
+
+        font-size: 38pt;
+
+        color: #dcefe0;
+    }
+
+
+    .print-tooth-watermark div {
+
+        display: flex;
+
+        flex-direction: column;
+
+        text-align: right;
+
+        color: #0c5947;
+
+        font-style: italic;
+    }
+
+
+    .print-tooth-watermark strong {
+
+        font-size: 10pt;
+
+        font-weight: 600;
+    }
+
+
+    .print-tooth-watermark span {
+
+        font-size: 9pt;
+
+        margin-top: 1mm;
+    }
+
+
+    /* =====================================================
+       IMPORTANT INFORMATION
+    ====================================================== */
+
+    .important-print-box {
+
+        margin-top: 3mm;
+
+        padding: 4mm 6mm 4mm;
+
+        border-radius: 3mm;
+
+        background: #edf5ed;
+
+        page-break-inside: avoid;
+    }
+
+
+    .important-print-header {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 4mm;
+
+        margin-bottom: 2mm;
+    }
+
+
+    .important-print-header h3 {
+
+        margin: 0;
+
+        font-size: 12pt;
+
+        color: #123f35;
+
+        font-weight: 800;
+    }
+
+
+    .important-print-header .print-card-icon {
+
+        width: 8mm;
+
+        height: 8mm;
+
+        flex-basis: 8mm;
+
+        font-size: 10pt;
+    }
+
+
+    .important-print-box ul {
+
+        margin: 0;
+
+        padding-left: 6mm;
+
+        color: #263f38;
+    }
+
+
+    .important-print-box li {
+
+        margin-bottom: 1.3mm;
+
+        padding-left: 1mm;
+
+        font-size: 9pt;
+
+        line-height: 1.25;
+    }
+
+
+    .important-print-box li:last-child {
+        margin-bottom: 0;
+    }
+
+
+    /* =====================================================
+       BOTTOM INFORMATION
+    ====================================================== */
+
+    .print-bottom-info {
+
+        display: flex;
+
+        align-items: flex-end;
+
+        justify-content: space-between;
+
+        padding: 5mm 2mm 7mm;
+
+        min-height: 29mm;
+    }
+
+
+    .print-copy-info {
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 1mm;
+
+        color: #142820;
+    }
+
+
+    .print-copy-info strong {
+
+        font-size: 10pt;
+    }
+
+
+    .print-copy-info span {
+
+        font-size: 9pt;
+    }
+
+
+    /* =====================================================
+       THANK YOU
+    ====================================================== */
+
+    .print-thank-you {
+
+        text-align: right;
+
+        padding-right: 8mm;
+
+        color: #0c5947;
+
+        font-style: italic;
+    }
+
+
+    .print-thank-you div {
+
+        font-size: 20pt;
+
+        line-height: 1;
+
+        font-family: "Segoe Script", "Brush Script MT", cursive;
+
+        font-weight: 600;
+    }
+
+
+    .print-thank-you span {
+
+        display: block;
+
+        margin-top: 1mm;
+
+        font-size: 11pt;
+
+        color: #263f38;
+
+        font-style: normal;
+    }
+
+
+    /* =====================================================
+       BOTTOM GREEN CURVE
+    ====================================================== */
+
+    .print-bottom-wave {
+
+        position: absolute;
+
+        bottom: 0;
+
+        left: 0;
+
+        width: 100%;
+
+        height: 20mm;
+
+        background: #0c5947;
+
+        clip-path: ellipse(85% 75% at 50% 100%);
+
+        display: flex;
+
+        align-items: flex-end;
+
+        justify-content: center;
+
+        padding-bottom: 5mm;
+
+        color: #ffffff;
+
+        z-index: 1;
+    }
+
+
+    .print-bottom-wave::before {
+
+        content: "";
+
+        position: absolute;
+
+        top: 0;
+
+        left: -5%;
+
+        width: 110%;
+
+        height: 5mm;
+
+        background: #a7c957;
+
+        border-radius: 50%;
+    }
+
+
+    .print-bottom-wave div {
+
+        position: relative;
+
+        z-index: 2;
+
+        font-size: 7pt;
+
+        letter-spacing: 3px;
+
+        font-weight: 500;
+
+        text-align: center;
+    }
+
+
+    /* =====================================================
+       PREVENT BREAKS
+    ====================================================== */
+
+    .print-card,
+    .important-print-box,
+    .print-bottom-info {
+
+        break-inside: avoid;
+
+        page-break-inside: avoid;
+    }
+
+
+    /* =====================================================
+       REMOVE BROWSER UI ELEMENTS
+    ====================================================== */
+
+    button,
+    input,
+    select,
+    textarea,
+    .modal-overlay,
+    .reception-page {
+
+        display: none !important;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 750px) {
+
+    .reception-page {
+
+        padding: 20px 15px;
+
+    }
+
+
+    .page-header {
+
+        align-items: flex-start;
+
+    }
+
+
+    .page-header h1 {
+
+        font-size: 23px;
+
+    }
+
+
+    .header-icon {
+
+        width: 52px;
+
+        height: 52px;
+
+        font-size: 21px;
+
+    }
+
+
+    .form-card {
+
+        padding: 20px;
+
+    }
+
+
+    .search-row {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+    }
+
+
+    .search-row button {
+
+        width: 100%;
+
+    }
+
+
+    .form-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .form-group.full-width {
+
+        grid-column: auto;
+
+    }
+
+
+    .patient-found {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+    }
+
+
+    .mrn-box {
+
+        text-align: left;
+
+    }
+
+
+    .patient-summary {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .form-actions {
+
+        flex-direction: column-reverse;
+
+    }
+
+
+    .form-actions button {
+
+        width: 100%;
+
+    }
+
+
+    .generated-details {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .modal-actions {
+
+        flex-direction: column-reverse;
+
+    }
+
+
+    .modal-actions button {
+
+        width: 100%;
+
+    }
+
+}
+
+/* =========================================
+   HOSPITAL HEADER
+========================================= */
+
+.hospital-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 30px;
+    box-shadow: var(--shadow);
+}
+
+.hospital-brand {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.hospital-logo {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.hospital-title h1 {
+    margin: 0;
+    color: var(--dark-green);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.hospital-title p {
+    margin: 5px 0 0;
+    color: var(--text);
+    font-size: 14px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .hospital-header {
+        padding: 15px 18px;
+    }
+
+    .hospital-brand {
+        gap: 12px;
+    }
+
+    .hospital-logo {
+        width: 55px;
+        height: 55px;
+    }
+
+    .hospital-title h1 {
+        font-size: 17px;
+        line-height: 1.3;
+    }
+
+    .hospital-title p {
+        font-size: 12px;
+    }
+}
+
+/* =========================================================
+   PAGE HEADER ACTIONS
+   Logout button - Reception
+========================================================= */
+
+.page-header {
+    position: relative;
+}
+
+.page-header-content {
+    flex: 1;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Calendar icon */
+
+.header-icon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #eaf2e8;
+    color: #006b3c;
+
+    font-size: 17px;
+}
+
+/* Logout button */
+
+.logout-btn {
+    min-height: 42px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 0 16px;
+
+    border: 1px solid #d6e2d4;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #006b3c;
+
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+
+    box-shadow: 0 4px 12px rgba(0, 107, 60, 0.08);
+}
+
+.logout-btn i {
+    font-size: 13px;
+}
+
+.logout-btn:hover {
+    background: #006b3c;
+    color: #ffffff;
+
+    border-color: #006b3c;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 6px 15px rgba(0, 107, 60, 0.16);
+}
+
+.logout-btn:active {
+    transform: translateY(0);
+}
+/* =========================================================
+   MOBILE HEADER
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .page-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .header-actions {
+        flex-shrink: 0;
+        gap: 8px;
+    }
+
+    .header-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 15px;
+        border-radius: 10px;
+    }
+
+    .logout-btn {
+        min-height: 40px;
+        padding: 0 12px;
+        font-size: 11px;
+        gap: 6px;
+    }
+
+    .logout-btn i {
+        font-size: 12px;
+    }
+}

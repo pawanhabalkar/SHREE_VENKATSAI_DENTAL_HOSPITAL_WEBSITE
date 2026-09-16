@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Book Appointment | SHREE VENKATSAI MULTI SPECIALITY DENTAL HOSPITAL
+    </title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="patient-book-appointment.css">
+
+</head>
+
+
+<body>
+
+<div class="appointment-page">
+
+
+    <!-- HEADER -->
+
+    <header class="appointment-header">
+
+        <div class="header-left">
+
+            <a href="patient_index.php"
+               class="back-btn">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+            </a>
+
+
+            <div>
+
+                <span class="header-label">
+                    PATIENT PORTAL
+                </span>
+
+                <h1>Book Your Appointment</h1>
+
+            </div>
+
+        </div>
+
+
+        <div class="hospital-mini">
+
+            <img src="../assets/logo.jpg"
+                 alt="Hospital Logo">
+
+            <div>
+
+                <strong>SHREE VENKATSAI</strong>
+
+                <span>
+                    MULTI SPECIALITY DENTAL HOSPITAL
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- PAGE CONTENT -->
+
+    <main class="appointment-container">
+
+
+        <!-- INTRO -->
+
+        <section class="intro-section">
+
+            <div>
+
+                <span class="section-label">
+                    APPOINTMENT BOOKING
+                </span>
+
+                <h2>
+                    Schedule Your Dental Appointment
+                </h2>
+
+                <p>
+                    Select your department, preferred doctor,
+                    date and available time slot.
+                </p>
+
+            </div>
+
+
+            <div class="secure-badge">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                <span>
+                    Secure Patient Booking
+                </span>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- PROGRESS -->
+
+        <div class="progress-container">
+
+            <div class="progress-step active">
+
+                <div class="step-number">1</div>
+
+                <span>Patient Information</span>
+
+            </div>
+
+
+            <div class="progress-line"></div>
+
+
+            <div class="progress-step">
+
+                <div class="step-number">2</div>
+
+                <span>Appointment Details</span>
+
+            </div>
+
+
+            <div class="progress-line"></div>
+
+
+            <div class="progress-step">
+
+                <div class="step-number">3</div>
+
+                <span>Review & Confirm</span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- FORM -->
+
+        <form id="appointmentForm">
+
+
+            <!-- PATIENT INFORMATION -->
+
+            <section class="form-card">
+
+                <div class="form-card-header">
+
+                    <div class="header-icon">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <div>
+
+                        <span class="section-label">
+                            STEP 1
+                        </span>
+
+                        <h3>Patient Information</h3>
+
+                        <p>
+                            Your existing patient details are
+                            automatically loaded.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="patient-info-banner">
+
+                    <div class="mrn-box">
+
+                        <span>PERMANENT MRN</span>
+
+                        <strong id="patientMRN">
+                            SHVMS-MRN-000001
+                        </strong>
+
+                    </div>
+
+                    <div class="mrn-note">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        <span>
+                            This MRN remains the same for all
+                            future appointments and medical history.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- NAME -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Full Name
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-user"></i>
+
+                            <input
+                                type="text"
+                                id="fullName"
+                                value="Rahul Patil"
+                                readonly
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MOBILE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Mobile Number
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-phone"></i>
+
+                            <input
+                                type="tel"
+                                id="mobile"
+                                value="9876543210"
+                                readonly
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- AGE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Age
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-calendar"></i>
+
+                            <input
+                                type="number"
+                                id="age"
+                                value="28"
+                                readonly
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- GENDER -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Gender
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-venus-mars"></i>
+
+                            <input
+                                type="text"
+                                id="gender"
+                                value="Male"
+                                readonly
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ADDRESS -->
+
+                    <div class="form-group full-width">
+
+                        <label>
+                            Address
+                        </label>
+
+                        <div class="input-wrapper textarea-wrapper">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            <textarea
+                                id="address"
+                                readonly
+                            >Kalaburagi, Karnataka</textarea>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- AREA -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Area
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-map-location-dot"></i>
+
+                            <input
+                                type="text"
+                                id="area"
+                                value="Vidya Nagar"
+                                readonly
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- APPOINTMENT DETAILS -->
+
+            <section class="form-card">
+
+                <div class="form-card-header">
+
+                    <div class="header-icon">
+                        <i class="fa-solid fa-calendar-plus"></i>
+                    </div>
+
+                    <div>
+
+                        <span class="section-label">
+                            STEP 2
+                        </span>
+
+                        <h3>Appointment Details</h3>
+
+                        <p>
+                            Choose your preferred department,
+                            doctor and available appointment slot.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- DEPARTMENT -->
+
+                    <div class="form-group">
+
+                        <label for="department">
+
+                            Department
+
+                            <span class="required">*</span>
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-building"></i>
+
+                            <select
+                                id="department"
+                                required
+                            >
+
+                                <option value="">
+                                    Select Department
+                                </option>
+
+                                <option value="general-dentistry">
+                                    General Dentistry
+                                </option>
+
+                                <option value="endodontics">
+                                    Endodontics / Root Canal
+                                </option>
+
+                                <option value="orthodontics">
+                                    Orthodontics
+                                </option>
+
+                                <option value="oral-surgery">
+                                    Oral & Maxillofacial Surgery
+                                </option>
+
+                                <option value="prosthodontics">
+                                    Prosthodontics
+                                </option>
+
+                                <option value="periodontics">
+                                    Periodontics
+                                </option>
+
+                                <option value="pedodontics">
+                                    Pediatric Dentistry
+                                </option>
+
+                                <option value="laser-treatment">
+                                    Laser Treatment
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- DOCTOR -->
+
+                    <div class="form-group">
+
+                        <label for="doctor">
+
+                            Preferred Doctor
+
+                            <span class="required">*</span>
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-user-doctor"></i>
+
+                            <select
+                                id="doctor"
+                                required
+                                disabled
+                            >
+
+                                <option value="">
+                                    Select Department First
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- DATE -->
+
+                    <div class="form-group">
+
+                        <label for="appointmentDate">
+
+                            Preferred Date
+
+                            <span class="required">*</span>
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-calendar-days"></i>
+
+                            <input
+                                type="date"
+                                id="appointmentDate"
+                                required
+                            >
+
+                        </div>
+
+                        <small class="field-hint">
+                            Only available future dates can be selected.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- TIME -->
+
+                    <div class="form-group">
+
+                        <label for="appointmentTime">
+
+                            Available Time
+
+                            <span class="required">*</span>
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-clock"></i>
+
+                            <select
+                                id="appointmentTime"
+                                required
+                                disabled
+                            >
+
+                                <option value="">
+                                    Select Doctor & Date First
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- REASON -->
+
+                    <div class="form-group full-width">
+
+                        <label for="reason">
+
+                            Reason / Symptoms
+
+                            <span class="required">*</span>
+
+                        </label>
+
+                        <div class="input-wrapper textarea-wrapper">
+
+                            <i class="fa-solid fa-notes-medical"></i>
+
+                            <textarea
+                                id="reason"
+                                placeholder="Describe your dental problem or reason for consultation"
+                                required
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- NOTES -->
+
+                    <div class="form-group full-width">
+
+                        <label for="notes">
+
+                            Additional Notes
+
+                            <span class="optional">
+                                Optional
+                            </span>
+
+                        </label>
+
+                        <div class="input-wrapper textarea-wrapper">
+
+                            <i class="fa-solid fa-message"></i>
+
+                            <textarea
+                                id="notes"
+                                placeholder="Any additional information you want the hospital to know"
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PRIORITY -->
+
+                    <div class="form-group full-width">
+
+                        <label>
+
+                            Appointment Priority
+
+                        </label>
+
+                        <div class="priority-options">
+
+                            <label class="priority-option">
+
+                                <input
+                                    type="radio"
+                                    name="priority"
+                                    value="normal"
+                                    checked
+                                >
+
+                                <span>
+
+                                    <strong>Normal</strong>
+
+                                    <small>
+                                        Regular consultation
+                                    </small>
+
+                                </span>
+
+                            </label>
+
+
+                            <label class="priority-option urgent">
+
+                                <input
+                                    type="radio"
+                                    name="priority"
+                                    value="urgent"
+                                >
+
+                                <span>
+
+                                    <strong>Urgent</strong>
+
+                                    <small>
+                                        Requires earlier attention
+                                    </small>
+
+                                </span>
+
+                            </label>
+
+
+                            <label class="priority-option emergency">
+
+                                <input
+                                    type="radio"
+                                    name="priority"
+                                    value="emergency"
+                                >
+
+                                <span>
+
+                                    <strong>Emergency</strong>
+
+                                    <small>
+                                        Immediate dental emergency
+                                    </small>
+
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- AVAILABILITY MESSAGE -->
+
+                <div
+                    class="availability-message"
+                    id="availabilityMessage"
+                >
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    <span>
+                        Select a department, doctor and date
+                        to check available appointment slots.
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- REVIEW -->
+
+            <section class="form-card review-card">
+
+                <div class="form-card-header">
+
+                    <div class="header-icon">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                    </div>
+
+                    <div>
+
+                        <span class="section-label">
+                            STEP 3
+                        </span>
+
+                        <h3>Review & Confirm</h3>
+
+                        <p>
+                            Review your appointment information
+                            before submitting.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="review-box">
+
+                    <div class="review-row">
+
+                        <span>Patient MRN</span>
+
+                        <strong id="reviewMRN">
+                            SHVMS-MRN-000001
+                        </strong>
+
+                    </div>
+
+
+                    <div class="review-row">
+
+                        <span>Patient Name</span>
+
+                        <strong id="reviewName">
+                            Rahul Patil
+                        </strong>
+
+                    </div>
+
+
+                    <div class="review-row">
+
+                        <span>Department</span>
+
+                        <strong id="reviewDepartment">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="review-row">
+
+                        <span>Doctor</span>
+
+                        <strong id="reviewDoctor">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="review-row">
+
+                        <span>Date</span>
+
+                        <strong id="reviewDate">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="review-row">
+
+                        <span>Time</span>
+
+                        <strong id="reviewTime">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="review-row">
+
+                        <span>Priority</span>
+
+                        <strong id="reviewPriority">
+                            Normal
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="confirmation-note">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    <p>
+                        Your appointment will initially be created
+                        with <strong>Pending</strong> status.
+                        The hospital admin will review and confirm,
+                        reschedule or cancel the appointment.
+                    </p>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <a href="patient_index.php"
+                       class="cancel-btn">
+
+                        Cancel
+
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="confirm-btn"
+                    >
+
+                        <i class="fa-solid fa-calendar-check"></i>
+
+                        Confirm Appointment
+
+                    </button>
+
+                </div>
+
+            </section>
+
+        </form>
+
+    </main>
+
+
+
+    <!-- SUCCESS MODAL -->
+
+    <div class="modal-overlay" id="successModal">
+
+        <div class="success-modal">
+
+            <button
+                class="modal-close"
+                id="modalClose"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+
+            <div class="success-icon">
+
+                <i class="fa-solid fa-check"></i>
+
+            </div>
+
+
+            <span class="success-label">
+                REQUEST SUBMITTED
+            </span>
+
+
+            <h2>
+                Appointment Booked!
+            </h2>
+
+
+            <p>
+                Your appointment request has been submitted
+                successfully. Please wait for hospital admin
+                confirmation.
+            </p>
+
+
+            <div class="appointment-confirmation">
+
+                <div>
+
+                    <span>Appointment ID</span>
+
+                    <strong id="successAppointmentId">
+                        APT-2026-000145
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>Patient MRN</span>
+
+                    <strong id="successMRN">
+                        SHVMS-MRN-000001
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>Status</span>
+
+                    <strong class="pending-status">
+                        PENDING
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <a href="patient_index.php"
+                   class="modal-dashboard-btn">
+
+                    Go to Dashboard
+
+                </a>
+
+                <button
+                    id="bookAnother"
+                    class="modal-book-btn"
+                >
+
+                    Book Another
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="patient-book-appointment.js"></script>
+
+</div>
+
+</body>
+</html>
